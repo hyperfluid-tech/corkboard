@@ -1,0 +1,5 @@
+# Configuration for Carbon Blog Platform
+
+blog_title = "My blog"
+articles_dir = "articles"
+port = 8080
