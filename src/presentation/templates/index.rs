@@ -7,6 +7,10 @@ use crate::domain::article::Article;
 #[template(path = "index.html")]
 pub struct IndexTemplate {
     pub blog_title: String,
+    pub blog_author: String,
+    pub blog_license: String,
+    pub blog_license_url: String,
+    pub current_year: i32,
     pub articles: Vec<Article>,
 }
 

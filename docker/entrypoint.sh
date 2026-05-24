@@ -7,7 +7,10 @@ echo "Starting Carbon initialization..."
 if [ ! -f "/app/config.toml" ]; then
     echo "config.toml not found, generating default..."
     cat <<EOF > /app/config.toml
-blog_title = "The Rusty Ledger"
+blog_title = "My blog"
+blog_author = "Author"
+blog_license = "CC 4.0 BY-SA"
+blog_license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
 articles_dir = "articles"
 port = 8080
 EOF

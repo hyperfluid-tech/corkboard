@@ -4,6 +4,9 @@ use serde::Deserialize;
 #[derive(Debug, Deserialize, Clone)]
 pub struct Settings {
     pub blog_title: String,
+    pub blog_author: String,
+    pub blog_license: String,
+    pub blog_license_url: String,
     pub articles_dir: String,
     pub port: u16,
 }
@@ -13,7 +16,10 @@ impl Settings {
         let s = Config::builder()
             .set_default("port", 8080)?
             .set_default("articles_dir", "articles")?
-            .set_default("blog_title", "My Rust Blog")?
+            .set_default("blog_title", "My blog")?
+            .set_default("blog_author", "Author")?
+            .set_default("blog_license", "CC 4.0 BY-SA")?
+            .set_default("blog_license_url", "https://creativecommons.org/licenses/by-sa/4.0/")?
             .add_source(File::with_name("config").required(false))
             .add_source(config::Environment::with_prefix("CARBON"))
             .build()?;
