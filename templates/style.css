@@ -121,7 +121,7 @@ body {
 }
 
 /* Sticky Sidebar on Desktop */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
     #sidebar {
         transform: none !important;
         position: sticky !important;

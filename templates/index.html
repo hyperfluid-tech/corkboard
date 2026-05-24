@@ -112,21 +112,21 @@
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen">
   <button
-    class="fixed top-4 left-4 z-50 md:hidden bg-surface-container-lowest text-primary p-2 border border-surface-variant shadow-[0_2px_8px_rgba(0,0,0,0.1)] rounded hover:bg-surface-container-low transition-colors"
+    class="fixed top-4 left-4 z-50 lg:hidden bg-surface-container-lowest text-primary p-2 border border-surface-variant shadow-[0_2px_8px_rgba(0,0,0,0.1)] rounded hover:bg-surface-container-low transition-colors"
     id="sidebar-toggle" onclick="toggleSidebar()">
     <span class="material-symbols-outlined">menu_book</span>
   </button>
-  <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 md:hidden" id="overlay" onclick="toggleSidebar()"></div>
+  <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay" onclick="toggleSidebar()"></div>
 
   <div
-    class="flex-grow w-full max-w-[1150px] mx-auto px-margin-mobile md:px-gutter py-stack-lg flex flex-col md:flex-row gap-8 relative">
+    class="flex-grow w-full max-w-[1150px] mx-auto px-margin-mobile lg:px-gutter py-stack-lg flex flex-col lg:flex-row gap-8 relative">
 
     <aside
-      class="fixed md:sticky inset-y-0 md:inset-y-auto left-0 w-64 border-r border-primary/20 shadow-2xl z-50 flex flex-col paper-card"
+      class="fixed lg:sticky inset-y-0 lg:inset-y-auto left-0 w-64 border-r border-primary/20 shadow-2xl z-50 flex flex-col paper-card"
       id="sidebar">
       <div class="p-4 border-b border-primary/10 flex justify-between items-center bg-white/20">
         <h2 class="font-headline-md text-headline-md text-primary tracking-tight">Ledger Index</h2>
-        <button class="text-on-surface-variant hover:text-primary transition-colors p-1 md:hidden"
+        <button class="text-on-surface-variant hover:text-primary transition-colors p-1 lg:hidden"
           onclick="toggleSidebar()">
           <span class="material-symbols-outlined">close</span>
         </button>
@@ -150,13 +150,13 @@
       </div>
     </aside>
 
-    <div class="flex-grow w-full max-w-[800px] flex flex-col gap-24">
-      <main class="w-full flex flex-col gap-24 relative">
-        <header class="text-center mb-12 py-8 paper-card p-8 rounded-sm rotate-neg shadow-xl">
+    <div class="flex-grow w-full max-w-[800px] flex flex-col gap-6">
+      <main class="w-full flex flex-col gap-6 relative">
+        <header class="text-center py-8 paper-card p-8 rounded-sm rotate-neg shadow-xl">
           <h1 class="font-headline-xl text-headline-xl text-primary tracking-tight">{{ blog_title }}</h1>
           <div class="h-1 w-24 bg-primary/20 mx-auto mt-4 rounded-full"></div>
         </header>
-        <div class="md:hidden h-8"></div>
+        <div class="lg:hidden h-4"></div>
 
         <div class="flex flex-col gap-24">
           {% if articles.is_empty() %}
@@ -197,8 +197,8 @@
       </main>
 
       <footer
-        class="paper-card p-margin-mobile md:p-gutter rounded-sm rotate-pos text-primary font-body-md text-body-md w-full flex flex-col md:flex-row justify-between items-center shadow-xl mb-12">
-        <div class="mb-4 md:mb-0">
+        class="paper-card p-margin-mobile lg:p-gutter rounded-sm rotate-pos text-primary font-body-md text-body-md w-full flex flex-col lg:flex-row justify-between items-center shadow-xl mb-12">
+        <div class="mb-4 lg:mb-0">
           <span class="font-headline-md text-headline-md text-primary block mb-2">{{ blog_title }}</span>
           <span class="text-on-surface-variant">© 2026 {{ blog_title }}. Built with precision.</span>
         </div>
