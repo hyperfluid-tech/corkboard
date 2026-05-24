@@ -371,3 +371,19 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
 
   This Source Code Form is "Incompatible With Secondary Licenses", as
   defined by the Mozilla Public License, v. 2.0.
+
+---
+
+Third-Party Components
+======================
+
+The following files are derived from third-party projects and are NOT
+covered by the Mozilla Public License above:
+
+  templates/paper-shader.js
+    Adapted from @paper-design/shaders
+    https://github.com/paper-design/shaders
+    License: PolyForm Shield License 1.0.0
+    https://polyformproject.org/licenses/shield/1.0.0
+
+See THIRD-PARTY-LICENSES.md for the full license text.
