@@ -379,7 +379,7 @@ void main() {
   }
 
   function applyPaperShaders() {
-    const cards = document.querySelectorAll(".paper-card");
+    const cards = document.querySelectorAll(".paper-card, .torn-paper-front");
     const instances = [];
 
     cards.forEach((card, index) => {
