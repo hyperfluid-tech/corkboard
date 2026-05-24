@@ -187,3 +187,16 @@ body {
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
     }
 }
+
+/* Spacer to visually balance the layout and center the main content column on desktop */
+.sidebar-spacer {
+    display: none;
+    width: 232px;
+    flex-shrink: 0;
+}
+
+@media (min-width: 1376px) {
+    .sidebar-spacer {
+        display: block;
+    }
+}
