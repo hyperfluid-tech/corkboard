@@ -2,20 +2,35 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    background-color: #fbf9f4;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    background-image: url("/static/image/screen.webp");
+    background-size: auto;
+    background-repeat: repeat;
 }
 
+/* Card / Paper effect */
 .paper-card {
     background-color: #ffffff;
     border: 1px solid #e4e2dd;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     position: relative;
     overflow: visible;
 }
 
+/* Red Pushpin (kept old design and placement) */
+.pushpin {
+    position: absolute;
+    top: -12px;
+    right: 0px;
+    width: 64px;
+    height: auto;
+    transform: rotate(15deg);
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Recessed code blocks */
 .recessed-slate {
-    background-color: #f4f2ea;
+    background-color: #ebe9e0;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
     border: 1px solid #dbdad5;
     padding: 1rem;
@@ -38,30 +53,14 @@ body {
     line-height: 1.5 !important;
 }
 
+/* Tipped-in image style (removed tape) */
 .tipped-image-container {
     position: relative;
     padding: 8px;
     background: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     border: 1px solid #e4e2dd;
     margin: 24px 0;
-}
-.tipped-image-container::before, .tipped-image-container::after {
-    content: '';
-    position: absolute;
-    width: 40px;
-    height: 12px;
-    background: rgba(22, 40, 57, 0.15);
-    transform: rotate(-45deg);
-    z-index: 10;
-}
-.tipped-image-container::before {
-    top: -2px;
-    left: -10px;
-}
-.tipped-image-container::after {
-    bottom: -2px;
-    right: -10px;
 }
 
 .handwritten-tag {
@@ -70,53 +69,55 @@ body {
     padding: 2px 6px;
 }
 
-.clip-back, .clip-front {
-    position: absolute;
-    top: -16px;
-    right: 40px;
-    width: 26px;
-    height: 72px;
-    transform: rotate(4deg);
-    pointer-events: none;
-    overflow: visible;
+/* Rotations for organic feel */
+.rotate-pos {
+    transform: rotate(1.2deg);
 }
 
-.clip-back {
-    z-index: 2;
-    clip-path: inset(0 0 77% 0);
-    filter: drop-shadow(0.5px 1px 1px rgba(0,0,0,0.15));
+.rotate-neg {
+    transform: rotate(-1.5deg);
 }
 
-.clip-front {
-    z-index: 3;
-    filter: drop-shadow(0.3px 0.5px 0.5px rgba(0,0,0,0.1));
-}
-
+/* Sidebar Transition */
 #sidebar {
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
+    background-color: #ffffff;
 }
+
 #sidebar.open {
     transform: translateX(0);
 }
+
 #overlay {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease-in-out;
 }
+
 #overlay.open {
     opacity: 1;
     pointer-events: auto;
 }
 
-@media (min-width: 1024px) {
+/* Header backdrop */
+.header-plank {
+    background-color: rgba(22, 40, 57, 0.05);
+    backdrop-filter: blur(2px);
+    border: 2px solid rgba(22, 40, 57, 0.1);
+    border-radius: 4px;
+}
+
+/* Sticky Sidebar on Desktop */
+@media (min-width: 768px) {
     #sidebar {
         transform: none !important;
         position: sticky !important;
         top: 2rem;
-        margin-left: -0.25rem;
+        bottom: auto !important;
+        left: auto !important;
         height: auto;
         max-height: calc(100vh - 4rem);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
     }
 }

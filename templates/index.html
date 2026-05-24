@@ -107,173 +107,117 @@
       }
     }
   </script>
-  <link href="/style.css" rel="stylesheet">
+  <link href="/static/style.css" rel="stylesheet">
 </head>
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen">
-
   <button
-    class="fixed top-4 left-4 z-50 lg:hidden bg-surface-container-lowest text-primary p-2 border border-surface-variant shadow-[0_2px_8px_rgba(0,0,0,0.1)] rounded hover:bg-surface-container-low transition-colors"
+    class="fixed top-4 left-4 z-50 md:hidden bg-surface-container-lowest text-primary p-2 border border-surface-variant shadow-[0_2px_8px_rgba(0,0,0,0.1)] rounded hover:bg-surface-container-low transition-colors"
     id="sidebar-toggle" onclick="toggleSidebar()">
     <span class="material-symbols-outlined">menu_book</span>
   </button>
-
-  <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay" onclick="toggleSidebar()"></div>
+  <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 md:hidden" id="overlay" onclick="toggleSidebar()"></div>
 
   <div
-    class="flex-grow w-full max-w-[1150px] mx-auto px-margin-mobile lg:px-gutter py-stack-lg flex flex-col lg:flex-row gap-8 relative">
+    class="flex-grow w-full max-w-[1150px] mx-auto px-margin-mobile md:px-gutter py-stack-lg flex flex-col md:flex-row gap-8 relative">
 
     <aside
-      class="fixed inset-y-0 left-0 w-64 bg-surface-container-lowest border-r border-surface-variant shadow-xl z-50 flex flex-col paper-card"
+      class="fixed md:sticky inset-y-0 md:inset-y-auto left-0 w-64 border-r border-primary/20 shadow-2xl z-50 flex flex-col paper-card"
       id="sidebar">
-      <div class="p-4 border-b border-surface-variant flex justify-between items-center">
-        <h2 class="font-headline-md text-headline-md text-primary tracking-tight">Index</h2>
-        <button class="text-on-surface-variant hover:text-primary transition-colors p-1 lg:hidden"
+      <div class="p-4 border-b border-primary/10 flex justify-between items-center bg-white/20">
+        <h2 class="font-headline-md text-headline-md text-primary tracking-tight">Ledger Index</h2>
+        <button class="text-on-surface-variant hover:text-primary transition-colors p-1 md:hidden"
           onclick="toggleSidebar()">
           <span class="material-symbols-outlined">close</span>
         </button>
       </div>
-      <nav class="flex-grow p-4 overflow-y-auto">
-        <ul class="space-y-4 font-body-md text-on-surface-variant">
+      <nav class="flex-grow p-4 overflow-y-auto bg-white/10 backdrop-blur-sm">
+        <ul class="space-y-4 font-body-md text-primary font-semibold">
           {% if articles.is_empty() %}
           <li><span class="block p-2 text-outline italic">No entries</span></li>
           {% else %}
           {% for article in articles %}
           <li>
-            <a class="block hover:text-primary hover:bg-surface-container-low p-2 rounded transition-colors"
-              href="#{{ article.slug }}" onclick="toggleSidebarOnMobile()">{{ article.title }}</a>
+            <a class="block hover:bg-white/30 p-2 rounded transition-colors" href="#{{ article.slug }}"
+              onclick="toggleSidebarOnMobile()">{{ article.title }}</a>
           </li>
           {% endfor %}
           {% endif %}
         </ul>
       </nav>
-      <div class="p-4 border-t border-surface-variant text-label-sm font-label-sm text-outline text-center">
+      <div class="p-4 border-t border-primary/10 text-label-sm font-label-sm text-primary/80 text-center bg-white/20">
         {{ blog_title }}
       </div>
     </aside>
 
-    <main class="flex-grow w-full max-w-[800px] flex flex-col gap-4 relative">
-      <header class="text-center mb-2">
-        <h1 class="font-headline-xl text-headline-xl text-primary tracking-tight">{{ blog_title }}</h1>
-        <div class="h-1 w-24 bg-primary/10 mx-auto mt-4 rounded-full"></div>
-      </header>
+    <div class="flex-grow w-full max-w-[800px] flex flex-col gap-24">
+      <main class="w-full flex flex-col gap-24 relative">
+        <header class="text-center mb-12 py-8 paper-card p-8 rounded-sm rotate-neg shadow-xl">
+          <h1 class="font-headline-xl text-headline-xl text-primary tracking-tight">{{ blog_title }}</h1>
+          <div class="h-1 w-24 bg-primary/20 mx-auto mt-4 rounded-full"></div>
+        </header>
+        <div class="md:hidden h-8"></div>
 
-      <div class="lg:hidden h-4"></div>
-
-      <div class="flex flex-col gap-stack-lg">
-        {% if articles.is_empty() %}
-        <article class="paper-card p-margin-mobile md:p-gutter rounded relative" id="no-articles">
-          <svg class="clip-back" viewBox="0 0 26 72" fill="none">
-            <defs>
-              <linearGradient id="metalB0" x1="0" y1="0" x2="26" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#b0b0b0" />
-                <stop offset="35%" stop-color="#d8d8d8" />
-                <stop offset="50%" stop-color="#a8a8a8" />
-                <stop offset="65%" stop-color="#c8c8c8" />
-                <stop offset="100%" stop-color="#9a9a9a" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M 3,16 L 3,7 C 3,2.5 7,1 13,1 C 19,1 23,2.5 23,7 L 23,62 C 23,68 19,71 13,71 C 7,71 3,68 3,62 L 3,16"
-              stroke="url(#metalB0)" stroke-width="2" stroke-linecap="round" fill="none" />
-          </svg>
-          <svg class="clip-front" viewBox="0 0 26 72" fill="none">
-            <defs>
-              <linearGradient id="metalF0" x1="0" y1="0" x2="26" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#c0c0c0" />
-                <stop offset="35%" stop-color="#e4e4e4" />
-                <stop offset="50%" stop-color="#b4b4b4" />
-                <stop offset="65%" stop-color="#d4d4d4" />
-                <stop offset="100%" stop-color="#a8a8a8" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M 8,16 L 8,54 C 8,59 10,62 13,62 C 16,62 18,59 18,54 L 18,10 C 18,6.5 16,4.5 13,4.5 C 10,4.5 8,6.5 8,10 L 8,16"
-              stroke="url(#metalF0)" stroke-width="2" stroke-linecap="round" fill="none" />
-          </svg>
-          <header class="mb-stack-sm border-b border-surface-variant pb-unit">
-            <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Welcome</h2>
-            <div class="flex flex-wrap items-center gap-unit text-on-surface-variant font-label-sm text-label-sm">
-              <span>SYSTEM TIME</span>
+        <div class="flex flex-col gap-24">
+          {% if articles.is_empty() %}
+          <article class="paper-card p-margin-mobile md:p-gutter rounded-sm rotate-pos scroll-mt-24" id="no-articles">
+            <img class="pushpin" src="/static/image/pushpin.svg" alt="Pushpin">
+            <header class="mb-stack-sm border-b border-surface-variant pb-unit">
+              <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Welcome</h2>
+              <div class="flex flex-wrap items-center gap-unit text-on-surface-variant font-label-sm text-label-sm">
+                <span>SYSTEM TIME</span>
+              </div>
+            </header>
+            <div class="prose prose-p:font-body-md prose-p:text-body-md prose-p:text-on-surface prose-p:mb-4">
+              <p>Welcome! No markdown files were found in the configured articles directory. Please place some
+                <code>.md</code> files under the configured directory to publish articles.
+              </p>
             </div>
-          </header>
-          <div class="prose prose-p:font-body-md prose-p:text-body-md prose-p:text-on-surface prose-p:mb-4">
-            <p>Welcome! No markdown files were found in the configured articles directory. Please place some
-              <code>.md</code> files under the configured directory to publish articles.</p>
-          </div>
-        </article>
-        {% else %}
-        {% for article in articles %}
-        <article class="paper-card p-margin-mobile md:p-gutter rounded relative scroll-mt-24" id="{{ article.slug }}">
-          <svg class="clip-back" viewBox="0 0 26 72" fill="none">
-            <defs>
-              <linearGradient id="metalB{{ loop.index }}" x1="0" y1="0" x2="26" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#b0b0b0" />
-                <stop offset="35%" stop-color="#d8d8d8" />
-                <stop offset="50%" stop-color="#a8a8a8" />
-                <stop offset="65%" stop-color="#c8c8c8" />
-                <stop offset="100%" stop-color="#9a9a9a" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M 3,16 L 3,7 C 3,2.5 7,1 13,1 C 19,1 23,2.5 23,7 L 23,62 C 23,68 19,71 13,71 C 7,71 3,68 3,62 L 3,16"
-              stroke="url(#metalB{{ loop.index }})" stroke-width="2" stroke-linecap="round" fill="none" />
-          </svg>
-          <svg class="clip-front" viewBox="0 0 26 72" fill="none">
-            <defs>
-              <linearGradient id="metalF{{ loop.index }}" x1="0" y1="0" x2="26" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#c0c0c0" />
-                <stop offset="35%" stop-color="#e4e4e4" />
-                <stop offset="50%" stop-color="#b4b4b4" />
-                <stop offset="65%" stop-color="#d4d4d4" />
-                <stop offset="100%" stop-color="#a8a8a8" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M 8,16 L 8,54 C 8,59 10,62 13,62 C 16,62 18,59 18,54 L 18,10 C 18,6.5 16,4.5 13,4.5 C 10,4.5 8,6.5 8,10 L 8,16"
-              stroke="url(#metalF{{ loop.index }})" stroke-width="2" stroke-linecap="round" fill="none" />
-          </svg>
-
-          <header class="mb-stack-sm border-b border-surface-variant pb-unit">
-            <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">{{ article.title
-              }}</h2>
-            <div class="flex flex-wrap items-center gap-unit text-on-surface-variant font-label-sm text-label-sm">
-              <time datetime="{{ article.date.format(" %Y-%m-%d") }}">{{ article.date.format("%B %e, %Y") }}</time>
+          </article>
+          {% else %}
+          {% for article in articles %}
+          <article
+            class="paper-card p-margin-mobile md:p-gutter rounded-sm {% if loop.index % 2 != 0 %}rotate-pos{% else %}rotate-neg{% endif %} scroll-mt-24"
+            id="{{ article.slug }}">
+            <img class="pushpin" src="/static/image/pushpin.svg" alt="Pushpin">
+            <header class="mb-stack-sm border-b border-surface-variant pb-unit">
+              <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">{{
+                article.title }}</h2>
+              <div class="flex flex-wrap items-center gap-unit text-on-surface-variant font-label-sm text-label-sm">
+                <time datetime="{{ article.date.format(" %Y-%m-%d") }}">{{ article.date.format("%B %e, %Y") }}</time>
+              </div>
+            </header>
+            <div class="prose prose-p:font-body-md prose-p:text-body-md prose-p:text-on-surface prose-p:mb-4">
+              {{ article.content_html|safe }}
             </div>
-          </header>
+          </article>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </main>
 
-          <div class="prose prose-p:font-body-md prose-p:text-body-md prose-p:text-on-surface prose-p:mb-4">
-            {{ article.content_html|safe }}
-          </div>
-        </article>
-        {% endfor %}
-        {% endif %}
-      </div>
-    </main>
-  </div>
-
-  <footer
-    class="bg-surface-container-low dark:bg-surface-container-lowest text-on-surface-variant dark:text-outline font-body-md text-body-md w-full mt-stack-lg border-t border-surface-container-highest py-stack-md">
-    <div
-      class="w-full max-w-[1150px] mx-auto px-margin-mobile lg:px-gutter flex flex-col lg:flex-row justify-between items-center">
-      <div class="mb-4 lg:mb-0">
-        <span class="font-headline-md text-headline-md text-primary block mb-2">{{ blog_title }}</span>
-        <span>&copy; 2026 {{ blog_title }}. Built with precision.</span>
-      </div>
-      <nav class="flex gap-4">
-        <a href="#"
-          class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high"
-          aria-label="GitHub">
-          <span class="material-symbols-outlined">code</span>
-        </a>
-        <a href="#"
-          class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high"
-          aria-label="LinkedIn">
-          <span class="material-symbols-outlined">link</span>
-        </a>
-      </nav>
+      <footer
+        class="paper-card p-margin-mobile md:p-gutter rounded-sm rotate-pos text-primary font-body-md text-body-md w-full flex flex-col md:flex-row justify-between items-center shadow-xl mb-12">
+        <div class="mb-4 md:mb-0">
+          <span class="font-headline-md text-headline-md text-primary block mb-2">{{ blog_title }}</span>
+          <span class="text-on-surface-variant">© 2026 {{ blog_title }}. Built with precision.</span>
+        </div>
+        <nav class="flex gap-4">
+          <a aria-label="GitHub"
+            class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
+            href="#">
+            <span class="material-symbols-outlined">code</span>
+          </a>
+          <a aria-label="LinkedIn"
+            class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
+            href="#">
+            <span class="material-symbols-outlined">link</span>
+          </a>
+        </nav>
+      </footer>
     </div>
-  </footer>
+
+  </div>
 
   <script>
     function toggleSidebar() {

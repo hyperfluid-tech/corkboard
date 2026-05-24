@@ -47,7 +47,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = axum::Router::new()
         .route("/", axum::routing::get(handlers::index::index_handler))
-        .route("/style.css", axum::routing::get(handlers::style::style_handler))
+        .nest_service("/static", tower_http::services::ServeDir::new("templates"))
         .with_state(state);
 
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], settings.port));
