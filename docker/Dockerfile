@@ -1,45 +1,54 @@
 # Stage 1: Builder
-FROM rust:1.80-slim AS builder
+FROM rust:1-slim-bookworm AS builder
+
+# Set working directory
+WORKDIR /usr/src/carbon
+
+# Install musl target and musl-tools
+RUN apt-get update && apt-get install -y musl-tools && rm -rf /var/lib/apt/lists/*
+RUN rustup target add x86_64-unknown-linux-musl
+
+# Copy all source files
+COPY . .
+
+# Build the release binary using the musl target
+RUN cargo build --release --target x86_64-unknown-linux-musl
+
+# Stage 2: Runtime
+FROM alpine:latest
+
+# Install required runtime dependencies for alpine (including su-exec for dropping privileges)
+RUN apk add --no-cache ca-certificates su-exec
+
+# Create a non-root user initially
+RUN addgroup -S carbon_group && adduser -S carbon_user -G carbon_group
+
+# Create the /app directory and set permissions
+RUN mkdir -p /app && chown -R carbon_user:carbon_group /app
+
+# Note: We do NOT switch to the non-root user here. 
+# We stay as ROOT so the entrypoint can dynamically chown the mounted volume 
+# and switch to the provided PUID/PGID at runtime!
 WORKDIR /app
 
-# Install compilation essentials
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Copy the compiled binary from the builder stage
+COPY --from=builder /usr/src/carbon/target/x86_64-unknown-linux-musl/release/carbon /usr/local/bin/carbon
 
-# Cache dependencies
-COPY Cargo.toml Cargo.lock ./
-RUN mkdir src && echo "fn main() {}" > src/main.rs
-RUN cargo build --release
-RUN rm -rf src
+# Copy templates to /app/templates for static asset serving at runtime
+COPY --from=builder /usr/src/carbon/templates /app/templates
 
-# Copy real source files and templates (Askama compiles templates into the binary)
-COPY src ./src
-COPY templates ./templates
-RUN touch src/main.rs
-RUN cargo build --release
+# Copy and setup our new entrypoint script
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Stage 2: Minimal runner
-FROM debian:bookworm-slim AS runner
-WORKDIR /app
-
-# Install SSL certificates and basic utilities
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy artifacts from builder
-COPY --from=builder /app/target/release/carbon /app/carbon
-COPY --from=builder /app/templates /app/templates
-COPY --from=builder /app/Cargo.toml /app/Cargo.toml
-COPY docker/entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-
-EXPOSE 8080
-
-# Environment configurations
+# Default environment configuration (safely overridable at runtime)
 ENV RUST_LOG=carbon=info,axum=info
-ENV CARBON_PORT=8080
+ENV CARBON_PORT=3000
 ENV CARBON_ARTICLES_DIR=/app/articles
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Expose the application port
+EXPOSE 3000
+
+# Use the entrypoint script to map PUID/PGID before dropping to the carbon command
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["carbon"]

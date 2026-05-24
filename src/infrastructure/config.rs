@@ -14,7 +14,7 @@ pub struct Settings {
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let s = Config::builder()
-            .set_default("port", 8080)?
+            .set_default("port", 3000)?
             .set_default("articles_dir", "articles")?
             .set_default("blog_title", "My blog")?
             .set_default("blog_author", "Author")?
