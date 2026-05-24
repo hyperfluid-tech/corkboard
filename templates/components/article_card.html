@@ -6,7 +6,7 @@
       <time datetime="{{ article.date.format(" %Y-%m-%d") }}">{{ article.date.format("%B %e, %Y") }}</time>
     </div>
   </header>
-  <div class="prose prose-p:font-body-md prose-p:text-body-md prose-p:text-on-surface prose-p:mb-4">
+  <div class="prose">
     {{ article.content_html|safe }}
   </div>
 </article>
