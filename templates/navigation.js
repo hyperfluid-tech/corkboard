@@ -26,6 +26,27 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleSidebar();
       }
     });
+
+    const textSpan = link.querySelector('.sidebar-link-text');
+    if (textSpan) {
+      link.addEventListener('mouseenter', () => {
+        if (window.innerWidth < 1024) return;
+
+        const textWidth = textSpan.scrollWidth;
+        const containerWidth = link.clientWidth - 16;
+        if (textWidth > containerWidth) {
+          const scrollDist = textWidth - containerWidth + 4;
+          const duration = scrollDist / 40;
+          link.style.setProperty('--scroll-dist', `-${scrollDist}px`);
+          link.style.setProperty('--scroll-duration', `${duration}s`);
+        }
+      });
+
+      link.addEventListener('mouseleave', () => {
+        link.style.removeProperty('--scroll-dist');
+        link.style.removeProperty('--scroll-duration');
+      });
+    }
   });
 
   if (articles.length === 0 || sidebarLinks.length === 0) return;

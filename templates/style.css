@@ -145,6 +145,23 @@ body {
     transition: font-weight 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
 }
 
+.sidebar-link-text {
+    display: block;
+    max-width: 100%;
+    transition: transform var(--scroll-duration, 0.3s) linear;
+    transform: translateX(0);
+}
+
+@media (min-width: 1024px) {
+    .sidebar-link:hover .sidebar-link-text {
+        overflow: visible;
+        text-overflow: clip;
+        max-width: none;
+        display: inline-block;
+        transform: translateX(var(--scroll-dist, 0px));
+    }
+}
+
 /* Sticky Sidebar on Desktop */
 @media (min-width: 1024px) {
     #sidebar {
