@@ -9,6 +9,9 @@ pub struct Settings {
     pub blog_license_url: String,
     pub articles_dir: String,
     pub port: u16,
+    pub linkedin_url: Option<String>,
+    pub github_url: Option<String>,
+    pub twitter_url: Option<String>,
 }
 
 impl Settings {

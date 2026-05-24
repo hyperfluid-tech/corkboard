@@ -12,6 +12,9 @@ pub struct IndexTemplate {
     pub blog_license_url: String,
     pub current_year: i32,
     pub articles: Vec<Article>,
+    pub linkedin_url: Option<String>,
+    pub github_url: Option<String>,
+    pub twitter_url: Option<String>,
 }
 
 impl IntoResponse for IndexTemplate {

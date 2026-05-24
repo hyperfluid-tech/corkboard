@@ -45,6 +45,9 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 ENV RUST_LOG=carbon=info,axum=info
 ENV CARBON_PORT=3000
 ENV CARBON_ARTICLES_DIR=/app/articles
+ENV CARBON_LINKEDIN_URL=""
+ENV CARBON_GITHUB_URL=""
+ENV CARBON_TWITTER_URL=""
 
 # Expose the application port
 EXPOSE 3000

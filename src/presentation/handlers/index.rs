@@ -13,5 +13,8 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
         blog_license_url: state.settings.blog_license_url.clone(),
         current_year,
         articles: (*state.articles).clone(),
+        linkedin_url: state.settings.linkedin_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+        github_url: state.settings.github_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+        twitter_url: state.settings.twitter_url.as_ref().filter(|s| !s.is_empty()).cloned(),
     }
 }

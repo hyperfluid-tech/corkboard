@@ -23,3 +23,6 @@ services:
       - RUST_LOG=carbon=info,axum=info
       - CARBON_PORT=3000
       - CARBON_ARTICLES_DIR=/app/articles
+      # - CARBON_LINKEDIN_URL=https://linkedin.com/in/your-username
+      # - CARBON_GITHUB_URL=https://github.com/your-username
+      # - CARBON_TWITTER_URL=https://twitter.com/your-username

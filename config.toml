@@ -6,3 +6,9 @@ blog_license = "CC 4.0 BY-SA"
 blog_license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
 articles_dir = "articles"
 port = 3000
+
+# Social media links (leave commented out or empty to hide respective icons in footer)
+# github_url = "https://github.com/your-username"
+# linkedin_url = "https://linkedin.com/in/your-username"
+# twitter_url = "https://twitter.com/your-username"
+
