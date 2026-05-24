@@ -80,10 +80,61 @@ fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> Str
     let mut code_block_lang = String::new();
     let mut code_block_content = String::new();
 
+    let mut in_image = false;
+    let mut image_dest = String::new();
+    let mut image_title = String::new();
+    let mut image_alt = String::new();
+
     let mut new_events = Vec::new();
 
     for event in parser {
+        if in_image {
+            match event {
+                Event::End(TagEnd::Image) => {
+                    in_image = false;
+                    let display_caption = if !image_title.is_empty() {
+                        image_title.clone()
+                    } else if !image_alt.is_empty() {
+                        image_alt.clone()
+                    } else {
+                        String::new()
+                    };
+                    
+                    let caption_html = if !display_caption.is_empty() {
+                        format!(
+                            r#"<p class="mt-2 text-center text-outline font-body-md text-sm italic">{}</p>"#,
+                            display_caption
+                        )
+                    } else {
+                        String::new()
+                    };
+
+                    let html = format!(
+                        r#"<div class="tipped-image-container">
+<img src="{}" alt="{}" class="w-full h-auto object-cover" />
+{}
+</div>"#,
+                        image_dest,
+                        image_alt,
+                        caption_html
+                    );
+                    new_events.push(Event::Html(html.into()));
+                }
+                Event::Text(text) => {
+                    image_alt.push_str(&text);
+                }
+                _ => {}
+            }
+            continue;
+        }
+
         match event {
+            Event::Start(Tag::Image { dest_url, title, .. }) => {
+                in_image = true;
+                image_dest = dest_url.to_string();
+                image_title = title.to_string();
+                image_alt.clear();
+            }
             Event::Start(Tag::CodeBlock(kind)) => {
                 in_code_block = true;
                 code_block_content.clear();

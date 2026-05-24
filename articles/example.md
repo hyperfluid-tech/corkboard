@@ -35,3 +35,10 @@ async fn handler() -> Html<&'static str> {
 ```
 
 This code snippet is syntax highlighted using **syntect** at compile time!
+
+## Tactile Visuals
+
+All images parsed from Markdown are automatically compiled into a skeuomorphic, tipped-in card style with waxy tape decorations and soft shadows:
+
+![Random Internet Image](https://picsum.photos/800/600)
+

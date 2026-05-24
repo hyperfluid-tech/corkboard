@@ -65,7 +65,7 @@ body {
     line-height: 1.5 !important;
 }
 
-/* Tipped-in image style (removed tape) */
+/* Tipped-in image style with tape */
 .tipped-image-container {
     position: relative;
     padding: 8px;
@@ -73,6 +73,23 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     border: 1px solid #e4e2dd;
     margin: 24px 0;
+}
+.tipped-image-container::before, .tipped-image-container::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 12px;
+    background: rgba(22, 40, 57, 0.15); /* waxy tape color */
+    transform: rotate(-45deg);
+    z-index: 10;
+}
+.tipped-image-container::before {
+    top: -2px;
+    left: -10px;
+}
+.tipped-image-container::after {
+    bottom: -2px;
+    right: -10px;
 }
 
 .handwritten-tag {
