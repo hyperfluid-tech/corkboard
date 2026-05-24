@@ -128,9 +128,8 @@
     <div class="flex-grow w-full max-w-[800px] flex flex-col gap-6">
       <main class="w-full flex flex-col gap-6 relative">
         {% include "components/header.html" %}
-        <div class="lg:hidden h-4"></div>
 
-        <div class="flex flex-col gap-24">
+        <div class="flex flex-col gap-gutter">
           {% if articles.is_empty() %}
             {% include "components/article_welcome.html" %}
           {% else %}
