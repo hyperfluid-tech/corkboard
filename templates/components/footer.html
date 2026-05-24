@@ -1,0 +1,26 @@
+<footer
+  class="paper-card p-margin-mobile lg:p-gutter rounded-sm rotate-pos text-primary font-body-md text-body-md w-full flex flex-col lg:flex-row justify-between items-center shadow-xl mb-12">
+  <div class="mb-4 lg:mb-0">
+    <span class="font-headline-md text-headline-md text-primary block mb-2">{{ blog_title }}</span>
+    <span class="text-on-surface-variant">
+      © {{ current_year }} {{ blog_author }}. Powered by <a class="hover:underline text-primary font-semibold" href="https://github.com/hyperfluid-tech/carbon" target="_blank" rel="noopener noreferrer">carbon</a>.
+      {% if !blog_license_url.is_empty() %}
+      Licensed under <a class="hover:underline text-primary font-semibold" href="{{ blog_license_url }}" target="_blank" rel="noopener noreferrer">{{ blog_license }}</a>.
+      {% else %}
+      Licensed under {{ blog_license }}.
+      {% endif %}
+    </span>
+  </div>
+  <nav class="flex gap-4">
+    <a aria-label="GitHub"
+      class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
+      href="#">
+      <span class="material-symbols-outlined">code</span>
+    </a>
+    <a aria-label="LinkedIn"
+      class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
+      href="#">
+      <span class="material-symbols-outlined">link</span>
+    </a>
+  </nav>
+</footer>

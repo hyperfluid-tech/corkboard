@@ -4,8 +4,10 @@ use std::path::Path;
 use syntect::highlighting::{Theme, ThemeSet};
 use syntect::html::highlighted_html_for_string;
 use syntect::parsing::SyntaxSet;
-
 use crate::domain::article::{Article, FrontMatter};
+use crate::presentation::templates::markdown_image::MarkdownImageTemplate;
+use crate::presentation::templates::code_block::CodeBlockTemplate;
+use askama::Template;
 
 pub fn load_articles(dir: &str) -> Result<Vec<Article>, Box<dyn std::error::Error>> {
     let ps = SyntaxSet::load_defaults_newlines();
@@ -93,31 +95,20 @@ fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> Str
                 Event::End(TagEnd::Image) => {
                     in_image = false;
                     let display_caption = if !image_title.is_empty() {
-                        image_title.clone()
+                        &image_title
                     } else if !image_alt.is_empty() {
-                        image_alt.clone()
+                        &image_alt
                     } else {
-                        String::new()
+                        ""
                     };
                     
-                    let caption_html = if !display_caption.is_empty() {
-                        format!(
-                            r#"<p class="mt-2 text-center text-outline font-body-md text-sm italic">{}</p>"#,
-                            display_caption
-                        )
-                    } else {
-                        String::new()
+                    let template = MarkdownImageTemplate {
+                        src: &image_dest,
+                        alt: &image_alt,
+                        caption: display_caption,
                     };
-
-                    let html = format!(
-                        r#"<div class="tipped-image-container">
-<img src="{}" alt="{}" class="w-full h-auto object-cover" />
-{}
-</div>"#,
-                        image_dest,
-                        image_alt,
-                        caption_html
-                    );
+                    
+                    let html = template.render().unwrap();
                     new_events.push(Event::Html(html.into()));
                 }
                 Event::Text(text) => {
@@ -151,15 +142,19 @@ fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> Str
 
                 let highlighted =
                     match highlighted_html_for_string(&code_block_content, ps, syntax, theme) {
-                        Ok(html) => format!("<div class=\"recessed-slate\">{}</div>", html),
+                        Ok(html) => html,
                         Err(_) => {
                             format!(
-                                "<div class=\"recessed-slate\"><pre><code>{}</code></pre></div>",
+                                "<pre><code>{}</code></pre>",
                                 escape_html(&code_block_content)
                             )
                         }
                     };
-                new_events.push(Event::Html(highlighted.into()));
+                let template = CodeBlockTemplate {
+                    content: &highlighted,
+                };
+                let html = template.render().unwrap();
+                new_events.push(Event::Html(html.into()));
             }
             Event::Text(text) if in_code_block => code_block_content.push_str(&text),
             Event::Text(text) => new_events.push(Event::Text(text)),
