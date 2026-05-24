@@ -2,14 +2,14 @@
   class="fixed lg:sticky inset-y-0 lg:inset-y-auto left-0 w-64 border-r border-primary/20 shadow-2xl z-50 flex flex-col paper-card"
   id="sidebar">
   <nav class="flex-grow p-4 overflow-y-auto bg-white/10 backdrop-blur-sm">
-    <ul class="space-y-4 font-body-md text-primary font-semibold">
+    <ul class="space-y-4 font-body-md text-primary">
       {% if articles.is_empty() %}
       <li><span class="block p-2 text-outline italic">No entries</span></li>
       {% else %}
       {% for article in articles %}
       <li>
-        <a class="block hover:bg-white/30 p-2 rounded transition-colors" href="#{{ article.slug }}"
-          onclick="toggleSidebarOnMobile()">{{ article.title }}</a>
+        <a class="block hover:bg-white/30 p-2 rounded transition-colors sidebar-link font-semibold truncate" href="#{{ article.slug }}"
+          data-slug="{{ article.slug }}">{{ article.title }}</a>
       </li>
       {% endfor %}
       {% endif %}
