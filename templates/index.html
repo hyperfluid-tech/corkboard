@@ -112,9 +112,9 @@
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen">
   <button
-    class="fixed top-4 left-4 z-50 lg:hidden bg-surface-container-lowest text-primary p-2 border border-surface-variant shadow-[0_2px_8px_rgba(0,0,0,0.1)] rounded hover:bg-surface-container-low transition-colors"
+    class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
     id="sidebar-toggle" onclick="toggleSidebar()">
-    <span class="material-symbols-outlined">menu_book</span>
+    <span class="material-symbols-outlined text-[20px]">menu_book</span>
   </button>
   <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay" onclick="toggleSidebar()"></div>
 
@@ -166,9 +166,7 @@
           </article>
           {% else %}
           {% for article in articles %}
-          <article
-            class="paper-card p-margin-mobile md:p-gutter rounded-sm scroll-mt-24"
-            id="{{ article.slug }}">
+          <article class="paper-card p-margin-mobile md:p-gutter rounded-sm scroll-mt-24" id="{{ article.slug }}">
             <img class="pushpin" src="/static/image/pushpin.svg" alt="Pushpin">
             <header class="mb-stack-sm border-b border-surface-variant pb-unit">
               <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">{{
