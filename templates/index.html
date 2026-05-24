@@ -119,9 +119,11 @@
   <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay" onclick="toggleSidebar()"></div>
 
   <div
-    class="flex-grow w-full max-w-[1150px] mx-auto px-margin-mobile lg:px-gutter py-stack-lg flex flex-col lg:flex-row gap-8 relative">
+    class="flex-grow w-full max-w-[1150px] mx-auto px-margin-mobile lg:px-gutter pt-stack-lg pb-gutter flex flex-col lg:flex-row gap-8 relative">
 
-    {% include "components/sidebar.html" %}
+    <div class="contents lg:block lg:w-64 lg:flex-shrink-0 lg:pt-[163px]">
+      {% include "components/sidebar.html" %}
+    </div>
 
     <div class="flex-grow w-full max-w-[800px] flex flex-col gap-6">
       <main class="w-full flex flex-col gap-6 relative">
