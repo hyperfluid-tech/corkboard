@@ -6,19 +6,19 @@ PGID=${PGID:-1000}
 
 # Robustly update or append group and user IDs 
 # Bypasses Alpine's unpredictable adduser/deluser behavior
-if grep -q "^carbon_group:" /etc/group; then
-    sed -i "s/^carbon_group:.*/carbon_group:x:$PGID:/" /etc/group
+if grep -q "^corkboard_group:" /etc/group; then
+    sed -i "s/^corkboard_group:.*/corkboard_group:x:$PGID:/" /etc/group
 else
-    echo "carbon_group:x:$PGID:" >> /etc/group
+    echo "corkboard_group:x:$PGID:" >> /etc/group
 fi
 
-if grep -q "^carbon_user:" /etc/passwd; then
-    sed -i "s/^carbon_user:.*/carbon_user:x:$PUID:$PGID:CARBON User,,,:\/app:\/bin\/false/" /etc/passwd
+if grep -q "^corkboard_user:" /etc/passwd; then
+    sed -i "s/^corkboard_user:.*/corkboard_user:x:$PUID:$PGID:CORKBOARD User,,,:\/app:\/bin\/false/" /etc/passwd
 else
-    echo "carbon_user:x:$PUID:$PGID:CARBON User,,,:/app:/bin/false" >> /etc/passwd
+    echo "corkboard_user:x:$PUID:$PGID:CORKBOARD User,,,:/app:/bin/false" >> /etc/passwd
 fi
 
-echo "Starting Carbon initialization..."
+echo "Starting Corkboard initialization..."
 
 # Check if config.toml exists in the runtime environment, else write default
 if [ ! -f "/app/config.toml" ]; then
@@ -39,7 +39,7 @@ EOF
 fi
 
 # Ensure the articles directory is set up
-ARTICLES_DIR=${CARBON_ARTICLES_DIR:-/app/articles}
+ARTICLES_DIR=${CORKBOARD_ARTICLES_DIR:-/app/articles}
 mkdir -p "$ARTICLES_DIR"
 
 # If no posts exist, create a default greeting post
@@ -69,6 +69,6 @@ fi
 # Apply permissions on the app directory 
 chown -R $PUID:$PGID /app
 
-echo "Starting Carbon blog platform..."
+echo "Starting Corkboard blog platform..."
 # Drop privileges using direct numeric mapping
 exec su-exec $PUID:$PGID "$@"

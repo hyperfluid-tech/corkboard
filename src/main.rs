@@ -16,12 +16,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "carbon=debug,axum=info".into()),
+                .unwrap_or_else(|_| "corkboard=debug,axum=info".into()),
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    tracing::info!("Initializing Carbon blog platform...");
+    tracing::info!("Initializing Corkboard blog platform...");
 
     let settings = Settings::new().map_err(|e| {
         tracing::error!("Failed to load configuration: {}", e);

@@ -215,25 +215,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e748733b7cbc798e1434b6ac524f0c1ff2ab456fe201501e6497c8417a4fc33"
 
 [[package]]
-name = "carbon"
-version = "0.1.0"
-dependencies = [
- "askama",
- "axum",
- "chrono",
- "config",
- "pulldown-cmark",
- "serde",
- "serde_yaml",
- "slug",
- "syntect",
- "tokio",
- "tower-http",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "cc"
 version = "1.2.62"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -317,6 +298,25 @@ name = "core-foundation-sys"
 version = "0.8.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+
+[[package]]
+name = "corkboard"
+version = "0.1.0"
+dependencies = [
+ "askama",
+ "axum",
+ "chrono",
+ "config",
+ "pulldown-cmark",
+ "serde",
+ "serde_yaml",
+ "slug",
+ "syntect",
+ "tokio",
+ "tower-http",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "cpufeatures"

@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  carbon:
+  corkboard:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    container_name: carbon_blog
+    container_name: corkboard_blog
     restart: unless-stopped
     ports:
       # Map the host's 8080 to the container's 3000
@@ -19,10 +19,10 @@ services:
       # - PUID=1000
       # - PGID=1000
 
-      # Configure Carbon environment
-      - RUST_LOG=carbon=info,axum=info
-      - CARBON_PORT=3000
-      - CARBON_ARTICLES_DIR=/app/articles
-      # - CARBON_LINKEDIN_URL=https://linkedin.com/in/your-username
-      # - CARBON_GITHUB_URL=https://github.com/your-username
-      # - CARBON_TWITTER_URL=https://twitter.com/your-username
+      # Configure Corkboard environment
+      - RUST_LOG=corkboard=info,axum=info
+      - CORKBOARD_PORT=3000
+      - CORKBOARD_ARTICLES_DIR=/app/articles
+      # - CORKBOARD_LINKEDIN_URL=https://linkedin.com/in/your-username
+      # - CORKBOARD_GITHUB_URL=https://github.com/your-username
+      # - CORKBOARD_TWITTER_URL=https://twitter.com/your-username
