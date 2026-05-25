@@ -30,7 +30,7 @@ pub fn load_articles(dir: &str) -> Result<Vec<Article>, Box<dyn std::error::Erro
         }
     }
 
-    articles.sort_by_key(|a| a.date);
+    articles.sort_by(|a, b| b.date.cmp(&a.date));
 
     Ok(articles)
 }
