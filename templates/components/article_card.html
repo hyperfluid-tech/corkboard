@@ -1,7 +1,10 @@
 <article class="paper-card p-margin-mobile md:p-gutter rounded-sm" id="{{ article.slug }}">
   <img class="pushpin" src="/static/image/pushpin.svg" alt="Pushpin">
   <header class="mb-stack-sm border-b border-surface-variant pb-unit">
-    <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">{{ article.title }}</h2>
+    <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{{ article.title }}</h2>
+    {% if let Some(subheading) = article.subheading %}
+      <p class="text-on-surface-variant font-body-md italic mb-2 text-base md:text-lg opacity-90">{{ subheading }}</p>
+    {% endif %}
     <div class="flex flex-wrap items-center gap-unit text-on-surface-variant font-label-sm text-label-sm">
       <time datetime="{{ article.date.format(" %Y-%m-%d") }}">{{ article.date.format("%B %e, %Y") }}</time>
     </div>

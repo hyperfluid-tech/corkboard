@@ -65,6 +65,7 @@ fn parse_article(
         title: fm.title,
         date,
         content_html,
+        subheading: fm.subheading,
     })
 }
 

@@ -399,3 +399,93 @@ body {
     color: #162839;
     border: 1px solid #dbdad5;
 }
+
+/* Custom Markdown Table Styling */
+.prose table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.prose th {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 700;
+    color: #162839;
+    border-bottom: 2px solid #162839;
+    padding: 0.75rem 1rem;
+    background-color: rgba(22, 40, 57, 0.03);
+}
+
+.prose td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e4e2dd;
+    color: #43474c;
+}
+
+.prose tr:nth-child(even) {
+    background-color: rgba(22, 40, 57, 0.015);
+}
+
+/* Strikethrough */
+.prose del {
+    text-decoration: line-through;
+    color: #74777d;
+}
+
+/* Horizontal Rule */
+.prose hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(22, 40, 57, 0), rgba(22, 40, 57, 0.25), rgba(22, 40, 57, 0));
+    margin: 2.5rem 0;
+}
+
+/* Task lists */
+.prose li:has(input[type="checkbox"]) {
+    list-style-type: none;
+    position: relative;
+    padding-left: 0;
+}
+
+.prose li input[type="checkbox"] {
+    margin-right: 0.5rem;
+    accent-color: #236580;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+/* Footnotes */
+.prose .footnote-definition {
+    font-size: 0.85rem;
+    margin-top: 1.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed #e4e2dd;
+    color: #74777d;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.prose .footnote-definition-label {
+    font-weight: 700;
+    color: #236580;
+}
+
+.prose .footnote-definition p {
+    margin-bottom: 0;
+    display: inline;
+}
+
+.prose sup a {
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #236580;
+    padding: 0 2px;
+}
+
+.prose sup a:hover {
+    color: #004d66;
+    text-decoration: underline;
+}
