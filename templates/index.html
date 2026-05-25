@@ -131,11 +131,11 @@
 
         <div class="flex flex-col gap-gutter">
           {% if articles.is_empty() %}
-            {% include "components/article_welcome.html" %}
+          {% include "components/article_welcome.html" %}
           {% else %}
-            {% for article in articles %}
-              {% include "components/article_card.html" %}
-            {% endfor %}
+          {% for article in articles %}
+          {% include "components/article_card.html" %}
+          {% endfor %}
           {% endif %}
         </div>
       </main>
@@ -146,6 +146,17 @@
     <div class="sidebar-spacer"></div>
 
   </div>
+
+  <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="chalk-filter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2" xChannelSelector="R" yChannelSelector="G"
+          result="rough-text" />
+        <feGaussianBlur in="rough-text" stdDeviation="0.25" />
+      </filter>
+    </defs>
+  </svg>
 
   <script src="/static/navigation.js"></script>
   <script src="/static/torn-paper.js"></script>
