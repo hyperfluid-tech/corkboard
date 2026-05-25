@@ -46,73 +46,49 @@
     const containers = document.querySelectorAll(".torn-code-container");
     containers.forEach((container) => {
       const W = container.offsetWidth;
-      const H = container.offsetHeight;
-      if (W === 0 || H === 0) return;
+      if (W === 0) return;
 
       const step = 8;
       const steps = Math.ceil(W / step) + 1;
 
-      // Base top and bottom offsets
-      const topOffset = 10;
-      const bottomOffset = H - 10;
+      // Centered noise for top and bottom ripped paper sheets.
+      // Offset is 12px within a 24px high overlay. Amplitude is 8px.
+      const topNoise = generateNoise(steps, 8, 12);
+      const bottomNoise = generateNoise(steps, 8, 12);
 
-      // Generate identical seed noise for both layers so they match shape naturally
-      const topNoise = generateNoise(steps, 14, topOffset);
-      const bottomNoise = generateNoise(steps, 14, bottomOffset);
-
-      // Back layer coordinates (White paper border)
-      const backPoints = [];
-      for (let i = 0; i < steps; i++) {
-        const x = Math.min(i * step, W);
-        backPoints.push(`${x}px ${topNoise[i]}px`);
-      }
-      backPoints.push(`${W}px ${H / 2}px`);
+      // Top overlay clip-path: straight top edge, jagged bottom edge.
+      const topPoints = [];
+      topPoints.push("-2px -2px");
+      topPoints.push(`${W + 2}px -2px`);
+      topPoints.push(`${W + 2}px ${topNoise[steps - 1]}px`);
       for (let i = steps - 1; i >= 0; i--) {
         const x = Math.min(i * step, W);
-        backPoints.push(`${x}px ${bottomNoise[i]}px`);
+        topPoints.push(`${x}px ${topNoise[i]}px`);
       }
-      backPoints.push(`0px ${H / 2}px`);
+      topPoints.push(`-2px ${topNoise[0]}px`);
+      const topClip = `polygon(${topPoints.join(", ")})`;
 
-      // Front layer coordinates (Grid paper, inset by 2px vertically, 3px horizontally)
-      const frontPoints = [];
-      const insetX = 3;
-      const insetY = 2;
+      // Bottom overlay clip-path: jagged top edge, straight bottom edge (24px height).
+      const bottomPoints = [];
+      bottomPoints.push(`-2px ${bottomNoise[0]}px`);
       for (let i = 0; i < steps; i++) {
-        const pct = i / (steps - 1);
-        const x = insetX + pct * (W - 2 * insetX);
-        const y = topNoise[i] + insetY;
-        frontPoints.push(`${x}px ${y}px`);
+        const x = Math.min(i * step, W);
+        bottomPoints.push(`${x}px ${bottomNoise[i]}px`);
       }
-      frontPoints.push(`${W - insetX}px ${H / 2}px`);
-      for (let i = steps - 1; i >= 0; i--) {
-        const pct = i / (steps - 1);
-        const x = insetX + pct * (W - 2 * insetX);
-        const y = bottomNoise[i] - insetY;
-        frontPoints.push(`${x}px ${y}px`);
-      }
-      frontPoints.push(`${insetX}px ${H / 2}px`);
+      bottomPoints.push(`${W + 2}px ${bottomNoise[steps - 1]}px`);
+      bottomPoints.push(`${W + 2}px 26px`);
+      bottomPoints.push(`-2px 26px`);
+      const bottomClip = `polygon(${bottomPoints.join(", ")})`;
 
-      const backClip = `polygon(${backPoints.join(", ")})`;
-      const frontClip = `polygon(${frontPoints.join(", ")})`;
+      const topEdge = container.querySelector(".torn-edge-top");
+      const bottomEdge = container.querySelector(".torn-edge-bottom");
 
-      const back = container.querySelector(".torn-paper-back");
-      const front = container.querySelector(".torn-paper-front");
-
-      if (back) back.style.clipPath = backClip;
-      if (front) front.style.clipPath = frontClip;
+      if (topEdge) topEdge.style.clipPath = topClip;
+      if (bottomEdge) bottomEdge.style.clipPath = bottomClip;
     });
   }
 
   function initTears() {
-    const containers = document.querySelectorAll(".torn-code-container");
-    containers.forEach((container) => {
-      if (!container.dataset.initialized) {
-        // Random rotation between -0.8deg and 0.8deg for an organic ledger look
-        const rot = (Math.random() * 1.6 - 0.8).toFixed(2);
-        container.style.transform = `rotate(${rot}deg)`;
-        container.dataset.initialized = "true";
-      }
-    });
     updateTears();
   }
 

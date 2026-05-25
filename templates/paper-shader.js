@@ -389,7 +389,22 @@ void main() {
       canvas.classList.add("paper-shader-canvas");
       card.appendChild(canvas);
 
-      const instance = initPaperShader(canvas, {
+      const isCodeBlock = card.classList.contains("torn-paper-front");
+      const shaderOptions = isCodeBlock ? {
+        colorFront: [0.808, 0.831, 0.851, 1.0],
+        colorBack: [1.0, 1.0, 1.0, 0.0],
+        contrast: 0.12,
+        roughness: 0.20,
+        fiber: 0.15,
+        fiberSize: 0.15,
+        crumples: 0.12,
+        crumpleSize: 0.35,
+        folds: 0.15,
+        foldCount: 3,
+        drops: 0.0,
+        fade: 0.00,
+        seed: 12
+      } : {
         colorFront: [0.808, 0.831, 0.851, 1.0],
         colorBack: [1.0, 1.0, 1.0, 1.0],
         contrast: 0.30,
@@ -403,7 +418,9 @@ void main() {
         drops: 0.20,
         fade: 0.00,
         seed: 6
-      });
+      };
+
+      const instance = initPaperShader(canvas, shaderOptions);
 
       if (instance) instances.push(instance);
     });
