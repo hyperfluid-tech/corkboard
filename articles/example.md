@@ -75,12 +75,6 @@ Blockquotes are perfect for highlighting pull-quotes or references from external
 > 
 > — Dieter Rams
 
-Here is a nested blockquote showing multiple levels of citation:
-
-> First level of citation.
-> 
-> > Second level of citation nested inside the first blockquote.
-
 ---
 
 ## 5. Rich Code Blocks

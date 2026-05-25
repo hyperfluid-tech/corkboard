@@ -361,16 +361,72 @@ body {
 }
 
 .prose blockquote {
-    margin: 1.75rem 0;
-    padding: 0.5rem 0 0.5rem 1.25rem;
-    border-left: 4px solid #162839;
-    color: #43474c;
-    font-style: italic;
-    background-color: rgba(22, 40, 57, 0.02);
+    position: relative;
+    margin: 2.5rem 1.5rem;
+    padding: 2rem 1.5rem;
+    border-top: 3px double rgba(22, 40, 57, 0.2);
+    border-bottom: 3px double rgba(22, 40, 57, 0.2);
+    background-color: transparent;
+    color: #2c3e50;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    text-align: center;
+    overflow: visible;
+}
+
+@media (min-width: 768px) {
+    .prose blockquote {
+        margin: 3rem 3.5rem;
+        padding: 2.25rem 2.5rem;
+    }
+}
+
+.prose blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -1.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: rgba(35, 101, 128, 0.25);
+    background-color: #ffffff;
+    padding: 0 1.25rem;
+}
+
+.prose blockquote::after {
+    content: "❦";
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.25rem;
+    line-height: 1;
+    color: rgba(35, 101, 128, 0.35);
+    background-color: #ffffff;
+    padding: 0 1.25rem;
 }
 
 .prose blockquote p {
     margin-bottom: 0;
+    font-style: italic;
+}
+
+.prose blockquote p + p {
+    margin-top: 1rem;
+}
+
+.prose blockquote p:not(:first-child):last-child {
+    font-family: "Source Sans 3", sans-serif;
+    font-style: normal;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #74777d;
+    margin-top: 1rem;
 }
 
 .prose a {
@@ -458,13 +514,28 @@ body {
 
 /* Footnotes */
 .prose .footnote-definition {
-    font-size: 0.85rem;
-    margin-top: 1.5rem;
-    padding-top: 0.75rem;
-    border-top: 1px dashed #e4e2dd;
-    color: #74777d;
+    font-size: 0.825rem;
+    line-height: 1.5;
+    color: #5a5f66;
     display: flex;
     gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.prose .footnote-definition:first-of-type {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    position: relative;
+}
+
+.prose .footnote-definition:first-of-type::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 1px;
+    background-color: rgba(22, 40, 57, 0.2);
 }
 
 .prose .footnote-definition-label {
