@@ -479,7 +479,6 @@ body {
     border: 1px solid #dbdad5;
 }
 
-/* Custom Markdown Table Styling - Skeuomorphic Chalkboard */
 .prose table {
     display: table;
     width: 100%;
@@ -538,7 +537,6 @@ body {
     background-color: rgba(255, 255, 255, 0.015);
 }
 
-/* Chalkboard Links */
 .prose table a {
     color: #aae0f0 !important;
     text-shadow: 0 0 2px rgba(170, 224, 240, 0.6);
@@ -553,20 +551,17 @@ body {
     text-shadow: 0 0 3px rgba(201, 240, 252, 0.8);
 }
 
-/* Chalkboard Bold / Strong Text */
 .prose table strong {
     color: #ffffff;
     font-weight: 700;
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.6);
 }
 
-/* Strikethrough */
 .prose del {
     text-decoration: line-through;
     color: #74777d;
 }
 
-/* Horizontal Rule */
 .prose hr {
     border: 0;
     height: 1px;
@@ -574,7 +569,6 @@ body {
     margin: 2.5rem 0;
 }
 
-/* Task lists */
 .prose li:has(input[type="checkbox"]) {
     list-style-type: none;
     position: relative;
@@ -588,7 +582,6 @@ body {
     vertical-align: middle;
 }
 
-/* Footnotes */
 .prose .footnote-definition {
     font-size: 0.825rem;
     line-height: 1.5;
@@ -637,7 +630,6 @@ body {
     text-decoration: underline;
 }
 
-/* Skeuomorphic Neon Tape Flag "Read more" Buttons */
 .read-more-container {
     position: absolute;
     bottom: 24px;
@@ -669,7 +661,6 @@ body {
     user-select: none;
 }
 
-/* Sequential color rotations for the flags */
 .article-card-wrapper:nth-child(5n+1) .read-more-flag {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
@@ -705,7 +696,6 @@ body {
     color: rgba(50, 15, 0, 0.9);
 }
 
-/* Organic hand-placed tilt variations on hover */
 .article-card-wrapper:nth-child(5n+1) .read-more-container:hover {
     transform: translate(2px, -3px) rotate(-1.5deg) scale(1.04) !important;
     filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
@@ -736,7 +726,6 @@ body {
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.15)) !important;
 }
 
-/* Skeuomorphic Torn Paper Bottom Edge Truncation Effects */
 .torn-paper-card-wrapper {
     position: relative;
     filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.16));
@@ -759,7 +748,6 @@ body {
     padding-bottom: 48px;
 }
 
-/* Text fade-out under the paper shader canvas (which sits at z-index 2) */
 .prose-truncated::after {
     content: "";
     position: absolute;
@@ -772,7 +760,6 @@ body {
     z-index: 1;
 }
 
-/* Align read-more flag perfectly over the ripped bottom-right corner */
 .is-truncated .read-more-container {
     bottom: 26px;
     right: -20px;

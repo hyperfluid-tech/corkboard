@@ -1,5 +1,3 @@
-# Configuration for Corkboard Blog Platform
-
 blog_title = "My blog"
 blog_author = "Author"
 blog_license = "CC 4.0 BY-SA"

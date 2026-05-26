@@ -1,7 +1,6 @@
 (function() {
   "use strict";
 
-  // Procedural Fractal Noise Generator (Low frequency + High frequency)
   function generateNoise(steps, amplitude, offset) {
     const values1 = [];
     const values2 = [];
@@ -11,8 +10,8 @@
     }
 
     const smoothed = [];
-    const win1 = 5; // Low-frequency window for main tear waves
-    const win2 = 2; // High-frequency window for small fibrous details
+    const win1 = 5;
+    const win2 = 2;
 
     for (let i = 0; i < steps; i++) {
       let sum1 = 0;
@@ -51,12 +50,9 @@
       const step = 8;
       const steps = Math.ceil(W / step) + 1;
 
-      // Centered noise for top and bottom ripped paper sheets.
-      // Offset is 12px within a 24px high overlay. Amplitude is 8px.
       const topNoise = generateNoise(steps, 8, 12);
       const bottomNoise = generateNoise(steps, 8, 12);
 
-      // Top overlay clip-path: straight top edge, jagged bottom edge.
       const topPoints = [];
       topPoints.push("-2px -2px");
       topPoints.push(`${W + 2}px -2px`);
@@ -68,7 +64,6 @@
       topPoints.push(`-2px ${topNoise[0]}px`);
       const topClip = `polygon(${topPoints.join(", ")})`;
 
-      // Bottom overlay clip-path: jagged top edge, straight bottom edge (24px height).
       const bottomPoints = [];
       bottomPoints.push(`-2px ${bottomNoise[0]}px`);
       for (let i = 0; i < steps; i++) {
@@ -87,16 +82,14 @@
       if (bottomEdge) bottomEdge.style.clipPath = bottomClip;
     });
 
-    // Procedural Torn bottom edge for truncated articles
     const truncatedCards = document.querySelectorAll(".is-truncated");
     truncatedCards.forEach((card) => {
       const W = card.offsetWidth;
       if (W === 0) return;
 
-      const step = 6; // smaller step size for finer paper details
+      const step = 6;
       const steps = Math.ceil(W / step) + 1;
 
-      // Noise centered at 28px with 10px amplitude
       const noise = generateNoise(steps, 10, 28);
 
       const points = [];
@@ -117,7 +110,6 @@
     updateTears();
   }
 
-  // Handle initialization on page load
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initTears);
   } else {
@@ -125,7 +117,6 @@
   }
   window.addEventListener("load", initTears);
 
-  // Resize listener
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);

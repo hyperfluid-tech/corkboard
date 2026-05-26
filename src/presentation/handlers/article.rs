@@ -12,7 +12,6 @@ pub async fn article_handler(
 ) -> impl IntoResponse {
     let current_year = chrono::Utc::now().year();
     
-    // Find article by slug
     let matching_article = state.articles.iter().find(|a| a.slug == slug);
 
     match matching_article {

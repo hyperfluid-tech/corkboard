@@ -8,18 +8,13 @@ services:
     container_name: corkboard_blog
     restart: unless-stopped
     ports:
-      # Map the host's 8080 to the container's 3000
       - "8080:3000"
     volumes:
-      # Mount a local articles directory and config file
       - ../articles:/app/articles
       - ../config.toml:/app/config.toml
     environment:
-      # Optional: Control file ownership on bind mounts
       # - PUID=1000
       # - PGID=1000
-
-      # Configure Corkboard environment
       - RUST_LOG=corkboard=info,axum=info
       - CORKBOARD_PORT=3000
       - CORKBOARD_ARTICLES_DIR=/app/articles
