@@ -111,21 +111,32 @@
 </head>
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen">
+  {% if is_single_article_page %}
+  <a href="/"
+    class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
+    id="back-button">
+    <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+  </a>
+  {% else %}
   <button
     class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
     id="sidebar-toggle">
     <span class="material-symbols-outlined text-[20px]">menu_book</span>
   </button>
   <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay"></div>
+  {% endif %}
 
   <div
-    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:pl-0 lg:pr-gutter pt-stack-lg pb-gutter flex flex-col lg:flex-row gap-8 relative">
+    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile {% if !is_single_article_page %}lg:pl-0 lg:pr-gutter{% else %}lg:px-gutter{% endif %} pt-stack-lg pb-gutter flex flex-col lg:flex-row gap-8 relative">
 
+    {% if !is_single_article_page %}
     <div class="contents lg:block lg:w-64 lg:flex-shrink-0 lg:pt-[163px]">
       {% include "components/sidebar.html" %}
     </div>
+    {% endif %}
 
-    <div class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col gap-6">
+    <div
+      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto {% if !is_single_article_page %}lg:mx-0{% endif %} flex flex-col gap-6">
       <main class="w-full flex flex-col gap-6 relative">
         {% include "components/header.html" %}
 
@@ -143,7 +154,9 @@
       {% include "components/footer.html" %}
     </div>
 
+    {% if !is_single_article_page %}
     <div class="sidebar-spacer"></div>
+    {% endif %}
 
   </div>
 
