@@ -39,25 +39,9 @@ mkdir -p "$ARTICLES_DIR"
 
 if [ -z "$(ls -A "$ARTICLES_DIR" 2>/dev/null)" ]; then
     echo "No markdown articles found in $ARTICLES_DIR. Creating a default welcome post..."
-    cat <<EOF > "$ARTICLES_DIR/welcome.md"
----
-title: "Welcome to Corkboard"
-date: "$(date +%Y-%m-%d)"
----
-
-Welcome to your new blog platform written in Rust!
-
-This is an auto-generated welcome article.
-
-## Features
-
-*   **Skeuomorphic Design:** Paper textures, torn edges, and realistic shadows.
-*   **Startup Parsing:** All markdown files are compiled into HTML on startup.
-*   **Syntax Highlighting:** Fenced code blocks are highlighted using \`syntect\`.
-*   **Lightweight:** Minimal client-side JavaScript.
-
-Enjoy your writing journey!
-EOF
+    cp /app/welcome.md "$ARTICLES_DIR/welcome.md"
+    CURRENT_DATE=$(date +%Y-%m-%d)
+    sed -i "s/date: .*/date: \"$CURRENT_DATE\"/" "$ARTICLES_DIR/welcome.md"
 fi
 
 chown -R $PUID:$PGID /app

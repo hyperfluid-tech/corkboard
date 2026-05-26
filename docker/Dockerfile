@@ -19,6 +19,7 @@ WORKDIR /app
 
 COPY --from=builder /usr/src/corkboard/target/x86_64-unknown-linux-musl/release/corkboard /usr/local/bin/corkboard
 COPY --from=builder /usr/src/corkboard/templates /app/templates
+COPY --from=builder /usr/src/corkboard/articles/welcome.md /app/welcome.md
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 

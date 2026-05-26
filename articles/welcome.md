@@ -1,20 +1,19 @@
 ---
-title: "Skeuomorphism in Modern Web Design"
-subheading: "Exploring tactile interfaces, leather grains, and torn paper edges on the modern web"
+title: "Welcome to Corkboard"
+subheading: "A fast, lightweight, and skeuomorphic blog platform built with Rust"
 date: "2026-05-21"
 ---
 
-Welcome to the inaugural post on **My blog**! Today we are exploring the resurgence of tactile design interfaces on the web.
+Welcome to Corkboard, a fast and lightweight blog platform written in Rust! 
 
-## The Physicality of Interfaces
+This post serves as a live demonstration of Corkboard's skeuomorphic layout and rendering features.
 
-For years, flat design dominated the web, stripping interfaces of their textures, gradients, and shadows. However, a modern return to *skeuomorphism* is underway, blending realistic tactile sensations with modern responsiveness.
+### Core Features
 
-### Why Skeuomorphism?
-
-*   **Affordances:** Physical cues (shadows, inset borders) signal how elements behave.
-*   **Aesthetics:** High-quality leather, wood, and paper textures provide visual warmth.
-*   **Delight:** Vintage design details evoke nostalgia and create a premium, handcrafted feel.
+*   **Skeuomorphic Design:** Realistically shaded paper cards, pushpins, chalkboard styling, and WebGL procedural canvas grains.
+*   **Zero-Config Startup:** All articles are compiled from Markdown to HTML on startup. No database or client-side frameworks needed.
+*   **Server-Side Syntax Highlighting:** Fenced code blocks are styled using `syntect` for rich, high-fidelity colorization.
+*   **Fully Responsive:** The layout scales cleanly from mobile devices up to ultra-wide displays.
 
 ---
 
