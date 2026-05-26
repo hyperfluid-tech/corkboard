@@ -1,6 +1,6 @@
 # Corkboard
 
-[![Docker Status](https://img.shields.io/docker/v/gilnobrega/carbon?label=Docker%20Image&style=flat-square&color=blue)](https://hub.docker.com/r/gilnobrega/carbon)
+[![Docker Status](https://img.shields.io/docker/v/gilnobrega/corkboard?label=Docker%20Image&style=flat-square&color=blue)](https://hub.docker.com/r/gilnobrega/corkboard)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-lightgrey.svg?style=flat-square)](https://opensource.org/licenses/MPL-2.0)
 
 A skeuomorphic blog platform built with Rust. Write Markdown files, and Corkboard turns them into a fully styled website that looks and feels like paper notes pinned to a corkboard.
@@ -42,7 +42,7 @@ version: '3.8'
 
 services:
   corkboard:
-    image: gilnobrega/carbon:latest
+    image: gilnobrega/corkboard:latest
     container_name: corkboard_blog
     restart: unless-stopped
     ports:
