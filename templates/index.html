@@ -130,31 +130,32 @@
   <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay"></div>
 
   <div
-    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:pl-0 lg:pr-gutter pt-stack-lg pb-gutter flex flex-col lg:flex-row gap-8 relative">
+    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:pl-0 lg:pr-gutter pt-stack-lg pb-gutter flex flex-col lg:grid lg:grid-cols-[16rem_1fr] xl:grid-cols-[16rem_1fr_14.5rem] lg:gap-x-8 lg:gap-y-6 relative">
 
-    <div class="contents lg:block lg:w-64 lg:flex-shrink-0 lg:pt-[163px]">
+    <div class="w-full max-w-[800px] mx-auto lg:mx-0 lg:col-start-2 lg:row-start-1">
+      {% include "components/header.html" %}
+    </div>
+
+    <div class="contents lg:block lg:w-64 lg:flex-shrink-0 lg:col-start-1 lg:row-start-2">
       {% include "components/sidebar.html" %}
     </div>
 
-    <div class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col gap-6">
-      <main class="w-full flex flex-col gap-6 relative">
-        {% include "components/header.html" %}
-
-        <div class="flex flex-col gap-gutter">
-          {% if articles.is_empty() %}
-          {% include "components/article_welcome.html" %}
-          {% else %}
-          {% for article in articles %}
-          {% include "components/article_card.html" %}
-          {% endfor %}
-          {% endif %}
-        </div>
+    <div
+      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col gap-6 lg:col-start-2 lg:row-start-2">
+      <main class="w-full flex flex-col gap-gutter relative">
+        {% if articles.is_empty() %}
+        {% include "components/article_welcome.html" %}
+        {% else %}
+        {% for article in articles %}
+        {% include "components/article_card.html" %}
+        {% endfor %}
+        {% endif %}
       </main>
 
       {% include "components/footer.html" %}
     </div>
 
-    <div class="sidebar-spacer"></div>
+    <div class="sidebar-spacer lg:col-start-3 lg:row-start-2"></div>
 
   </div>
 

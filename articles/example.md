@@ -4,7 +4,7 @@ subheading: "Exploring tactile interfaces, leather grains, and torn paper edges 
 date: "2026-05-21"
 ---
 
-Welcome to the inaugural post on **The Rusty Ledger**! Today we are exploring the resurgence of tactile design interfaces on the web.
+Welcome to the inaugural post on **My blog**! Today we are exploring the resurgence of tactile design interfaces on the web.
 
 ## The Physicality of Interfaces
 
