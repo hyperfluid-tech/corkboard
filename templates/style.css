@@ -621,7 +621,10 @@ body {
     bottom: 24px;
     right: -25px;
     z-index: 20;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease;
+    transform-origin: left center;
+    transform: rotate(0deg);
+    filter: drop-shadow(2px 2px 1.5px rgba(0, 0, 0, 0.15));
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
 }
 
 .read-more-flag {
@@ -644,11 +647,7 @@ body {
     user-select: none;
 }
 
-/* Sequential color rotations and hand-placed angle variations */
-.paper-card:nth-of-type(5n+1) .read-more-container {
-    transform: rotate(-1.5deg);
-    filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.18));
-}
+/* Sequential color rotations for the flags */
 .paper-card:nth-of-type(5n+1) .read-more-flag {
     background: 
         linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
@@ -656,10 +655,6 @@ body {
     color: rgba(50, 0, 20, 0.9);
 }
 
-.paper-card:nth-of-type(5n+2) .read-more-container {
-    transform: rotate(2deg);
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.16));
-}
 .paper-card:nth-of-type(5n+2) .read-more-flag {
     background: 
         linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
@@ -667,10 +662,6 @@ body {
     color: rgba(45, 45, 0, 0.9);
 }
 
-.paper-card:nth-of-type(5n+3) .read-more-container {
-    transform: rotate(-0.5deg);
-    filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.18));
-}
 .paper-card:nth-of-type(5n+3) .read-more-flag {
     background: 
         linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
@@ -678,10 +669,6 @@ body {
     color: rgba(0, 45, 15, 0.9);
 }
 
-.paper-card:nth-of-type(5n+4) .read-more-container {
-    transform: rotate(1.5deg);
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.16));
-}
 .paper-card:nth-of-type(5n+4) .read-more-flag {
     background: 
         linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
@@ -689,10 +676,6 @@ body {
     color: rgba(0, 25, 50, 0.9);
 }
 
-.paper-card:nth-of-type(5n+5) .read-more-container {
-    transform: rotate(-2deg);
-    filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.18));
-}
 .paper-card:nth-of-type(5n+5) .read-more-flag {
     background: 
         linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
@@ -700,10 +683,30 @@ body {
     color: rgba(50, 15, 0, 0.9);
 }
 
-/* Tactile Micro-Animations on Hover & Active States */
-.read-more-container:hover {
-    transform: translate(2px, -3px) rotate(0deg) scale(1.05) !important;
-    filter: drop-shadow(5px 7px 5px rgba(0, 0, 0, 0.28)) !important;
+/* Organic hand-placed tilt variations on hover */
+.paper-card:nth-of-type(5n+1) .read-more-container:hover {
+    transform: translate(2px, -3px) rotate(-1.5deg) scale(1.04) !important;
+    filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
+}
+
+.paper-card:nth-of-type(5n+2) .read-more-container:hover {
+    transform: translate(2px, -3px) rotate(2deg) scale(1.04) !important;
+    filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
+}
+
+.paper-card:nth-of-type(5n+3) .read-more-container:hover {
+    transform: translate(2px, -3px) rotate(-0.5deg) scale(1.04) !important;
+    filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
+}
+
+.paper-card:nth-of-type(5n+4) .read-more-container:hover {
+    transform: translate(2px, -3px) rotate(1.5deg) scale(1.04) !important;
+    filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
+}
+
+.paper-card:nth-of-type(5n+5) .read-more-container:hover {
+    transform: translate(2px, -3px) rotate(-2deg) scale(1.04) !important;
+    filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
 }
 
 .read-more-container:active {
