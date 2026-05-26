@@ -1,5 +1,6 @@
-<article class="paper-card p-margin-mobile md:p-gutter rounded-sm" id="{{ article.slug }}">
+<div class="article-card-wrapper relative {% if !is_single_article_page && article.has_more_content %}torn-paper-card-wrapper{% endif %}">
   <img class="pushpin" src="/static/image/pushpin.svg" alt="Pushpin">
+<article class="paper-card p-margin-mobile md:p-gutter rounded-sm {% if !is_single_article_page && article.has_more_content %}is-truncated{% endif %}" id="{{ article.slug }}">
   <header class="mb-stack-sm border-b border-surface-variant pb-unit">
     <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{{ article.title }}</h2>
     {% if let Some(subheading) = article.subheading %}
@@ -9,12 +10,13 @@
       <time datetime="{{ article.date.format(" %Y-%m-%d") }}">{{ article.date.format("%B %e, %Y") }}</time>
     </div>
   </header>
-  <div class="prose">
+  <div class="prose {% if !is_single_article_page && article.has_more_content %}prose-truncated{% endif %}">
     {{ article.content|safe }}
   </div>
-  {% if !is_single_article_page && article.has_more_content %}
+</article>
+{% if !is_single_article_page && article.has_more_content %}
   <div class="read-more-container">
     <a href="/article/{{ article.slug }}" class="read-more-flag">Read more</a>
   </div>
-  {% endif %}
-</article>
+{% endif %}
+</div>

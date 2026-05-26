@@ -86,6 +86,31 @@
       if (topEdge) topEdge.style.clipPath = topClip;
       if (bottomEdge) bottomEdge.style.clipPath = bottomClip;
     });
+
+    // Procedural Torn bottom edge for truncated articles
+    const truncatedCards = document.querySelectorAll(".is-truncated");
+    truncatedCards.forEach((card) => {
+      const W = card.offsetWidth;
+      if (W === 0) return;
+
+      const step = 6; // smaller step size for finer paper details
+      const steps = Math.ceil(W / step) + 1;
+
+      // Noise centered at 28px with 10px amplitude
+      const noise = generateNoise(steps, 10, 28);
+
+      const points = [];
+      points.push("0% 0%");
+      points.push("100% 0%");
+      points.push(`100% calc(100% - ${noise[steps - 1]}px)`);
+      for (let i = steps - 1; i >= 0; i--) {
+        const x = Math.min(i * step, W);
+        points.push(`${x}px calc(100% - ${noise[i]}px)`);
+      }
+      points.push(`0px calc(100% - ${noise[0]}px)`);
+
+      card.style.clipPath = `polygon(${points.join(", ")})`;
+    });
   }
 
   function initTears() {

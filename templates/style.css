@@ -415,7 +415,7 @@ body {
     font-style: italic;
 }
 
-.prose blockquote p + p {
+.prose blockquote p+p {
     margin-top: 1rem;
 }
 
@@ -467,7 +467,7 @@ body {
     font-size: 0.95rem;
     line-height: 1.6;
     background-color: #1a251e;
-    background-image: 
+    background-image:
         radial-gradient(circle at 50% 50%, rgba(36, 53, 43, 0.9) 0%, rgba(21, 30, 25, 0.95) 100%),
         url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
     background-blend-mode: normal;
@@ -648,63 +648,63 @@ body {
 }
 
 /* Sequential color rotations for the flags */
-.paper-card:nth-of-type(5n+1) .read-more-flag {
-    background: 
-        linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
+.article-card-wrapper:nth-child(5n+1) .read-more-flag {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(255, 30, 140, 0.75) 0%, rgba(255, 30, 140, 0.85) 80%, rgba(255, 30, 140, 0.95) 100%);
     color: rgba(50, 0, 20, 0.9);
 }
 
-.paper-card:nth-of-type(5n+2) .read-more-flag {
-    background: 
-        linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
+.article-card-wrapper:nth-child(5n+2) .read-more-flag {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(225, 245, 0, 0.8) 0%, rgba(225, 245, 0, 0.9) 80%, rgba(225, 245, 0, 0.98) 100%);
     color: rgba(45, 45, 0, 0.9);
 }
 
-.paper-card:nth-of-type(5n+3) .read-more-flag {
-    background: 
-        linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
+.article-card-wrapper:nth-child(5n+3) .read-more-flag {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(0, 230, 110, 0.75) 0%, rgba(0, 230, 110, 0.85) 80%, rgba(0, 230, 110, 0.95) 100%);
     color: rgba(0, 45, 15, 0.9);
 }
 
-.paper-card:nth-of-type(5n+4) .read-more-flag {
-    background: 
-        linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
+.article-card-wrapper:nth-child(5n+4) .read-more-flag {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(0, 180, 255, 0.75) 0%, rgba(0, 180, 255, 0.85) 80%, rgba(0, 180, 255, 0.95) 100%);
     color: rgba(0, 25, 50, 0.9);
 }
 
-.paper-card:nth-of-type(5n+5) .read-more-flag {
-    background: 
-        linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%),
+.article-card-wrapper:nth-child(5n+5) .read-more-flag {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(255, 110, 0, 0.75) 0%, rgba(255, 110, 0, 0.85) 80%, rgba(255, 110, 0, 0.95) 100%);
     color: rgba(50, 15, 0, 0.9);
 }
 
 /* Organic hand-placed tilt variations on hover */
-.paper-card:nth-of-type(5n+1) .read-more-container:hover {
+.article-card-wrapper:nth-child(5n+1) .read-more-container:hover {
     transform: translate(2px, -3px) rotate(-1.5deg) scale(1.04) !important;
     filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
 }
 
-.paper-card:nth-of-type(5n+2) .read-more-container:hover {
+.article-card-wrapper:nth-child(5n+2) .read-more-container:hover {
     transform: translate(2px, -3px) rotate(2deg) scale(1.04) !important;
     filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
 }
 
-.paper-card:nth-of-type(5n+3) .read-more-container:hover {
+.article-card-wrapper:nth-child(5n+3) .read-more-container:hover {
     transform: translate(2px, -3px) rotate(-0.5deg) scale(1.04) !important;
     filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
 }
 
-.paper-card:nth-of-type(5n+4) .read-more-container:hover {
+.article-card-wrapper:nth-child(5n+4) .read-more-container:hover {
     transform: translate(2px, -3px) rotate(1.5deg) scale(1.04) !important;
     filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
 }
 
-.paper-card:nth-of-type(5n+5) .read-more-container:hover {
+.article-card-wrapper:nth-child(5n+5) .read-more-container:hover {
     transform: translate(2px, -3px) rotate(-2deg) scale(1.04) !important;
     filter: drop-shadow(4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
 }
@@ -712,4 +712,46 @@ body {
 .read-more-container:active {
     transform: translate(0px, 0px) rotate(0deg) scale(0.98) !important;
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.15)) !important;
+}
+
+/* Skeuomorphic Torn Paper Bottom Edge Truncation Effects */
+.torn-paper-card-wrapper {
+    position: relative;
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.16));
+    margin-bottom: -16px;
+    transition: filter 0.3s ease;
+}
+
+.torn-paper-card-wrapper:hover {
+    filter: drop-shadow(0 15px 32px rgba(0, 0, 0, 0.22));
+}
+
+.torn-paper-card-wrapper .paper-card {
+    box-shadow: none !important;
+}
+
+.prose-truncated {
+    position: relative;
+    max-height: 400px;
+    overflow: hidden;
+    padding-bottom: 48px;
+}
+
+/* Text fade-out under the paper shader canvas (which sits at z-index 2) */
+.prose-truncated::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 85%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Align read-more flag perfectly over the ripped bottom-right corner */
+.is-truncated .read-more-container {
+    bottom: 26px;
+    right: -20px;
 }
