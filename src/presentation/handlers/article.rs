@@ -2,7 +2,8 @@ use axum::extract::{Path, State};
 use axum::response::IntoResponse;
 use axum::http::StatusCode;
 use crate::presentation::state::AppState;
-use crate::presentation::templates::index::{ArticleView, IndexTemplate};
+use crate::presentation::templates::index::{ArticleView, HeaderView, FooterView};
+use crate::presentation::templates::article::ArticleTemplate;
 use chrono::Datelike;
 
 pub async fn article_handler(
@@ -25,16 +26,25 @@ pub async fn article_handler(
                 subheading: article.subheading.clone(),
             };
 
-            let template = IndexTemplate {
+            let header = HeaderView {
                 blog_title: state.settings.blog_title.clone(),
+                blog_author: state.settings.blog_author.clone(),
+            };
+
+            let footer = FooterView {
                 blog_author: state.settings.blog_author.clone(),
                 blog_license: state.settings.blog_license.clone(),
                 blog_license_url: state.settings.blog_license_url.clone(),
                 current_year,
-                articles: vec![article_view],
                 linkedin_url: state.settings.linkedin_url.as_ref().filter(|s| !s.is_empty()).cloned(),
                 github_url: state.settings.github_url.as_ref().filter(|s| !s.is_empty()).cloned(),
                 twitter_url: state.settings.twitter_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+            };
+
+            let template = ArticleTemplate {
+                header,
+                footer,
+                article: article_view,
                 is_single_article_page: true,
             };
             template.into_response()

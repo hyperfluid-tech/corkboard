@@ -2,19 +2,19 @@
   class="paper-card p-margin-mobile lg:p-gutter rounded-sm rotate-pos text-primary font-body-md text-body-md w-full flex flex-col lg:flex-row justify-between items-center shadow-xl mb-0">
   <div class="mb-4 lg:mb-0">
     <span class="text-on-surface-variant">
-      © {{ current_year }} {{ blog_author }}. Powered by <a class="hover:underline text-primary font-semibold"
+      © {{ footer.current_year }} {{ footer.blog_author }}. Powered by <a class="hover:underline text-primary font-semibold"
         href="https://github.com/hyperfluid-tech/corkboard" target="_blank" rel="noopener noreferrer">corkboard</a>.
       <br />
-      {% if !blog_license_url.is_empty() %}
-      Licensed under <a class="hover:underline text-primary font-semibold" href="{{ blog_license_url }}" target="_blank"
-        rel="noopener noreferrer">{{ blog_license }}</a>.
+      {% if !footer.blog_license_url.is_empty() %}
+      Licensed under <a class="hover:underline text-primary font-semibold" href="{{ footer.blog_license_url }}" target="_blank"
+        rel="noopener noreferrer">{{ footer.blog_license }}</a>.
       {% else %}
-      Licensed under {{ blog_license }}.
+      Licensed under {{ footer.blog_license }}.
       {% endif %}
     </span>
   </div>
   <nav class="flex gap-4">
-    {% if let Some(url) = github_url %}
+    {% if let Some(url) = footer.github_url %}
     <a aria-label="GitHub"
       class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
       href="{{ url }}" target="_blank" rel="noopener noreferrer">
@@ -23,7 +23,7 @@
       </svg>
     </a>
     {% endif %}
-    {% if let Some(url) = linkedin_url %}
+    {% if let Some(url) = footer.linkedin_url %}
     <a aria-label="LinkedIn"
       class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
       href="{{ url }}" target="_blank" rel="noopener noreferrer">
@@ -32,7 +32,7 @@
       </svg>
     </a>
     {% endif %}
-    {% if let Some(url) = twitter_url %}
+    {% if let Some(url) = footer.twitter_url %}
     <a aria-label="Twitter"
       class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
       href="{{ url }}" target="_blank" rel="noopener noreferrer">

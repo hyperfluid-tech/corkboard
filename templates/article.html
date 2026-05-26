@@ -4,18 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>{{ header.blog_title }}</title>
-
-  <meta property="og:title" content="{{ header.blog_title }}" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="/" />
-  <meta property="og:description" content="Read articles on {{ header.blog_title }} by {{ header.blog_author }}." />
-  <meta property="og:site_name" content="{{ header.blog_title }}" />
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="{{ header.blog_title }}" />
-  <meta name="twitter:description" content="Read articles on {{ header.blog_title }} by {{ header.blog_author }}." />
-
+  <title>{{ article.title }} | {{ header.blog_title }}</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
@@ -25,6 +14,25 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
     rel="stylesheet">
+
+  <meta property="og:title" content="{{ article.title }}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="/article/{{ article.slug }}" />
+  {% if let Some(subheading) = article.subheading %}
+  <meta property="og:description" content="{{ subheading }}" />
+  {% else %}
+  <meta property="og:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
+  {% endif %}
+  <meta property="og:site_name" content="{{ header.blog_title }}" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{ article.title }}" />
+  {% if let Some(subheading) = article.subheading %}
+  <meta name="twitter:description" content="{{ subheading }}" />
+  {% else %}
+  <meta name="twitter:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
+  {% endif %}
+
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -122,39 +130,26 @@
 </head>
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen">
-  <button
+  <a href="/"
     class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
-    id="sidebar-toggle">
-    <span class="material-symbols-outlined text-[20px]">menu_book</span>
-  </button>
-  <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay"></div>
+    id="back-button">
+    <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+  </a>
 
   <div
-    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:pl-0 lg:pr-gutter pt-stack-lg pb-gutter flex flex-col lg:flex-row gap-8 relative">
+    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:px-gutter pt-stack-lg pb-gutter flex flex-col lg:flex-row gap-8 relative">
 
-    <div class="contents lg:block lg:w-64 lg:flex-shrink-0 lg:pt-[163px]">
-      {% include "components/sidebar.html" %}
-    </div>
-
-    <div class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col gap-6">
+    <div class="flex-grow w-full max-w-[800px] min-w-0 mx-auto flex flex-col gap-6">
       <main class="w-full flex flex-col gap-6 relative">
         {% include "components/header.html" %}
 
         <div class="flex flex-col gap-gutter">
-          {% if articles.is_empty() %}
-          {% include "components/article_welcome.html" %}
-          {% else %}
-          {% for article in articles %}
           {% include "components/article_card.html" %}
-          {% endfor %}
-          {% endif %}
         </div>
       </main>
 
       {% include "components/footer.html" %}
     </div>
-
-    <div class="sidebar-spacer"></div>
 
   </div>
 

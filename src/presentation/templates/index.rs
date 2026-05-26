@@ -11,18 +11,29 @@ pub struct ArticleView {
     pub subheading: Option<String>,
 }
 
-#[derive(Template)]
-#[template(path = "index.html")]
-pub struct IndexTemplate {
+#[derive(Debug, Clone)]
+pub struct HeaderView {
     pub blog_title: String,
+    pub blog_author: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct FooterView {
     pub blog_author: String,
     pub blog_license: String,
     pub blog_license_url: String,
     pub current_year: i32,
-    pub articles: Vec<ArticleView>,
     pub linkedin_url: Option<String>,
     pub github_url: Option<String>,
     pub twitter_url: Option<String>,
+}
+
+#[derive(Template)]
+#[template(path = "index.html")]
+pub struct IndexTemplate {
+    pub header: HeaderView,
+    pub footer: FooterView,
+    pub articles: Vec<ArticleView>,
     pub is_single_article_page: bool,
 }
 
