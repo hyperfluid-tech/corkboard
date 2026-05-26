@@ -159,6 +159,7 @@ body {
 
 .tipped-image-container {
     position: relative;
+    z-index: 10;
     padding: 8px;
     background: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);

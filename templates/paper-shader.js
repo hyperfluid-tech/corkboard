@@ -295,7 +295,7 @@ void main() {
   }
 
   function initPaperShader(canvas, options = {}) {
-    const gl = canvas.getContext("webgl2", { alpha: true, premultipliedAlpha: false });
+    const gl = canvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true });
     if (!gl) {
       console.warn("WebGL2 not supported, skipping paper shader");
       return null;
@@ -391,7 +391,7 @@ void main() {
 
       const isCodeBlock = card.classList.contains("torn-paper-front");
       const shaderOptions = isCodeBlock ? {
-        colorFront: [0.808, 0.831, 0.851, 1.0],
+        colorFront: [0.808, 0.831, 0.851, 0.15],
         colorBack: [1.0, 1.0, 1.0, 0.0],
         contrast: 0.12,
         roughness: 0.20,
