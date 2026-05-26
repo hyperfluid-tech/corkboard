@@ -49,10 +49,11 @@ services:
       - "8080:3000"
     volumes:
       - ./articles:/app/articles
-      - ./config.toml:/app/config.toml
     environment:
       - PUID=1000
       - PGID=1000
+      - CORKBOARD_BLOG_TITLE=My blog
+      - CORKBOARD_BLOG_AUTHOR=Author
 ```
 
 Then start the service:
@@ -63,7 +64,7 @@ docker-compose up -d
 
 Once the container is up, navigate to `http://localhost:8080` in your browser.
 
-If no `config.toml` is mounted, a default one is generated. If the articles directory is empty, a welcome post is created automatically.
+The `articles` directory will be created if it does not exist, and a welcome post will be generated automatically. You can configure any setting using environment variables prefixed with `CORKBOARD_`.
 
 ## Writing Articles
 
@@ -109,20 +110,20 @@ truncate_lines = 15
 # twitter_url = "https://twitter.com/your-username"
 ```
 
-Every setting can be overridden with an environment variable prefixed with `CORKBOARD_` (e.g., `CORKBOARD_PORT=8080`).
+Every setting can be configured via a `config.toml` file or overridden using an environment variable prefixed with `CORKBOARD_`.
 
-| Setting | Default | Description |
-| --- | --- | --- |
-| `blog_title` | `My blog` | Shown in the header and page title |
-| `blog_author` | `Author` | Shown in the footer copyright |
-| `blog_license` | `CC 4.0 BY-SA` | License name in the footer |
-| `blog_license_url` | *(CC link)* | URL the license links to |
-| `articles_dir` | `articles` | Directory to scan for `.md` files |
-| `port` | `3000` | HTTP port |
-| `truncate_lines` | `15` | Markdown lines shown per card before truncation |
-| `github_url` | *(empty)* | GitHub link in the footer |
-| `linkedin_url` | *(empty)* | LinkedIn link in the footer |
-| `twitter_url` | *(empty)* | Twitter/X link in the footer |
+| Setting | Environment Variable | Default | Description |
+| --- | --- | --- | --- |
+| `blog_title` | `CORKBOARD_BLOG_TITLE` | `My blog` | Shown in the header and page title |
+| `blog_author` | `CORKBOARD_BLOG_AUTHOR` | `Author` | Shown in the footer copyright |
+| `blog_license` | `CORKBOARD_BLOG_LICENSE` | `CC 4.0 BY-SA` | License name in the footer |
+| `blog_license_url` | `CORKBOARD_BLOG_LICENSE_URL` | *(CC link)* | URL the license links to |
+| `articles_dir` | `CORKBOARD_ARTICLES_DIR` | `articles` | Directory to scan for `.md` files |
+| `port` | `CORKBOARD_PORT` | `3000` | HTTP port |
+| `truncate_lines` | `CORKBOARD_TRUNCATE_LINES` | `15` | Markdown lines shown per card before truncation |
+| `github_url` | `CORKBOARD_GITHUB_URL` | *(empty)* | GitHub link in the footer |
+| `linkedin_url` | `CORKBOARD_LINKEDIN_URL` | *(empty)* | LinkedIn link in the footer |
+| `twitter_url` | `CORKBOARD_TWITTER_URL` | *(empty)* | Twitter/X link in the footer |
 
 ## Contributing
 
