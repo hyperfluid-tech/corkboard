@@ -23,6 +23,7 @@ services:
       - RUST_LOG=corkboard=info,axum=info
       - CORKBOARD_PORT=3000
       - CORKBOARD_ARTICLES_DIR=/app/articles
+      - CORKBOARD_TRUNCATE_LINES=15
       # - CORKBOARD_LINKEDIN_URL=https://linkedin.com/in/your-username
       # - CORKBOARD_GITHUB_URL=https://github.com/your-username
       # - CORKBOARD_TWITTER_URL=https://twitter.com/your-username

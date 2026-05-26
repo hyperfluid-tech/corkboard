@@ -34,7 +34,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     tracing::info!("Parsing articles from '{}'...", settings.articles_dir);
-    let articles = load_articles(&settings.articles_dir).map_err(|e| {
+    let articles = load_articles(&settings.articles_dir, settings.truncate_lines).map_err(|e| {
         tracing::error!("Failed to load articles: {}", e);
         e
     })?;
@@ -47,6 +47,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = axum::Router::new()
         .route("/", axum::routing::get(handlers::index::index_handler))
+        .route("/article/{slug}", axum::routing::get(handlers::article::article_handler))
         .nest_service("/static", tower_http::services::ServeDir::new("templates"))
         .with_state(state);
 

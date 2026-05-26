@@ -1,15 +1,18 @@
+use crate::domain::article::{Article, FrontMatter};
+use crate::presentation::templates::code_block::CodeBlockTemplate;
+use crate::presentation::templates::markdown_image::MarkdownImageTemplate;
+use askama::Template;
 use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag, TagEnd};
 use std::fs;
 use std::path::Path;
 use syntect::highlighting::{Theme, ThemeSet};
 use syntect::html::highlighted_html_for_string;
 use syntect::parsing::SyntaxSet;
-use crate::domain::article::{Article, FrontMatter};
-use crate::presentation::templates::markdown_image::MarkdownImageTemplate;
-use crate::presentation::templates::code_block::CodeBlockTemplate;
-use askama::Template;
 
-pub fn load_articles(dir: &str) -> Result<Vec<Article>, Box<dyn std::error::Error>> {
+pub fn load_articles(
+    dir: &str,
+    truncate_lines: usize,
+) -> Result<Vec<Article>, Box<dyn std::error::Error>> {
     let ps = SyntaxSet::load_defaults_newlines();
     let ts = ThemeSet::load_defaults();
     let theme = &ts.themes["InspiredGitHub"];
@@ -19,12 +22,12 @@ pub fn load_articles(dir: &str) -> Result<Vec<Article>, Box<dyn std::error::Erro
 
     for path in paths {
         let path = path?.path();
-        
+
         if !path.is_file() || path.extension().map_or(true, |ext| ext != "md") {
             continue;
         }
 
-        match parse_article(&path, &ps, theme) {
+        match parse_article(&path, &ps, theme, truncate_lines) {
             Ok(article) => articles.push(article),
             Err(e) => tracing::error!("Error parsing article {:?}: {}", path, e),
         }
@@ -39,6 +42,7 @@ fn parse_article(
     file_path: &Path,
     ps: &SyntaxSet,
     theme: &Theme,
+    truncate_lines: usize,
 ) -> Result<Article, Box<dyn std::error::Error>> {
     let content = fs::read_to_string(file_path)?;
 
@@ -58,13 +62,24 @@ fn parse_article(
     let date = chrono::NaiveDate::parse_from_str(fm.date.trim(), "%Y-%m-%d")?;
     let slug = slug::slugify(&fm.title);
 
-    let content_html = render_markdown(markdown_content, ps, theme);
+    let content = render_markdown(markdown_content, ps, theme);
+
+    let lines: Vec<&str> = markdown_content.lines().collect();
+    let (preview, has_more_content) = if lines.len() > truncate_lines {
+        let truncated_md = lines[..truncate_lines].join("\n");
+        let safe_md = close_open_fences(&truncated_md);
+        (render_markdown(&safe_md, ps, theme), true)
+    } else {
+        (content.clone(), false)
+    };
 
     Ok(Article {
         slug,
         title: fm.title,
         date,
-        content_html,
+        content,
+        preview,
+        has_more_content,
         subheading: fm.subheading,
     })
 }
@@ -102,13 +117,13 @@ fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> Str
                     } else {
                         ""
                     };
-                    
+
                     let template = MarkdownImageTemplate {
                         src: &image_dest,
                         alt: &image_alt,
                         caption: display_caption,
                     };
-                    
+
                     let html = template.render().unwrap();
                     new_events.push(Event::Html(html.into()));
                 }
@@ -121,7 +136,9 @@ fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> Str
         }
 
         match event {
-            Event::Start(Tag::Image { dest_url, title, .. }) => {
+            Event::Start(Tag::Image {
+                dest_url, title, ..
+            }) => {
                 in_image = true;
                 image_dest = dest_url.to_string();
                 image_title = title.to_string();
@@ -185,4 +202,18 @@ fn escape_html(s: &str) -> String {
         }
     }
     escaped
+}
+
+fn close_open_fences(markdown: &str) -> String {
+    let mut in_code_block = false;
+    for line in markdown.lines() {
+        if line.trim().starts_with("```") {
+            in_code_block = !in_code_block;
+        }
+    }
+    if in_code_block {
+        format!("{}\n```", markdown)
+    } else {
+        markdown.to_string()
+    }
 }

@@ -1,0 +1,46 @@
+use axum::extract::{Path, State};
+use axum::response::IntoResponse;
+use axum::http::StatusCode;
+use crate::presentation::state::AppState;
+use crate::presentation::templates::index::{ArticleView, IndexTemplate};
+use chrono::Datelike;
+
+pub async fn article_handler(
+    State(state): State<AppState>,
+    Path(slug): Path<String>,
+) -> impl IntoResponse {
+    let current_year = chrono::Utc::now().year();
+    
+    // Find article by slug
+    let matching_article = state.articles.iter().find(|a| a.slug == slug);
+
+    match matching_article {
+        Some(article) => {
+            let article_view = ArticleView {
+                slug: article.slug.clone(),
+                title: article.title.clone(),
+                date: article.date,
+                content: article.content.clone(),
+                has_more_content: article.has_more_content,
+                subheading: article.subheading.clone(),
+            };
+
+            let template = IndexTemplate {
+                blog_title: state.settings.blog_title.clone(),
+                blog_author: state.settings.blog_author.clone(),
+                blog_license: state.settings.blog_license.clone(),
+                blog_license_url: state.settings.blog_license_url.clone(),
+                current_year,
+                articles: vec![article_view],
+                linkedin_url: state.settings.linkedin_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+                github_url: state.settings.github_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+                twitter_url: state.settings.twitter_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+                is_single_article_page: true,
+            };
+            template.into_response()
+        }
+        None => {
+            (StatusCode::NOT_FOUND, "Article not found").into_response()
+        }
+    }
+}

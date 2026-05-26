@@ -3,7 +3,9 @@ pub struct Article {
     pub slug: String,
     pub title: String,
     pub date: chrono::NaiveDate,
-    pub content_html: String,
+    pub content: String,
+    pub preview: String,
+    pub has_more_content: bool,
     pub subheading: Option<String>,
 }
 

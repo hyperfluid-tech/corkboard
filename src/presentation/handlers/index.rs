@@ -1,20 +1,31 @@
 use axum::extract::State;
 use axum::response::IntoResponse;
 use crate::presentation::state::AppState;
-use crate::presentation::templates::index::IndexTemplate;
+use crate::presentation::templates::index::{ArticleView, IndexTemplate};
 use chrono::Datelike;
 
 pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
     let current_year = chrono::Utc::now().year();
+    
+    let articles: Vec<ArticleView> = state.articles.iter().map(|a| ArticleView {
+        slug: a.slug.clone(),
+        title: a.title.clone(),
+        date: a.date,
+        content: a.preview.clone(),
+        has_more_content: a.has_more_content,
+        subheading: a.subheading.clone(),
+    }).collect();
+
     IndexTemplate {
         blog_title: state.settings.blog_title.clone(),
         blog_author: state.settings.blog_author.clone(),
         blog_license: state.settings.blog_license.clone(),
         blog_license_url: state.settings.blog_license_url.clone(),
         current_year,
-        articles: (*state.articles).clone(),
+        articles,
         linkedin_url: state.settings.linkedin_url.as_ref().filter(|s| !s.is_empty()).cloned(),
         github_url: state.settings.github_url.as_ref().filter(|s| !s.is_empty()).cloned(),
         twitter_url: state.settings.twitter_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+        is_single_article_page: false,
     }
 }
