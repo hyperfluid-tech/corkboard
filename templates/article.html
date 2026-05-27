@@ -2,18 +2,8 @@
 <html class="light" lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  {% include "components/head.html" %}
   <title>{{ article.title }} | {{ header.blog_title }}</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;family=Source+Sans+3:ital,wght@0,200..900;1,200..900&amp;display=swap"
-    rel="stylesheet">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-    rel="stylesheet">
 
   <meta property="og:title" content="{{ article.title }}" />
   <meta property="og:type" content="article" />
@@ -32,101 +22,6 @@
   {% else %}
   <meta name="twitter:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
   {% endif %}
-
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "on-tertiary-fixed-variant": "#5a4225",
-            "background": "#fbf9f4",
-            "on-error-container": "#93000a",
-            "primary-container": "#2c3e50",
-            "surface-container-highest": "#e4e2dd",
-            "surface": "#fbf9f4",
-            "secondary-fixed-dim": "#92cfee",
-            "on-primary": "#ffffff",
-            "secondary-container": "#a3dfff",
-            "on-secondary-fixed": "#001e2b",
-            "secondary-fixed": "#c0e8ff",
-            "inverse-primary": "#b5c8df",
-            "on-primary-container": "#96a9be",
-            "on-surface": "#1b1c19",
-            "surface-container-low": "#f5f3ee",
-            "surface-variant": "#e4e2dd",
-            "on-primary-fixed-variant": "#36485b",
-            "surface-dim": "#dbdad5",
-            "on-secondary-fixed-variant": "#004d66",
-            "inverse-surface": "#30312e",
-            "error-container": "#ffdad6",
-            "on-secondary-container": "#21647f",
-            "secondary": "#236580",
-            "primary": "#162839",
-            "outline": "#74777d",
-            "surface-container-high": "#eae8e3",
-            "on-background": "#1b1c19",
-            "surface-bright": "#fbf9f4",
-            "tertiary": "#362308",
-            "surface-container-lowest": "#ffffff",
-            "primary-fixed": "#d1e4fb",
-            "on-primary-fixed": "#091d2e",
-            "on-tertiary-container": "#c1a17d",
-            "on-surface-variant": "#43474c",
-            "primary-fixed-dim": "#b5c8df",
-            "on-tertiary": "#ffffff",
-            "on-tertiary-fixed": "#291802",
-            "surface-container": "#f0eee9",
-            "tertiary-container": "#4e381c",
-            "error": "#ba1a1a",
-            "on-secondary": "#ffffff",
-            "on-error": "#ffffff",
-            "tertiary-fixed": "#ffddb7",
-            "surface-tint": "#4e6073",
-            "tertiary-fixed-dim": "#e3c19b",
-            "inverse-on-surface": "#f2f1ec",
-            "outline-variant": "#c4c6cd"
-          },
-          "borderRadius": {
-            "DEFAULT": "0.125rem",
-            "lg": "0.25rem",
-            "xl": "0.5rem",
-            "full": "0.75rem"
-          },
-          "spacing": {
-            "unit": "8px",
-            "stack-lg": "64px",
-            "margin-mobile": "16px",
-            "stack-md": "32px",
-            "container-max": "800px",
-            "gutter": "24px",
-            "stack-sm": "12px"
-          },
-          "fontFamily": {
-            "headline-lg-mobile": ["Playfair Display"],
-            "body-md": ["Source Sans 3"],
-            "headline-xl": ["Playfair Display"],
-            "headline-md": ["Playfair Display"],
-            "body-lg": ["Source Sans 3"],
-            "code-block": ["JetBrains Mono"],
-            "label-sm": ["JetBrains Mono"],
-            "headline-lg": ["Playfair Display"]
-          },
-          "fontSize": {
-            "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "700" }],
-            "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
-            "headline-xl": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-            "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
-            "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
-            "code-block": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
-            "label-sm": ["13px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500" }],
-            "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
-          }
-        }
-      }
-    }
-  </script>
-  <link href="/static/style.css?v=2" rel="stylesheet">
 </head>
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen">
@@ -137,15 +32,16 @@
   </a>
 
   <div
-    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:px-gutter pt-stack-lg pb-gutter flex flex-col lg:flex-row gap-8 relative">
+    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:px-gutter pt-stack-lg pb-gutter flex flex-col gap-6 relative">
 
-    <div class="flex-grow w-full max-w-[800px] min-w-0 mx-auto flex flex-col gap-6">
-      <main class="w-full flex flex-col gap-6 relative">
-        {% include "components/header.html" %}
+    <div class="w-full max-w-[800px] mx-auto">
+      {% include "components/header.html" %}
+    </div>
 
-        <div class="flex flex-col gap-gutter">
-          {% include "components/article_card.html" %}
-        </div>
+    <div
+      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto flex flex-col gap-6">
+      <main class="w-full flex flex-col gap-gutter relative">
+        {% include "components/article_card.html" %}
       </main>
 
       {% include "components/footer.html" %}
@@ -153,20 +49,7 @@
 
   </div>
 
-  <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <filter id="chalk-filter">
-        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2" xChannelSelector="R" yChannelSelector="G"
-          result="rough-text" />
-        <feGaussianBlur in="rough-text" stdDeviation="0.25" />
-      </filter>
-    </defs>
-  </svg>
-
-  <script src="/static/navigation.js"></script>
-  <script src="/static/torn-paper.js"></script>
-  <script src="/static/paper-shader.js?v=2"></script>
+  {% include "components/scripts.html" %}
 </body>
 
 </html>
