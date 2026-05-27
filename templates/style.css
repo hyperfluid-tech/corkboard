@@ -800,3 +800,17 @@ body {
 .back-home-container:active {
     filter: drop-shadow(-1px 1px 1px rgba(0, 0, 0, 0.15)) !important;
 }
+
+@media (max-width: 1024px) {
+    .read-more-container {
+        right: -12px;
+    }
+
+    .back-home-container {
+        left: -12px;
+    }
+
+    .is-truncated .read-more-container {
+        right: -12px;
+    }
+}
