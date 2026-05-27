@@ -38,6 +38,7 @@ pub async fn article_handler(
                 linkedin_url: state.settings.linkedin_url.as_ref().filter(|s| !s.is_empty()).cloned(),
                 github_url: state.settings.github_url.as_ref().filter(|s| !s.is_empty()).cloned(),
                 twitter_url: state.settings.twitter_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+                version: env!("CARGO_PKG_VERSION").to_string(),
             };
 
             let template = ArticleTemplate {

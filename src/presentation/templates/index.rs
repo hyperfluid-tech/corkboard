@@ -26,6 +26,7 @@ pub struct FooterView {
     pub linkedin_url: Option<String>,
     pub github_url: Option<String>,
     pub twitter_url: Option<String>,
+    pub version: String,
 }
 
 #[derive(Template)]
