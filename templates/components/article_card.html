@@ -1,22 +1,31 @@
-<div class="article-card-wrapper relative {% if !is_single_article_page && article.has_more_content %}torn-paper-card-wrapper{% endif %}">
+<div
+  class="article-card-wrapper relative {% if !is_single_article_page && article.has_more_content %}torn-paper-card-wrapper{% endif %}">
   <img class="pushpin" src="/static/image/pushpin.svg" alt="Pushpin">
-<article class="paper-card p-margin-mobile md:p-gutter rounded-sm {% if !is_single_article_page && article.has_more_content %}is-truncated{% endif %}" id="{{ article.slug }}">
-  <header class="mb-stack-sm border-b border-surface-variant pb-unit">
-    <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{{ article.title }}</h2>
-    {% if let Some(subheading) = article.subheading %}
-    <p class="text-on-surface-variant font-body-md italic mb-2 text-base md:text-lg opacity-90">{{ subheading }}</p>
-    {% endif %}
-    <div class="flex flex-wrap items-center gap-unit text-on-surface-variant font-label-sm text-label-sm">
-      <time datetime="{{ article.date.format(" %Y-%m-%d") }}">{{ article.date.format("%B %e, %Y") }}</time>
+  <article
+    class="paper-card p-margin-mobile md:p-gutter rounded-sm {% if !is_single_article_page && article.has_more_content %}is-truncated{% endif %} {% if is_single_article_page %}pb-16 md:pb-24{% endif %}"
+    id="{{ article.slug }}">
+    <header class="mb-stack-sm border-b border-surface-variant pb-unit">
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{{ article.title }}
+      </h2>
+      {% if let Some(subheading) = article.subheading %}
+      <p class="text-on-surface-variant font-body-md italic mb-2 text-base md:text-lg opacity-90">{{ subheading }}</p>
+      {% endif %}
+      <div class="flex flex-wrap items-center gap-unit text-on-surface-variant font-label-sm text-label-sm">
+        <time datetime="{{ article.date.format(" %Y-%m-%d") }}">{{ article.date.format("%B %e, %Y") }}</time>
+      </div>
+    </header>
+    <div class="prose {% if !is_single_article_page && article.has_more_content %}prose-truncated{% endif %}">
+      {{ article.content|safe }}
     </div>
-  </header>
-  <div class="prose {% if !is_single_article_page && article.has_more_content %}prose-truncated{% endif %}">
-    {{ article.content|safe }}
+  </article>
+  {% if !is_single_article_page && article.has_more_content %}
+  <div class="tape-container read-more-container">
+    <a href="/article/{{ article.slug }}" class="tape-flag read-more-flag">Read more</a>
   </div>
-</article>
-{% if !is_single_article_page && article.has_more_content %}
-  <div class="read-more-container">
-    <a href="/article/{{ article.slug }}" class="read-more-flag">Read more</a>
+  {% endif %}
+  {% if is_single_article_page %}
+  <div class="tape-container back-home-container">
+    <a href="/" class="tape-flag back-home-flag">More posts</a>
   </div>
-{% endif %}
+  {% endif %}
 </div>
