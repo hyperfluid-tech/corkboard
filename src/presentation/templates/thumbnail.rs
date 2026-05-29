@@ -1,3 +1,4 @@
+use crate::presentation::templates::index::HeaderView;
 use askama::Template;
 use axum::http::StatusCode;
 use axum::response::{Html, IntoResponse, Response};
@@ -5,6 +6,7 @@ use axum::response::{Html, IntoResponse, Response};
 #[derive(Template)]
 #[template(path = "thumbnail.html")]
 pub struct ThumbnailSourceTemplate {
+    pub header: HeaderView,
     pub current_title: String,
 }
 

@@ -1,4 +1,5 @@
 use crate::presentation::state::AppState;
+use crate::presentation::templates::index::HeaderView;
 use crate::presentation::templates::thumbnail::ThumbnailSourceTemplate;
 use axum::extract::{Path, Query, State};
 use axum::http::{StatusCode, header};
@@ -18,7 +19,15 @@ pub async fn thumbnail_source_handler(
         .title
         .unwrap_or_else(|| state.settings.blog_title.clone());
 
-    ThumbnailSourceTemplate { current_title }
+    let header = HeaderView {
+        blog_title: current_title.clone(),
+        blog_author: state.settings.blog_author.clone(),
+    };
+
+    ThumbnailSourceTemplate {
+        header,
+        current_title,
+    }
 }
 
 pub async fn thumbnails_handler(
