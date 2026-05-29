@@ -50,7 +50,7 @@ body {
 
 .torn-code-container {
     position: relative;
-    margin: 2.5rem -16px;
+    margin: 2.5rem -22px;
     overflow: visible;
     clip-path: inset(0);
 }
@@ -739,7 +739,7 @@ body {
 .torn-paper-card-wrapper {
     position: relative;
     filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.16));
-    margin-bottom: -16px;
+    margin-bottom: -22px;
     transition: filter 0.3s ease;
 }
 
@@ -807,10 +807,6 @@ body {
     }
 
     .back-home-container {
-        left: -12px;
-    }
-
-    .is-truncated .read-more-container {
-        right: -12px;
+        left: -16px;
     }
 }
