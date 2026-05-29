@@ -23,6 +23,7 @@ pub async fn article_handler(
                 content: article.content.clone(),
                 has_more_content: article.has_more_content,
                 subheading: article.subheading.clone(),
+                thumbnail: article.thumbnail.clone(),
             };
 
             let header = HeaderView {

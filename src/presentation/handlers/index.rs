@@ -14,6 +14,7 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
         content: a.preview.clone(),
         has_more_content: a.has_more_content,
         subheading: a.subheading.clone(),
+        thumbnail: a.thumbnail.clone(),
     }).collect();
 
     let header = HeaderView {

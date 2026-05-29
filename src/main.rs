@@ -33,6 +33,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::fs::create_dir_all(&settings.articles_dir)?;
     }
 
+    let thumbnails_dir = "templates/thumbnails";
+    if !std::path::Path::new(thumbnails_dir).exists() {
+        tracing::info!("Thumbnails directory '{}' not found, creating it.", thumbnails_dir);
+        std::fs::create_dir_all(thumbnails_dir)?;
+    }
+
     tracing::info!("Parsing articles from '{}'...", settings.articles_dir);
     let articles = load_articles(&settings.articles_dir, settings.truncate_lines).map_err(|e| {
         tracing::error!("Failed to load articles: {}", e);
@@ -48,6 +54,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let app = axum::Router::new()
         .route("/", axum::routing::get(handlers::index::index_handler))
         .route("/article/{slug}", axum::routing::get(handlers::article::article_handler))
+        .route("/thumbnails/{filename}", axum::routing::get(handlers::thumbnail::thumbnails_handler))
+        .route("/thumbnail-source", axum::routing::get(handlers::thumbnail::thumbnail_source_handler))
         .nest_service("/static", tower_http::services::ServeDir::new("templates"))
         .with_state(state);
 

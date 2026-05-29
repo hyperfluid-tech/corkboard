@@ -7,6 +7,7 @@ pub struct Article {
     pub preview: String,
     pub has_more_content: bool,
     pub subheading: Option<String>,
+    pub thumbnail: Option<String>,
 }
 
 #[derive(serde::Deserialize)]
@@ -15,4 +16,6 @@ pub struct FrontMatter {
     pub date: String,
     #[serde(default)]
     pub subheading: Option<String>,
+    #[serde(default)]
+    pub thumbnail: Option<String>,
 }

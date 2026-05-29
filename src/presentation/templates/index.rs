@@ -9,12 +9,19 @@ pub struct ArticleView {
     pub content: String,
     pub has_more_content: bool,
     pub subheading: Option<String>,
+    pub thumbnail: Option<String>,
 }
 
 #[derive(Debug, Clone)]
 pub struct HeaderView {
     pub blog_title: String,
     pub blog_author: String,
+}
+
+impl HeaderView {
+    pub fn blog_title_slug(&self) -> String {
+        slug::slugify(&self.blog_title)
+    }
 }
 
 #[derive(Debug, Clone)]

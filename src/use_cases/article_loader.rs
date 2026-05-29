@@ -81,6 +81,7 @@ fn parse_article(
         preview,
         has_more_content,
         subheading: fm.subheading,
+        thumbnail: fm.thumbnail,
     })
 }
 

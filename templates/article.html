@@ -8,19 +8,29 @@
   <meta property="og:title" content="{{ article.title }}" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="/article/{{ article.slug }}" />
+  <meta property="og:site_name" content="{{ header.blog_title }}" />
   {% if let Some(subheading) = article.subheading %}
   <meta property="og:description" content="{{ subheading }}" />
   {% else %}
   <meta property="og:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
   {% endif %}
-  <meta property="og:site_name" content="{{ header.blog_title }}" />
+  {% if let Some(thumb) = article.thumbnail %}
+  <meta property="og:image" content="{{ thumb }}" />
+  {% else %}
+  <meta property="og:image" content="/thumbnails/{{ header.blog_title_slug() }}.png" />
+  {% endif %}
 
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ article.title }}" />
   {% if let Some(subheading) = article.subheading %}
   <meta name="twitter:description" content="{{ subheading }}" />
   {% else %}
   <meta name="twitter:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
+  {% endif %}
+  {% if let Some(thumb) = article.thumbnail %}
+  <meta name="twitter:image" content="{{ thumb }}" />
+  {% else %}
+  <meta name="twitter:image" content="/thumbnails/{{ header.blog_title_slug() }}.png" />
   {% endif %}
 </head>
 
