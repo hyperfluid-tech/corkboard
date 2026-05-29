@@ -18,11 +18,7 @@ pub struct HeaderView {
     pub blog_author: String,
 }
 
-impl HeaderView {
-    pub fn blog_title_slug(&self) -> String {
-        slug::slugify(&self.blog_title)
-    }
-}
+
 
 #[derive(Debug, Clone)]
 pub struct FooterView {

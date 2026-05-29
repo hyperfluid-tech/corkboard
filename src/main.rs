@@ -51,18 +51,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         articles: Arc::new(articles),
     };
 
-    let app = axum::Router::new()
-        .route("/", axum::routing::get(handlers::index::index_handler))
-        .route("/article/{slug}", axum::routing::get(handlers::article::article_handler))
-        .route("/thumbnails/{filename}", axum::routing::get(handlers::thumbnail::thumbnails_handler))
-        .route("/thumbnail-source", axum::routing::get(handlers::thumbnail::thumbnail_source_handler))
-        .nest_service("/static", tower_http::services::ServeDir::new("templates"))
-        .with_state(state);
+    let app = presentation::router::build_router(state);
 
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], settings.port));
     tracing::info!("Listening on http://{}", addr);
     
     let listener = tokio::net::TcpListener::bind(addr).await?;
+
+    let port = settings.port;
+    let blog_title = settings.blog_title.clone();
+    tokio::spawn(async move {
+        tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+        handlers::thumbnail::generate_startup_thumbnail(port, blog_title).await;
+    });
+
     axum::serve(listener, app).await?;
 
     Ok(())

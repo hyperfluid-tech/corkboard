@@ -5,12 +5,12 @@ use axum::response::{Html, IntoResponse, Response};
 
 #[derive(Template)]
 #[template(path = "thumbnail.html")]
-pub struct ThumbnailSourceTemplate {
+pub struct ThumbnailTemplate {
     pub header: HeaderView,
     pub current_title: String,
 }
 
-impl IntoResponse for ThumbnailSourceTemplate {
+impl IntoResponse for ThumbnailTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),

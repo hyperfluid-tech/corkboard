@@ -17,7 +17,7 @@
   {% if let Some(thumb) = article.thumbnail %}
   <meta property="og:image" content="{{ thumb }}" />
   {% else %}
-  <meta property="og:image" content="/thumbnails/{{ header.blog_title_slug() }}.png" />
+  <meta property="og:image" content="/thumbnails/thumbnail.webp" />
   {% endif %}
 
   <meta name="twitter:card" content="summary_large_image" />
@@ -27,10 +27,11 @@
   {% else %}
   <meta name="twitter:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
   {% endif %}
+  
   {% if let Some(thumb) = article.thumbnail %}
   <meta name="twitter:image" content="{{ thumb }}" />
   {% else %}
-  <meta name="twitter:image" content="/thumbnails/{{ header.blog_title_slug() }}.png" />
+  <meta name="twitter:image" content="/thumbnails/thumbnail.webp" />
   {% endif %}
 </head>
 
