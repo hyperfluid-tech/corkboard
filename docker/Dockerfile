@@ -11,7 +11,14 @@ RUN cargo build --release --target x86_64-unknown-linux-musl
 
 FROM alpine:latest
 
-RUN apk add --no-cache ca-certificates su-exec
+RUN apk add --no-cache \
+    ca-certificates \
+    su-exec \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ttf-freefont
 RUN addgroup -S corkboard_group && adduser -S corkboard_user -G corkboard_group
 RUN mkdir -p /app && chown -R corkboard_user:corkboard_group /app
 

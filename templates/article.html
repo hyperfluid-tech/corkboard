@@ -8,14 +8,20 @@
   <meta property="og:title" content="{{ article.title }}" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="/article/{{ article.slug }}" />
+  <meta property="og:site_name" content="{{ header.blog_title }}" />
   {% if let Some(subheading) = article.subheading %}
   <meta property="og:description" content="{{ subheading }}" />
   {% else %}
   <meta property="og:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
   {% endif %}
-  <meta property="og:site_name" content="{{ header.blog_title }}" />
+  {% if let Some(thumb) = article.thumbnail %}
+  <meta property="og:image" content="{{ thumb }}" />
+  <meta name="twitter:image" content="{{ thumb }}" />
+  {% else %}
+  {% include "components/default_thumbnail_meta.html" %}
+  {% endif %}
 
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ article.title }}" />
   {% if let Some(subheading) = article.subheading %}
   <meta name="twitter:description" content="{{ subheading }}" />
