@@ -794,13 +794,15 @@ body {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(255, 30, 140, 0.75) 0%, rgba(255, 30, 140, 0.85) 80%, rgba(255, 30, 140, 0.95) 100%);
+    color: #000000;
+    text-shadow: none;
 }
 
 .article-card-wrapper:nth-child(5n+2) .read-more-flag {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
-        linear-gradient(90deg, rgba(225, 245, 0, 0.8) 0%, rgba(225, 245, 0, 0.9) 80%, rgba(225, 245, 0, 0.98) 100%);
-    color: #162839;
+        linear-gradient(90deg, rgba(255, 30, 140, 0.75) 0%, rgba(255, 30, 140, 0.85) 80%, rgba(255, 30, 140, 0.95) 100%);
+    color: #000000;
     text-shadow: none;
 }
 
@@ -808,18 +810,24 @@ body {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(0, 230, 110, 0.75) 0%, rgba(0, 230, 110, 0.85) 80%, rgba(0, 230, 110, 0.95) 100%);
+    color: #162839;
+    text-shadow: none;
 }
 
 .article-card-wrapper:nth-child(5n+4) .read-more-flag {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(0, 180, 255, 0.75) 0%, rgba(0, 180, 255, 0.85) 80%, rgba(0, 180, 255, 0.95) 100%);
+    color: #162839;
+    text-shadow: none;
 }
 
 .article-card-wrapper:nth-child(5n+5) .read-more-flag {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(255, 110, 0, 0.75) 0%, rgba(255, 110, 0, 0.85) 80%, rgba(255, 110, 0, 0.95) 100%);
+    color: #162839;
+    text-shadow: none;
 }
 
 .article-card-wrapper:nth-child(5n+1) .read-more-container:hover {
@@ -906,6 +914,8 @@ body {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(0, 180, 255, 0.75) 0%, rgba(0, 180, 255, 0.85) 80%, rgba(0, 180, 255, 0.95) 100%);
+    color: #162839;
+    text-shadow: none;
 }
 
 .back-home-container:hover {
