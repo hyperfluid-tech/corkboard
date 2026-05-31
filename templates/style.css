@@ -334,12 +334,23 @@ body {
 
 .sidebar-link {
     transition: font-weight 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
+    position: relative;
+    padding-left: 24px !important;
 }
 
-.sidebar-link[aria-current="true"] {
-    background-color: rgba(22, 40, 57, 0.08);
-    border-left: 3px solid #236580;
-    padding-left: calc(0.5rem - 3px);
+#sidebar-active-indicator {
+    position: absolute;
+    left: 6px;
+    top: 0;
+    pointer-events: none;
+    text-shadow: none;
+    font-size: 13px;
+    line-height: 1;
+    color: #236580;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(0) translateY(-50%);
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
 }
 
 .sidebar-link-text {

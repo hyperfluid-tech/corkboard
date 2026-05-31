@@ -113,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const isCurrent = link.getAttribute('data-slug') === currentActive;
       link.classList.toggle('font-bold', isCurrent);
       link.classList.toggle('font-semibold', !isCurrent);
-      link.classList.toggle('bg-primary/10', isCurrent);
 
       if (isCurrent) {
         link.setAttribute('aria-current', 'true');
@@ -121,6 +120,20 @@ document.addEventListener('DOMContentLoaded', () => {
         link.removeAttribute('aria-current');
       }
     });
+
+    const activeLink = document.querySelector('.sidebar-link[aria-current="true"]');
+    const indicator = document.getElementById('sidebar-active-indicator');
+    const wrapper = document.querySelector('.sidebar-relative-wrapper');
+    if (activeLink && indicator && wrapper) {
+      const activeRect = activeLink.getBoundingClientRect();
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const relativeTop = activeRect.top - wrapperRect.top + (activeRect.height / 2);
+      
+      indicator.style.transform = `translateY(${relativeTop}px) translateY(-50%)`;
+      indicator.style.opacity = '1';
+    } else if (indicator) {
+      indicator.style.opacity = '0';
+    }
   }
 
   let ticking = false;
@@ -133,6 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ticking = true;
     }
   });
+
+  window.addEventListener('resize', updateActiveLink);
 
   updateActiveLink();
 });
