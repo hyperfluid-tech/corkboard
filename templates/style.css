@@ -1,3 +1,4 @@
+/* ===== BASE HTML ===== */
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 4.5rem;
@@ -9,6 +10,7 @@ html {
     }
 }
 
+/* ===== SKIP LINK ===== */
 .skip-link {
     position: absolute;
     top: -100%;
@@ -32,29 +34,16 @@ html {
 }
 
 /* ===== GLOBAL FOCUS STYLES ===== */
-
-/*
- * Use :focus-visible so outlines only show for keyboard navigation,
- * not for mouse clicks. All interactive elements get a consistent ring.
- */
 :focus-visible {
     outline: 3px solid #236580;
     outline-offset: 2px;
 }
 
-/*
- * For elements that use clip-path (tape flags), outline is clipped.
- * Use box-shadow as the focus indicator instead.
- */
 .tape-flag:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px #236580, 0 0 0 5px #ffffff;
 }
 
-/*
- * The header home link uses absolute inset-0 so outline draws
- * around the full card. Use a visible ring on the parent instead.
- */
 header:has(a:focus-visible) {
     outline: 3px solid #236580;
     outline-offset: 4px;
@@ -64,33 +53,24 @@ header a:focus-visible {
     outline: none;
 }
 
-/*
- * Sidebar links: ensure outline is not clipped by overflow.
- */
 .sidebar-link:focus-visible {
     outline: 3px solid #236580;
     outline-offset: -2px;
 }
 
-/*
- * Footer social icon links: round focus ring to match shape.
- */
 footer nav a:focus-visible {
     outline: 3px solid #236580;
     outline-offset: 2px;
     border-radius: 50%;
 }
 
-/*
- * Prose links: add visible focus ring.
- */
 .prose a:focus-visible {
     outline: 3px solid #236580;
     outline-offset: 2px;
     border-radius: 2px;
 }
 
-
+/* ===== CORE LAYOUT & CARDS ===== */
 body {
     margin: 0;
     padding: 0;
@@ -130,6 +110,7 @@ body {
     z-index: 10;
 }
 
+/* ===== TORN PAPER CODEBLOCKS ===== */
 .torn-code-container {
     position: relative;
     margin: 2.5rem -22px;
@@ -239,6 +220,7 @@ body {
     line-height: 1.6 !important;
 }
 
+/* ===== TIPPED IMAGES ===== */
 .tipped-image-container {
     position: relative;
     z-index: 10;
@@ -270,6 +252,7 @@ body {
     right: -10px;
 }
 
+/* ===== UTILITIES & ROTATIONS ===== */
 .handwritten-tag {
     border: 1px dashed #74777d;
     border-radius: 2px;
@@ -284,6 +267,7 @@ body {
     transform: rotate(-1.5deg);
 }
 
+/* ===== NAVIGATION PANELS ===== */
 #sidebar {
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
@@ -305,6 +289,7 @@ body {
     pointer-events: auto;
 }
 
+/* ===== HEADER & HEADER PANELS ===== */
 .header-plank {
     background-color: rgba(22, 40, 57, 0.05);
     backdrop-filter: blur(2px);
@@ -332,6 +317,7 @@ body {
     display: inline;
 }
 
+/* ===== SIDEBAR NAVIGATION ===== */
 .sidebar-link {
     transition: font-weight 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
     position: relative;
@@ -395,6 +381,7 @@ body {
     }
 }
 
+/* ===== TYPOGRAPHY & PROSE CONTENT ===== */
 .prose {
     font-family: "Source Sans 3", system-ui, -apple-system, sans-serif;
     color: #1b1c19;
@@ -742,6 +729,7 @@ body {
     text-decoration: underline;
 }
 
+/* ===== SKEUOMORPHIC TAPE FLAGS ===== */
 .tape-container {
     position: absolute;
     bottom: 24px;
@@ -937,6 +925,7 @@ body {
     }
 }
 
+/* ===== ACCESSIBILITY UTILITIES ===== */
 .sr-only {
     position: absolute;
     width: 1px;
