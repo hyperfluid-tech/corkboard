@@ -815,10 +815,6 @@ body {
     z-index: 1;
 }
 
-.article-card-wrapper:not(:first-child) .pushpin {
-    display: none;
-}
-
 .red-string-connector {
     position: relative;
     height: 24px;
