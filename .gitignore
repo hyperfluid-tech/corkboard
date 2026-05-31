@@ -8,3 +8,7 @@ target
 
 .DS_Store
 templates/thumbnails/
+
+tests/golden/*_gen.png
+tests/golden/diffs/
+tests/snapshots/

@@ -1,0 +1,50 @@
+name: Verify Goldens
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify_goldens:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies (Chrome, ImageMagick)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick chromium-browser
+
+      - name: Build golden tool
+        run: cargo build --bin golden
+
+      - name: Run app server in background
+        run: |
+          cargo run &
+          echo $! > server.pid
+          sleep 5
+
+      - name: Generate and compare golden images
+        run: cargo run --bin golden
+
+      - name: Verify no golden test diffs exist
+        run: |
+          if [ -d "tests/golden/diffs" ] && [ "$(ls -A tests/golden/diffs)" ]; then
+            echo "❌ Golden test mismatches found! Check the uploaded diff artifacts."
+            ls -la tests/golden/diffs
+            exit 1
+          else
+            echo "✅ All golden checks passed!"
+          fi
+
+      - name: Upload golden diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-diffs
+          path: tests/golden/diffs/

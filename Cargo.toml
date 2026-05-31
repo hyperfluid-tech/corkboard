@@ -2,6 +2,7 @@
 name = "corkboard"
 version = "0.1.3"
 edition = "2024"
+default-run = "corkboard"
 
 [dependencies]
 askama = "0.16.0"
@@ -18,3 +19,7 @@ tower-http = { version = "0.6.2", features = ["fs"] }
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 headless_chrome = "1.0.21"
+
+[[bin]]
+name = "golden"
+path = "tests/bin/golden/main.rs"
