@@ -6,9 +6,16 @@ use axum::response::IntoResponse;
 pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoResponse {
     let current_title = state.settings.blog_title.clone();
 
-    ThumbnailTemplate {
+    let header = crate::presentation::templates::index::HeaderView {
         blog_title: current_title.clone(),
+        blog_author: state.settings.blog_author.clone(),
+        lang: state.settings.lang.clone(),
+    };
+
+    ThumbnailTemplate {
+        header,
         current_title,
+        is_single_article_page: false,
     }
 }
 
