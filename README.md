@@ -19,6 +19,7 @@ A skeuomorphic blog platform built with Rust. Write Markdown files, and Corkboar
 - [Tech Stack](#tech-stack)
 - [Configuration](#configuration)
 - [Contributing](#contributing)
+- [Testing (Golden Tests)](TESTING.md)
 - [License](#license)
 
 ## Getting Started
@@ -128,6 +129,8 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 ## Contributing
 
 Contributions are always welcome! Whether it's a bug report, a new feature, or a typo fix, feel free to open an issue or submit a pull request.
+
+Please see [TESTING.md](TESTING.md) for guidelines on how to run and update the visual regression tests when changing layout or styling elements.
 
 ## License
 

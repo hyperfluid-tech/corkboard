@@ -59,15 +59,48 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let article_card_name = if override_main { "article_card_main.png" } else { "article_card_gen.png" };
     capture_selector_padded(&tab, ".article-card-wrapper", article_card_name, 16.0)?;
 
-    // 2. Snapshot Welcome Article Full Page
+    // 2. Snapshot Welcome Article Components
     let url_article = format!("http://localhost:{}/article/welcome-to-corkboard?deterministic=true", port);
     println!("Navigating to: {}", url_article);
     tab.navigate_to(&url_article)?;
     
     std::thread::sleep(Duration::from_millis(2000));
     
-    let main_article_name = if override_main { "welcome_article_main.png" } else { "welcome_article_gen.png" };
-    capture_selector_padded(&tab, "main", main_article_name, 16.0)?;
+    let blockquote_name = if override_main { "welcome_article_blockquote_main.png" } else { "welcome_article_blockquote_gen.png" };
+    capture_selector_padded(&tab, ".prose blockquote", blockquote_name, 16.0)?;
+
+    let table_name = if override_main { "welcome_article_table_main.png" } else { "welcome_article_table_gen.png" };
+    capture_selector_padded(&tab, ".prose table", table_name, 16.0)?;
+
+    let codeblock_name = if override_main { "welcome_article_codeblock_main.png" } else { "welcome_article_codeblock_gen.png" };
+    capture_selector_padded(&tab, ".prose pre", codeblock_name, 16.0)?;
+
+    let image_name = if override_main { "welcome_article_image_main.png" } else { "welcome_article_image_gen.png" };
+    capture_selector_padded(&tab, ".prose .tipped-image-container", image_name, 16.0)?;
+
+    let list_name = if override_main { "welcome_article_list_main.png" } else { "welcome_article_list_gen.png" };
+    capture_selector_padded(&tab, ".prose ul", list_name, 16.0)?;
+
+    let h1_name = if override_main { "welcome_article_h1_main.png" } else { "welcome_article_h1_gen.png" };
+    capture_selector_padded(&tab, ".prose h1", h1_name, 16.0)?;
+
+    let h2_name = if override_main { "welcome_article_h2_main.png" } else { "welcome_article_h2_gen.png" };
+    capture_selector_padded(&tab, ".prose h2", h2_name, 16.0)?;
+
+    let h3_name = if override_main { "welcome_article_h3_main.png" } else { "welcome_article_h3_gen.png" };
+    capture_selector_padded(&tab, ".prose h3", h3_name, 16.0)?;
+
+    let h4_name = if override_main { "welcome_article_h4_main.png" } else { "welcome_article_h4_gen.png" };
+    capture_selector_padded(&tab, ".prose h4", h4_name, 16.0)?;
+
+    let h5_name = if override_main { "welcome_article_h5_main.png" } else { "welcome_article_h5_gen.png" };
+    capture_selector_padded(&tab, ".prose h5", h5_name, 16.0)?;
+
+    let h6_name = if override_main { "welcome_article_h6_main.png" } else { "welcome_article_h6_gen.png" };
+    capture_selector_padded(&tab, ".prose h6", h6_name, 16.0)?;
+
+    let hr_name = if override_main { "welcome_article_hr_main.png" } else { "welcome_article_hr_gen.png" };
+    capture_selector_padded(&tab, ".prose hr", hr_name, 16.0)?;
 
     println!("All snapshots generated successfully.");
     Ok(())

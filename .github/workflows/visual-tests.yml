@@ -49,7 +49,7 @@ jobs:
               continue
             fi
             
-            if ! compare -metric AE -fuzz 5% "$main_file" "$gen_file" "diffs/$filename" 2> diffs/${filename%.*}.log; then
+            if ! compare -metric AE "$main_file" "$gen_file" "diffs/$filename" 2> diffs/${filename%.*}.log; then
               echo "❌ Visual mismatch found in $filename"
               FAILED=1
             else

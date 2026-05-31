@@ -8,15 +8,6 @@
 (() => {
   "use strict";
 
-  // Test Mode: Deterministic PRNG to freeze procedural generation for visual regression tests
-  if (typeof window !== "undefined" && new URLSearchParams(window.location.search).has('deterministic')) {
-    let seed = 42;
-    Math.random = function() {
-      let x = Math.sin(seed++) * 10000;
-      return x - Math.floor(x);
-    };
-  }
-
   const VERTEX_SHADER = `#version 300 es
 precision mediump float;
 
