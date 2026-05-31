@@ -335,12 +335,12 @@ body {
 .sidebar-link {
     transition: font-weight 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
     position: relative;
-    padding-left: 24px !important;
+    padding-left: 10px !important;
 }
 
 #sidebar-active-indicator {
     position: absolute;
-    left: 6px;
+    left: -8px;
     top: 0;
     pointer-events: none;
     text-shadow: none;
