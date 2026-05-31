@@ -1,6 +1,5 @@
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView};
 use askama::Template;
-use axum::http::StatusCode;
 use axum::response::{Html, IntoResponse, Response};
 
 #[derive(Template)]

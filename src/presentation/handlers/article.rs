@@ -2,7 +2,6 @@ use crate::presentation::state::AppState;
 use crate::presentation::templates::article::ArticleTemplate;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView};
 use axum::extract::{Path, State};
-use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use chrono::Datelike;
 
