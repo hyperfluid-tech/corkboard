@@ -18,3 +18,7 @@ tower-http = { version = "0.6.2", features = ["fs"] }
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 headless_chrome = "1.0.21"
+
+[[bin]]
+name = "snapshot"
+path = "tests/snapshot.rs"

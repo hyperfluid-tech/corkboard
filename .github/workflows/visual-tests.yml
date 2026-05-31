@@ -1,0 +1,71 @@
+name: Visual Regression Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  visual_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies (Chrome, ImageMagick)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick chromium-browser
+
+      - name: Build snapshot tool
+        run: cargo build --bin snapshot
+
+      - name: Run app server in background
+        run: |
+          cargo run &
+          echo $! > server.pid
+          sleep 5
+
+      - name: Generate new snapshots
+        run: cargo run --bin snapshot
+
+      - name: Compare snapshots against golden images
+        run: |
+          mkdir -p diffs
+          FAILED=0
+          for main_file in tests/golden/*_main.png; do
+            if [ ! -f "$main_file" ]; then continue; fi
+            
+            gen_file="${main_file%_main.png}_gen.png"
+            filename=$(basename "$main_file")
+            echo "Comparing $filename..."
+            
+            if [ ! -f "$gen_file" ]; then
+              echo "❌ Generated snapshot missing: $gen_file"
+              FAILED=1
+              continue
+            fi
+            
+            if ! compare -metric AE -fuzz 5% "$main_file" "$gen_file" "diffs/$filename" 2> diffs/${filename%.*}.log; then
+              echo "❌ Visual mismatch found in $filename"
+              FAILED=1
+            else
+              echo "✅ $filename matches"
+              rm "diffs/$filename"
+            fi
+          done
+          
+          if [ $FAILED -eq 1 ]; then
+            echo "Visual regression tests failed!"
+            exit 1
+          fi
+
+      - name: Upload visual diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: diffs/

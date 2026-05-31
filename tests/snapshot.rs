@@ -1,0 +1,140 @@
+use headless_chrome::{Browser, LaunchOptionsBuilder};
+use std::ffi::OsStr;
+use std::fs;
+use std::path::Path;
+use std::time::Duration;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let args: Vec<String> = std::env::args().collect();
+    let override_main = args.contains(&"--override".to_string());
+    
+    println!("Starting snapshot generation...");
+    if override_main {
+        println!("Running in override mode. Will overwrite *_main.png files directly.");
+    }
+
+    let options = LaunchOptionsBuilder::default()
+        .headless(true)
+        .enable_gpu(true)
+        .window_size(Some((1400, 1000)))
+        .args(vec![
+            OsStr::new("--no-sandbox"),
+            OsStr::new("--ignore-gpu-blocklist"),
+            OsStr::new("--enable-webgl"),
+        ])
+        .build()?;
+
+    let browser = Browser::new(options)?;
+    let tab = browser.new_tab()?;
+
+    let snapshots_dir = Path::new("tests/golden");
+    if !snapshots_dir.exists() {
+        fs::create_dir_all(snapshots_dir)?;
+    }
+
+    let port = 3000;
+    
+    // 1. Snapshot Home Page Components
+    let url_home = format!("http://localhost:{}/?deterministic=true", port);
+    println!("Navigating to: {}", url_home);
+    tab.navigate_to(&url_home)?;
+    
+    // Wait for page to load and procedural shaders to render
+    std::thread::sleep(Duration::from_millis(2000));
+
+    let header_name = if override_main { "header_main.png" } else { "header_gen.png" };
+    capture_selector_padded(&tab, "header", header_name, 32.0)?;
+    
+    let sidebar_name = if override_main { "sidebar_main.png" } else { "sidebar_gen.png" };
+    capture_selector_padded(&tab, "#sidebar", sidebar_name, 0.0)?;
+    
+    // Scroll to bottom before capturing footer to ensure it's fully painted and in-viewport
+    tab.evaluate("window.scrollTo(0, document.body.scrollHeight)", false)?;
+    std::thread::sleep(Duration::from_millis(500));
+    
+    let footer_name = if override_main { "footer_main.png" } else { "footer_gen.png" };
+    capture_selector_padded(&tab, "footer", footer_name, 32.0)?;
+    
+    // Capture the first article card
+    let article_card_name = if override_main { "article_card_main.png" } else { "article_card_gen.png" };
+    capture_selector_padded(&tab, ".article-card-wrapper", article_card_name, 16.0)?;
+
+    // 2. Snapshot Welcome Article Full Page
+    let url_article = format!("http://localhost:{}/article/welcome-to-corkboard?deterministic=true", port);
+    println!("Navigating to: {}", url_article);
+    tab.navigate_to(&url_article)?;
+    
+    std::thread::sleep(Duration::from_millis(2000));
+    
+    let main_article_name = if override_main { "welcome_article_main.png" } else { "welcome_article_gen.png" };
+    capture_selector_padded(&tab, "main", main_article_name, 16.0)?;
+
+    println!("All snapshots generated successfully.");
+    Ok(())
+}
+
+fn capture_selector_padded(
+    tab: &std::sync::Arc<headless_chrome::Tab>,
+    selector: &str,
+    filename: &str,
+    padding: f64,
+) -> Result<(), Box<dyn std::error::Error>> {
+    println!("Capturing {} with padding {}...", filename, padding);
+    tab.wait_for_element(selector)?;
+
+    let js = format!(
+        r#"(function() {{
+            let el = document.querySelector('{}');
+            if (!el) return "";
+            let r = el.getBoundingClientRect();
+            return `${{r.x + window.scrollX - {}}},${{r.y + window.scrollY - {}}},${{r.width + {}}},${{r.height + {}}}`;
+        }})()"#,
+        selector, padding, padding, padding * 2.0, padding * 2.0
+    );
+
+    let eval = tab.evaluate(&js, false)?;
+    let val_str = eval.value.unwrap().as_str().unwrap().to_string();
+    let parts: Vec<f64> = val_str.split(',').map(|s| s.parse::<f64>().unwrap()).collect();
+    
+    let viewport = headless_chrome::protocol::cdp::Page::Viewport {
+        x: parts[0],
+        y: parts[1],
+        width: parts[2],
+        height: parts[3],
+        scale: 1.0,
+    };
+
+    // Expand the headless browser's viewport so it can render the full height of the element 
+    // without clipping it to the default 1000px window height.
+    let required_height = (parts[1] + parts[3]).ceil() as u32;
+    tab.call_method(headless_chrome::protocol::cdp::Emulation::SetDeviceMetricsOverride {
+        width: 1400,
+        height: std::cmp::max(1000_u32, required_height),
+        device_scale_factor: 1.0,
+        mobile: false,
+        scale: None,
+        screen_width: None,
+        screen_height: None,
+        position_x: None,
+        position_y: None,
+        dont_set_visible_size: None,
+        screen_orientation: None,
+        viewport: None,
+        display_feature: None,
+        device_posture: None,
+    })?;
+
+    // Give it a tiny moment to reflow the layout with the new viewport height
+    std::thread::sleep(Duration::from_millis(200));
+
+    let image_data = tab.capture_screenshot(
+        headless_chrome::protocol::cdp::Page::CaptureScreenshotFormatOption::Png,
+        None,
+        Some(viewport),
+        true,
+    )?;
+    
+    let path = Path::new("tests/golden").join(filename);
+    fs::write(path, image_data)?;
+    Ok(())
+}
