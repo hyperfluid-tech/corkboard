@@ -2,6 +2,7 @@
 title: "Welcome to Corkboard"
 subheading: "A fast, lightweight, and skeuomorphic blog platform built with Rust"
 date: "2026-05-21"
+thumbnail: "https://picsum.photos/800/600"
 ---
 
 Welcome to Corkboard, a fast and lightweight blog platform written in Rust! 
