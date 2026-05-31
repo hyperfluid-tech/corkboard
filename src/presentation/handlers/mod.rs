@@ -1,3 +1,3 @@
-pub mod index;
 pub mod article;
+pub mod index;
 pub mod thumbnail;

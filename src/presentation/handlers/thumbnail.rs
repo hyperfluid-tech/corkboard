@@ -4,9 +4,7 @@ use crate::presentation::templates::thumbnail::ThumbnailTemplate;
 use axum::extract::State;
 use axum::response::IntoResponse;
 
-pub async fn thumbnail_handler(
-    State(state): State<AppState>,
-) -> impl IntoResponse {
+pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoResponse {
     let current_title = state.settings.blog_title.clone();
 
     let header = HeaderView {
@@ -27,7 +25,7 @@ const BROWSER_WINDOW_HEIGHT: u32 = 830;
 
 pub async fn generate_startup_thumbnail(port: u16, _title: String) {
     let cache_path = std::path::Path::new("templates/thumbnails").join("thumbnail.webp");
-    
+
     let result = tokio::task::spawn_blocking(move || capture_screenshot(port))
         .await
         .map_err(|e| format!("Task error generating startup thumbnail: {}", e))
@@ -47,8 +45,8 @@ pub async fn generate_startup_thumbnail(port: u16, _title: String) {
 
 fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
     use headless_chrome::{Browser, LaunchOptionsBuilder};
-    use std::time::Duration;
     use std::ffi::OsStr;
+    use std::time::Duration;
 
     let options = LaunchOptionsBuilder::default()
         .headless(true)
@@ -70,22 +68,24 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
         .map_err(|e| format!("Failed to open tab: {:?}", e))?;
 
     // Force the viewport to exactly the target thumbnail size via CDP
-    tab.call_method(headless_chrome::protocol::cdp::Emulation::SetDeviceMetricsOverride {
-        width: THUMBNAIL_WIDTH,
-        height: THUMBNAIL_HEIGHT,
-        device_scale_factor: 1.0,
-        mobile: false,
-        scale: None,
-        screen_width: None,
-        screen_height: None,
-        position_x: None,
-        position_y: None,
-        dont_set_visible_size: None,
-        screen_orientation: None,
-        viewport: None,
-        display_feature: None,
-        device_posture: None,
-    })
+    tab.call_method(
+        headless_chrome::protocol::cdp::Emulation::SetDeviceMetricsOverride {
+            width: THUMBNAIL_WIDTH,
+            height: THUMBNAIL_HEIGHT,
+            device_scale_factor: 1.0,
+            mobile: false,
+            scale: None,
+            screen_width: None,
+            screen_height: None,
+            position_x: None,
+            position_y: None,
+            dont_set_visible_size: None,
+            screen_orientation: None,
+            viewport: None,
+            display_feature: None,
+            device_posture: None,
+        },
+    )
     .map_err(|e| format!("Failed to set device metrics: {:?}", e))?;
 
     let url = format!("http://127.0.0.1:{}/thumbnail", port);

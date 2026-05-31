@@ -1,6 +1,6 @@
 use askama::Template;
-use axum::response::{Html, IntoResponse, Response};
 use axum::http::StatusCode;
+use axum::response::{Html, IntoResponse, Response};
 #[derive(Debug, Clone)]
 pub struct ArticleView {
     pub slug: String,
@@ -17,8 +17,6 @@ pub struct HeaderView {
     pub blog_title: String,
     pub blog_author: String,
 }
-
-
 
 #[derive(Debug, Clone)]
 pub struct FooterView {
