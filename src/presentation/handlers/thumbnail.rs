@@ -20,6 +20,11 @@ pub async fn thumbnail_handler(
     }
 }
 
+const THUMBNAIL_WIDTH: u32 = 1200;
+const THUMBNAIL_HEIGHT: u32 = 630;
+const BROWSER_WINDOW_WIDTH: u32 = 1400;
+const BROWSER_WINDOW_HEIGHT: u32 = 830;
+
 pub async fn generate_startup_thumbnail(port: u16, _title: String) {
     let cache_path = std::path::Path::new("templates/thumbnails").join("thumbnail.webp");
     
@@ -48,7 +53,7 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
     let options = LaunchOptionsBuilder::default()
         .headless(true)
         .enable_gpu(true)
-        .window_size(Some((1400, 830)))
+        .window_size(Some((BROWSER_WINDOW_WIDTH, BROWSER_WINDOW_HEIGHT)))
         .args(vec![
             OsStr::new("--no-sandbox"),
             OsStr::new("--ignore-gpu-blocklist"),
@@ -64,10 +69,10 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
         .new_tab()
         .map_err(|e| format!("Failed to open tab: {:?}", e))?;
 
-    // Force the viewport to exactly 1200x630 via CDP
+    // Force the viewport to exactly the target thumbnail size via CDP
     tab.call_method(headless_chrome::protocol::cdp::Emulation::SetDeviceMetricsOverride {
-        width: 1200,
-        height: 630,
+        width: THUMBNAIL_WIDTH,
+        height: THUMBNAIL_HEIGHT,
         device_scale_factor: 1.0,
         mobile: false,
         scale: None,
@@ -102,8 +107,8 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
             Some(headless_chrome::protocol::cdp::Page::Viewport {
                 x: 0.0,
                 y: 0.0,
-                width: 1200.0,
-                height: 630.0,
+                width: THUMBNAIL_WIDTH as f64,
+                height: THUMBNAIL_HEIGHT as f64,
                 scale: 1.0,
             }),
             true,
