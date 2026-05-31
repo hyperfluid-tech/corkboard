@@ -9,6 +9,88 @@ html {
     }
 }
 
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    z-index: 9999;
+    padding: 12px 24px;
+    background-color: #162839;
+    color: #ffffff;
+    font-family: "Source Sans 3", system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid #236580;
+    outline-offset: 2px;
+}
+
+/* ===== GLOBAL FOCUS STYLES ===== */
+
+/*
+ * Use :focus-visible so outlines only show for keyboard navigation,
+ * not for mouse clicks. All interactive elements get a consistent ring.
+ */
+:focus-visible {
+    outline: 3px solid #236580;
+    outline-offset: 2px;
+}
+
+/*
+ * For elements that use clip-path (tape flags), outline is clipped.
+ * Use box-shadow as the focus indicator instead.
+ */
+.tape-flag:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px #236580, 0 0 0 5px #ffffff;
+}
+
+/*
+ * The header home link uses absolute inset-0 so outline draws
+ * around the full card. Use a visible ring on the parent instead.
+ */
+header:has(a:focus-visible) {
+    outline: 3px solid #236580;
+    outline-offset: 4px;
+}
+
+header a:focus-visible {
+    outline: none;
+}
+
+/*
+ * Sidebar links: ensure outline is not clipped by overflow.
+ */
+.sidebar-link:focus-visible {
+    outline: 3px solid #236580;
+    outline-offset: -2px;
+}
+
+/*
+ * Footer social icon links: round focus ring to match shape.
+ */
+footer nav a:focus-visible {
+    outline: 3px solid #236580;
+    outline-offset: 2px;
+    border-radius: 50%;
+}
+
+/*
+ * Prose links: add visible focus ring.
+ */
+.prose a:focus-visible {
+    outline: 3px solid #236580;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+
 body {
     margin: 0;
     padding: 0;
@@ -254,6 +336,12 @@ body {
     transition: font-weight 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
 }
 
+.sidebar-link[aria-current="true"] {
+    background-color: rgba(22, 40, 57, 0.08);
+    border-left: 3px solid #236580;
+    padding-left: calc(0.5rem - 3px);
+}
+
 .sidebar-link-text {
     display: block;
     max-width: 100%;
@@ -446,12 +534,12 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: #74777d;
+    color: #4a4e54;
     margin-top: 1rem;
 }
 
 .prose a {
-    color: #236580;
+    color: #1a4f65;
     text-decoration: underline;
     text-underline-offset: 4px;
     font-weight: 500;
@@ -500,10 +588,25 @@ body {
     overflow: hidden;
 }
 
+.table-scroll-container {
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .table-scroll-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+.table-scroll-container:focus-visible {
+    outline: 3px solid #236580;
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
 @media (max-width: 640px) {
     .prose table {
-        display: block;
-        overflow-x: auto;
         white-space: nowrap;
     }
 }
@@ -557,7 +660,7 @@ body {
 
 .prose del {
     text-decoration: line-through;
-    color: #74777d;
+    color: #4a4e54;
 }
 
 .prose hr {
@@ -583,7 +686,7 @@ body {
 .prose .footnote-definition {
     font-size: 0.825rem;
     line-height: 1.5;
-    color: #5a5f66;
+    color: #454a50;
     display: flex;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
@@ -607,7 +710,7 @@ body {
 
 .prose .footnote-definition-label {
     font-weight: 700;
-    color: #236580;
+    color: #1a4f65;
 }
 
 .prose .footnote-definition p {
@@ -619,7 +722,7 @@ body {
     text-decoration: none;
     font-weight: 700;
     font-size: 0.75rem;
-    color: #236580;
+    color: #1a4f65;
     padding: 0 2px;
 }
 
@@ -686,6 +789,8 @@ body {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.08) 100%),
         linear-gradient(90deg, rgba(225, 245, 0, 0.8) 0%, rgba(225, 245, 0, 0.9) 80%, rgba(225, 245, 0, 0.98) 100%);
+    color: #162839;
+    text-shadow: none;
 }
 
 .article-card-wrapper:nth-child(5n+3) .read-more-flag {
@@ -808,5 +913,42 @@ body {
 
     .back-home-container {
         left: -16px;
+    }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-contrast: more) {
+
+    .prose th,
+    .prose td {
+        filter: none;
+        text-shadow: none;
+    }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

@@ -28,6 +28,7 @@ pub async fn article_handler(
             let header = HeaderView {
                 blog_title: state.settings.blog_title.clone(),
                 blog_author: state.settings.blog_author.clone(),
+                lang: state.settings.lang.clone(),
             };
 
             let footer = FooterView {

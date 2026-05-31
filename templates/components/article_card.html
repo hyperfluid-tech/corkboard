@@ -1,12 +1,17 @@
 <div
   class="article-card-wrapper relative {% if !is_single_article_page && article.has_more_content %}torn-paper-card-wrapper{% endif %}">
-  <img class="pushpin" src="/static/image/pushpin.svg" alt="Pushpin">
+  <img class="pushpin" src="/static/image/pushpin.svg" alt="" role="presentation">
   <article
     class="paper-card p-margin-mobile md:p-gutter rounded-sm {% if !is_single_article_page && article.has_more_content %}is-truncated{% endif %} {% if is_single_article_page %}pb-16 md:pb-24{% endif %}"
     id="{{ article.slug }}">
     <header class="mb-stack-sm border-b border-surface-variant pb-unit">
+      {% if is_single_article_page %}
+      <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{{ article.title }}
+      </h1>
+      {% else %}
       <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{{ article.title }}
       </h2>
+      {% endif %}
       {% if let Some(subheading) = article.subheading %}
       <p class="text-on-surface-variant font-body-md italic mb-2 text-base md:text-lg opacity-90">{{ subheading }}</p>
       {% endif %}

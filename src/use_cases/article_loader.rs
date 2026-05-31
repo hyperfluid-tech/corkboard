@@ -113,8 +113,6 @@ fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> Str
                     in_image = false;
                     let display_caption = if !image_title.is_empty() {
                         &image_title
-                    } else if !image_alt.is_empty() {
-                        &image_alt
                     } else {
                         ""
                     };
@@ -175,6 +173,16 @@ fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> Str
                 let html = template.render().unwrap();
                 new_events.push(Event::Html(html.into()));
             }
+            Event::Start(Tag::Table(aligns)) => {
+                new_events.push(Event::Html(
+                    "<div class=\"table-scroll-container\" tabindex=\"0\" role=\"region\" aria-label=\"Scrollable table\">".into()
+                ));
+                new_events.push(Event::Start(Tag::Table(aligns)));
+            }
+            Event::End(TagEnd::Table) => {
+                new_events.push(Event::End(TagEnd::Table));
+                new_events.push(Event::Html("</div>".into()));
+            }
             Event::Text(text) if in_code_block => code_block_content.push_str(&text),
             Event::Text(text) => new_events.push(Event::Text(text)),
             Event::SoftBreak | Event::HardBreak if in_code_block => code_block_content.push('\n'),
@@ -187,6 +195,7 @@ fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> Str
 
     let mut html_output = String::new();
     pulldown_cmark::html::push_html(&mut html_output, new_events.into_iter());
+
     html_output
 }
 

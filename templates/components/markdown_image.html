@@ -1,6 +1,6 @@
-<div class="tipped-image-container">
+<figure class="tipped-image-container">
 <img src="{{ src }}" alt="{{ alt }}" class="w-full h-auto object-cover" />
 {% if !caption.is_empty() %}
-<p class="mt-2 text-center text-outline font-body-md text-sm italic">{{ caption }}</p>
+<figcaption class="mt-2 text-center text-outline font-body-md text-sm italic">{{ caption }}</figcaption>
 {% endif %}
-</div>
+</figure>

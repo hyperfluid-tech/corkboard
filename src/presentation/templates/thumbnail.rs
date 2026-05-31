@@ -1,11 +1,10 @@
-use crate::presentation::templates::index::HeaderView;
 use askama::Template;
 use axum::response::{Html, IntoResponse, Response};
 
 #[derive(Template)]
 #[template(path = "thumbnail.html")]
 pub struct ThumbnailTemplate {
-    pub header: HeaderView,
+    pub blog_title: String,
     pub current_title: String,
 }
 

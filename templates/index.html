@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html class="light" lang="{{ header.lang }}">
 
 <head>
   {% include "components/head.html" %}
   <title>{{ header.blog_title }}</title>
+  <meta name="description" content="Read articles on {{ header.blog_title }} by {{ header.blog_author }}.">
 
   <meta property="og:title" content="{{ header.blog_title }}" />
   <meta property="og:type" content="website" />
@@ -18,10 +19,14 @@
 </head>
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <button
     class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
-    id="sidebar-toggle">
-    <span class="material-symbols-outlined text-[20px]">menu_book</span>
+    id="sidebar-toggle"
+    aria-label="Open navigation"
+    aria-expanded="false"
+    aria-controls="sidebar">
+    <span class="material-symbols-outlined text-[20px]" aria-hidden="true">menu_book</span>
   </button>
   <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay"></div>
 
@@ -38,7 +43,7 @@
 
     <div
       class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col gap-2 lg:gap-4 lg:col-start-2 lg:row-start-2">
-      <main class="w-full flex flex-col gap-gutter relative">
+      <main id="main-content" class="w-full flex flex-col gap-gutter relative">
         {% if articles.is_empty() %}
         {% include "components/article_welcome.html" %}
         {% else %}

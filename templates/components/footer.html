@@ -3,19 +3,19 @@
   <div class="mb-4 sm:mb-0">
     <span class="text-on-surface-variant">
       © {{ footer.current_year }} {{ footer.blog_author }}. Powered by <a class="hover:underline text-primary font-semibold"
-        href="https://github.com/hyperfluid-tech/corkboard" target="_blank" rel="noopener noreferrer">Corkboard v{{ footer.version }}</a>.
+        href="https://github.com/hyperfluid-tech/corkboard" target="_blank" rel="noopener noreferrer">Corkboard v{{ footer.version }}<span class="sr-only"> (opens in new tab)</span></a>.
       <br />
       {% if !footer.blog_license_url.is_empty() %}
       Licensed under <a class="hover:underline text-primary font-semibold" href="{{ footer.blog_license_url }}" target="_blank"
-        rel="noopener noreferrer">{{ footer.blog_license }}</a>.
+        rel="noopener noreferrer">{{ footer.blog_license }}<span class="sr-only"> (opens in new tab)</span></a>.
       {% else %}
       Licensed under {{ footer.blog_license }}.
       {% endif %}
     </span>
   </div>
-  <nav class="flex gap-4">
+  <nav class="flex gap-4" aria-label="Social media links">
     {% if let Some(url) = footer.github_url %}
-    <a aria-label="GitHub"
+    <a aria-label="GitHub (opens in new tab)"
       class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
       href="{{ url }}" target="_blank" rel="noopener noreferrer">
       <svg class="w-5 h-5 fill-current" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -24,7 +24,7 @@
     </a>
     {% endif %}
     {% if let Some(url) = footer.linkedin_url %}
-    <a aria-label="LinkedIn"
+    <a aria-label="LinkedIn (opens in new tab)"
       class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
       href="{{ url }}" target="_blank" rel="noopener noreferrer">
       <svg class="w-5 h-5 fill-current" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +33,7 @@
     </a>
     {% endif %}
     {% if let Some(url) = footer.twitter_url %}
-    <a aria-label="Twitter"
+    <a aria-label="Twitter (opens in new tab)"
       class="text-primary hover:bg-primary/20 transition-colors flex items-center justify-center w-10 h-10 rounded-full"
       href="{{ url }}" target="_blank" rel="noopener noreferrer">
       <svg class="w-5 h-5 fill-current" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">

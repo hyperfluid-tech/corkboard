@@ -15,6 +15,7 @@ pub struct ArticleView {
 pub struct HeaderView {
     pub blog_title: String,
     pub blog_author: String,
+    pub lang: String,
 }
 
 #[derive(Debug, Clone)]

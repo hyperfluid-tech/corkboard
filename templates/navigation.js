@@ -5,10 +5,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const articles = document.querySelectorAll('article');
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
+  if (sidebar) {
+    sidebar.setAttribute('aria-hidden', 'true');
+  }
+
   function toggleSidebar() {
     if (sidebar && overlay) {
       sidebar.classList.toggle('open');
       overlay.classList.toggle('open');
+
+      const isOpen = sidebar.classList.contains('open');
+
+      if (toggleBtn) {
+        toggleBtn.setAttribute('aria-expanded', String(isOpen));
+        toggleBtn.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+      }
+
+      sidebar.setAttribute('aria-hidden', String(!isOpen));
+
+      if (isOpen) {
+        document.querySelector('.flex-grow')?.toggleAttribute('inert', true);
+      } else {
+        document.querySelector('.flex-grow')?.toggleAttribute('inert', false);
+      }
     }
   }
 
@@ -19,6 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (overlay) {
     overlay.addEventListener('click', toggleSidebar);
   }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebar && sidebar.classList.contains('open')) {
+      toggleSidebar();
+      if (toggleBtn) {
+        toggleBtn.focus();
+      }
+    }
+  });
 
   sidebarLinks.forEach(link => {
     link.addEventListener('click', () => {
@@ -85,6 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const isCurrent = link.getAttribute('data-slug') === currentActive;
       link.classList.toggle('font-bold', isCurrent);
       link.classList.toggle('font-semibold', !isCurrent);
+      link.classList.toggle('bg-primary/10', isCurrent);
+
+      if (isCurrent) {
+        link.setAttribute('aria-current', 'true');
+      } else {
+        link.removeAttribute('aria-current');
+      }
     });
   }
 
