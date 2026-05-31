@@ -1,6 +1,5 @@
 <div
   class="article-card-wrapper relative {% if !is_single_article_page && article.has_more_content %}torn-paper-card-wrapper{% endif %}">
-  <img class="pushpin" src="/static/image/pushpin.svg" alt="" role="presentation">
   <article
     class="paper-card p-margin-mobile md:p-gutter rounded-sm {% if !is_single_article_page && article.has_more_content %}is-truncated{% endif %} {% if is_single_article_page %}pb-16 md:pb-24{% endif %}"
     id="{{ article.slug }}">

@@ -22,10 +22,7 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <button
     class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
-    id="sidebar-toggle"
-    aria-label="Open navigation"
-    aria-expanded="false"
-    aria-controls="sidebar">
+    id="sidebar-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
     <span class="material-symbols-outlined text-[20px]" aria-hidden="true">menu_book</span>
   </button>
   <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay"></div>
@@ -42,16 +39,23 @@
     </div>
 
     <div
-      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col gap-2 lg:gap-4 lg:col-start-2 lg:row-start-2">
-      <main id="main-content" class="w-full flex flex-col gap-gutter relative">
+      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col mt-[-24px] lg:mt-[-32px] lg:col-start-2 lg:row-start-2">
+      {% include "components/string_connector.html" %}
+
+      <main id="main-content" class="w-full flex flex-col relative">
         {% if articles.is_empty() %}
         {% include "components/article_welcome.html" %}
         {% else %}
         {% for article in articles %}
+        {% if !loop.first %}
+        {% include "components/string_connector.html" %}
+        {% endif %}
         {% include "components/article_card.html" %}
         {% endfor %}
         {% endif %}
       </main>
+
+      {% include "components/string_connector.html" %}
 
       {% include "components/footer.html" %}
     </div>
