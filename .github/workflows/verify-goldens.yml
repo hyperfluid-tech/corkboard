@@ -1,4 +1,4 @@
-name: Golden Tests
+name: Verify Goldens
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  golden_tests:
+  verify_goldens:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo

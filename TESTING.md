@@ -63,7 +63,7 @@ cargo run --bin golden -- --override
 
 ## Continuous Integration (CI)
 
-Our GitHub Actions workflow ([golden-tests.yml](file:///Users/gilnobrega/git/carbon/.github/workflows/golden-tests.yml)) automatically runs the golden tests on every push and pull request.
+Our GitHub Actions workflow ([verify-goldens.yml](file:///Users/gilnobrega/git/carbon/.github/workflows/verify-goldens.yml)) automatically runs the golden tests on every push and pull request.
 
 1. Spawns the Corkboard server in the background.
 2. Compiles and executes the `golden` runner to produce `_gen.png` images.
@@ -73,3 +73,16 @@ Our GitHub Actions workflow ([golden-tests.yml](file:///Users/gilnobrega/git/car
    ```
 4. **Tolerance**: The `1%` fuzz factor allows the suite to ignore subtle sub-pixel variations (such as minor rendering/image loading differences) while still catching actual layout regressions.
 5. **Artifacts**: If tests fail, the visual diff files highlight mismatches in red and are uploaded as pipeline artifacts.
+
+### Automatically Updating Reference Images on CI
+
+Because rendering (such as font anti-aliasing and subpixel layouts) can differ slightly between your local operating system (e.g. macOS) and the Linux environment used by GitHub Actions, reference images should be generated on the CI runner to prevent OS-specific test failures.
+
+You can trigger the **Update Golden Images** workflow on demand:
+
+1. Push your code changes (which might affect UI rendering) to your branch on GitHub.
+2. Go to the **Actions** tab in the repository.
+3. Select the **Update Golden Images** workflow from the sidebar.
+4. Click the **Run workflow** button, select your branch, and run it.
+5. The workflow will run the suite in override mode (`--override`), regenerate the golden reference files (`*_main.png`), and commit/push them directly back to your branch.
+
