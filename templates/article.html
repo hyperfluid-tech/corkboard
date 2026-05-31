@@ -45,10 +45,14 @@
     </div>
 
     <div
-      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto flex flex-col gap-6 lg:gap-8">
-      <main class="w-full flex flex-col gap-gutter relative">
+      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto flex flex-col mt-[-24px] lg:mt-[-32px]">
+      {% include "components/string_connector.html" %}
+
+      <main class="w-full flex flex-col relative">
         {% include "components/article_card.html" %}
       </main>
+
+      {% include "components/string_connector.html" %}
 
       {% include "components/footer.html" %}
     </div>
