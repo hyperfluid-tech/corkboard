@@ -4,23 +4,26 @@ use std::fs;
 use std::path::Path;
 use std::time::Duration;
 
-mod helper;
-mod header;
-mod sidebar;
-mod footer;
+#[path = "../../util/mod.rs"]
+pub mod util;
+
 mod article_card;
 mod blockquote;
-mod table;
 mod codeblock;
+mod footer;
+mod header;
+mod headings;
+mod helper;
 mod image;
 mod list;
-mod headings;
 mod separator;
+mod sidebar;
+mod table;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
     let override_main = args.contains(&"--override".to_string());
-    
+
     println!("Starting golden image generation...");
     if override_main {
         println!("Running in override mode. Will overwrite *_main.png reference goldens directly.");
@@ -47,12 +50,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let port = 3000;
     let mut all_matched = true;
-    
+
     // 1. Capture Home Page Components
     let url_home = format!("http://localhost:{}/?deterministic=true", port);
     println!("Navigating to: {}", url_home);
     tab.navigate_to(&url_home)?;
-    
+
     // Wait for page to load and procedural shaders to render
     std::thread::sleep(Duration::from_millis(2000));
 
@@ -62,10 +65,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     all_matched &= article_card::assert_article_card(&tab, override_main)?;
 
     // 2. Capture Welcome Article Components
-    let url_article = format!("http://localhost:{}/article/welcome-to-corkboard?deterministic=true", port);
+    let url_article = format!(
+        "http://localhost:{}/article/welcome-to-corkboard?deterministic=true",
+        port
+    );
     println!("Navigating to: {}", url_article);
     tab.navigate_to(&url_article)?;
-    
+
     std::thread::sleep(Duration::from_millis(2000));
 
     all_matched &= blockquote::assert_blockquote(&tab, override_main)?;
