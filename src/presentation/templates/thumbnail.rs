@@ -14,11 +14,7 @@ impl IntoResponse for ThumbnailTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),
-            Err(err) => (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                format!("Failed to render template: {}", err),
-            )
-                .into_response(),
+            Err(err) => crate::domain::error::AppError::TemplateError(err).into_response(),
         }
     }
 }

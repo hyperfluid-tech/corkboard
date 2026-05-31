@@ -65,6 +65,6 @@ pub async fn article_handler(
             };
             template.into_response()
         }
-        None => (StatusCode::NOT_FOUND, "Article not found").into_response(),
+        None => crate::domain::error::AppError::ArticleNotFound.into_response(),
     }
 }
