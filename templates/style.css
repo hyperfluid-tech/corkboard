@@ -810,3 +810,26 @@ body {
         left: -16px;
     }
 }
+
+.article-card-wrapper {
+    z-index: 1;
+}
+
+.article-card-wrapper:not(:first-child) .pushpin {
+    display: none;
+}
+
+.red-string-connector {
+    position: relative;
+    height: 24px;
+    pointer-events: none;
+}
+
+.red-string-connector svg {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: -48px;
+    height: calc(100% + 96px);
+    overflow: visible;
+}
