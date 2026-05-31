@@ -1,9 +1,8 @@
+use crate::presentation::state::AppState;
+use crate::presentation::templates::article::ArticleTemplate;
+use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView};
 use axum::extract::{Path, State};
 use axum::response::IntoResponse;
-use axum::http::StatusCode;
-use crate::presentation::state::AppState;
-use crate::presentation::templates::index::{ArticleView, HeaderView, FooterView};
-use crate::presentation::templates::article::ArticleTemplate;
 use chrono::Datelike;
 
 pub async fn article_handler(
@@ -11,7 +10,7 @@ pub async fn article_handler(
     Path(slug): Path<String>,
 ) -> impl IntoResponse {
     let current_year = chrono::Utc::now().year();
-    
+
     let matching_article = state.articles.iter().find(|a| a.slug == slug);
 
     match matching_article {
@@ -36,9 +35,24 @@ pub async fn article_handler(
                 blog_license: state.settings.blog_license.clone(),
                 blog_license_url: state.settings.blog_license_url.clone(),
                 current_year,
-                linkedin_url: state.settings.linkedin_url.as_ref().filter(|s| !s.is_empty()).cloned(),
-                github_url: state.settings.github_url.as_ref().filter(|s| !s.is_empty()).cloned(),
-                twitter_url: state.settings.twitter_url.as_ref().filter(|s| !s.is_empty()).cloned(),
+                linkedin_url: state
+                    .settings
+                    .linkedin_url
+                    .as_ref()
+                    .filter(|s| !s.is_empty())
+                    .cloned(),
+                github_url: state
+                    .settings
+                    .github_url
+                    .as_ref()
+                    .filter(|s| !s.is_empty())
+                    .cloned(),
+                twitter_url: state
+                    .settings
+                    .twitter_url
+                    .as_ref()
+                    .filter(|s| !s.is_empty())
+                    .cloned(),
                 version: env!("CARGO_PKG_VERSION").to_string(),
             };
 
@@ -50,8 +64,6 @@ pub async fn article_handler(
             };
             template.into_response()
         }
-        None => {
-            (StatusCode::NOT_FOUND, "Article not found").into_response()
-        }
+        None => crate::domain::error::AppError::ArticleNotFound.into_response(),
     }
 }

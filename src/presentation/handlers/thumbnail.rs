@@ -4,9 +4,7 @@ use crate::presentation::templates::thumbnail::ThumbnailTemplate;
 use axum::extract::State;
 use axum::response::IntoResponse;
 
-pub async fn thumbnail_handler(
-    State(state): State<AppState>,
-) -> impl IntoResponse {
+pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoResponse {
     let current_title = state.settings.blog_title.clone();
 
     let header = HeaderView {
@@ -20,32 +18,40 @@ pub async fn thumbnail_handler(
     }
 }
 
+const THUMBNAIL_WIDTH: u32 = 1200;
+const THUMBNAIL_HEIGHT: u32 = 630;
+const BROWSER_WINDOW_WIDTH: u32 = 1400;
+const BROWSER_WINDOW_HEIGHT: u32 = 830;
+
 pub async fn generate_startup_thumbnail(port: u16, _title: String) {
     let cache_path = std::path::Path::new("templates/thumbnails").join("thumbnail.webp");
-    
-    let result = tokio::task::spawn_blocking(move || capture_screenshot(port)).await;
+
+    let result = tokio::task::spawn_blocking(move || capture_screenshot(port))
+        .await
+        .map_err(|e| format!("Task error generating startup thumbnail: {}", e))
+        .and_then(|r| r.map_err(|e| format!("Failed to capture startup thumbnail: {}", e)));
+
     match result {
-        Ok(Ok(image_bytes)) => {
+        Ok(image_bytes) => {
             if let Err(e) = std::fs::write(&cache_path, &image_bytes) {
                 tracing::error!("Failed to save startup thumbnail {:?}: {}", cache_path, e);
             } else {
                 tracing::info!("Successfully generated startup thumbnail: {:?}", cache_path);
             }
         }
-        Ok(Err(err)) => tracing::error!("Failed to capture startup thumbnail: {}", err),
-        Err(e) => tracing::error!("Task error generating startup thumbnail: {}", e),
+        Err(err) => tracing::error!("{}", err),
     }
 }
 
 fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
     use headless_chrome::{Browser, LaunchOptionsBuilder};
-    use std::time::Duration;
     use std::ffi::OsStr;
+    use std::time::Duration;
 
     let options = LaunchOptionsBuilder::default()
         .headless(true)
         .enable_gpu(true)
-        .window_size(Some((1400, 830)))
+        .window_size(Some((BROWSER_WINDOW_WIDTH, BROWSER_WINDOW_HEIGHT)))
         .args(vec![
             OsStr::new("--no-sandbox"),
             OsStr::new("--ignore-gpu-blocklist"),
@@ -61,23 +67,25 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
         .new_tab()
         .map_err(|e| format!("Failed to open tab: {:?}", e))?;
 
-    // Force the viewport to exactly 1200x630 via CDP
-    tab.call_method(headless_chrome::protocol::cdp::Emulation::SetDeviceMetricsOverride {
-        width: 1200,
-        height: 630,
-        device_scale_factor: 1.0,
-        mobile: false,
-        scale: None,
-        screen_width: None,
-        screen_height: None,
-        position_x: None,
-        position_y: None,
-        dont_set_visible_size: None,
-        screen_orientation: None,
-        viewport: None,
-        display_feature: None,
-        device_posture: None,
-    })
+    // Force the viewport to exactly the target thumbnail size via CDP
+    tab.call_method(
+        headless_chrome::protocol::cdp::Emulation::SetDeviceMetricsOverride {
+            width: THUMBNAIL_WIDTH,
+            height: THUMBNAIL_HEIGHT,
+            device_scale_factor: 1.0,
+            mobile: false,
+            scale: None,
+            screen_width: None,
+            screen_height: None,
+            position_x: None,
+            position_y: None,
+            dont_set_visible_size: None,
+            screen_orientation: None,
+            viewport: None,
+            display_feature: None,
+            device_posture: None,
+        },
+    )
     .map_err(|e| format!("Failed to set device metrics: {:?}", e))?;
 
     let url = format!("http://127.0.0.1:{}/thumbnail", port);
@@ -99,8 +107,8 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
             Some(headless_chrome::protocol::cdp::Page::Viewport {
                 x: 0.0,
                 y: 0.0,
-                width: 1200.0,
-                height: 630.0,
+                width: THUMBNAIL_WIDTH as f64,
+                height: THUMBNAIL_HEIGHT as f64,
                 scale: 1.0,
             }),
             true,

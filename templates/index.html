@@ -10,12 +10,11 @@
   <meta property="og:url" content="/" />
   <meta property="og:description" content="Read articles on {{ header.blog_title }} by {{ header.blog_author }}." />
   <meta property="og:site_name" content="{{ header.blog_title }}" />
-  <meta property="og:image" content="/thumbnails/thumbnail.webp" />
+  {% include "components/default_thumbnail_meta.html" %}
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ header.blog_title }}" />
   <meta name="twitter:description" content="Read articles on {{ header.blog_title }} by {{ header.blog_author }}." />
-  <meta name="twitter:image" content="/thumbnails/thumbnail.webp" />
 </head>
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen">

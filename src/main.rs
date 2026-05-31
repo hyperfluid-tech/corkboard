@@ -7,9 +7,9 @@ mod presentation;
 mod use_cases;
 
 use infrastructure::config::Settings;
+use presentation::handlers;
 use presentation::state::AppState;
 use use_cases::article_loader::load_articles;
-use presentation::handlers;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -29,13 +29,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     })?;
 
     if !std::path::Path::new(&settings.articles_dir).exists() {
-        tracing::warn!("Articles directory '{}' not found, creating it.", settings.articles_dir);
+        tracing::warn!(
+            "Articles directory '{}' not found, creating it.",
+            settings.articles_dir
+        );
         std::fs::create_dir_all(&settings.articles_dir)?;
     }
 
     let thumbnails_dir = "templates/thumbnails";
     if !std::path::Path::new(thumbnails_dir).exists() {
-        tracing::info!("Thumbnails directory '{}' not found, creating it.", thumbnails_dir);
+        tracing::info!(
+            "Thumbnails directory '{}' not found, creating it.",
+            thumbnails_dir
+        );
         std::fs::create_dir_all(thumbnails_dir)?;
     }
 
@@ -55,7 +61,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], settings.port));
     tracing::info!("Listening on http://{}", addr);
-    
+
     let listener = tokio::net::TcpListener::bind(addr).await?;
 
     let port = settings.port;

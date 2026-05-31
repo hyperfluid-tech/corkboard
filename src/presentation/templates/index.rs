@@ -1,6 +1,5 @@
 use askama::Template;
 use axum::response::{Html, IntoResponse, Response};
-use axum::http::StatusCode;
 #[derive(Debug, Clone)]
 pub struct ArticleView {
     pub slug: String,
@@ -17,8 +16,6 @@ pub struct HeaderView {
     pub blog_title: String,
     pub blog_author: String,
 }
-
-
 
 #[derive(Debug, Clone)]
 pub struct FooterView {
@@ -45,11 +42,7 @@ impl IntoResponse for IndexTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),
-            Err(err) => (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                format!("Failed to render template: {}", err),
-            )
-                .into_response(),
+            Err(err) => crate::domain::error::AppError::TemplateError(err).into_response(),
         }
     }
 }
