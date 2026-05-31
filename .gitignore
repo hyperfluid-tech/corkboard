@@ -9,7 +9,6 @@ target
 .DS_Store
 templates/thumbnails/
 
-# Visual Regression Test Gen Files
 tests/golden/*_gen.png
 tests/golden/diffs/
 tests/snapshots/
