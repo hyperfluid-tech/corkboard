@@ -27,7 +27,7 @@ This locks down the visual noise patterns so they are identical across test runs
 
 ### 2. Golden Image Runner
 
-A headless Chrome browser driver, located in [tests/bin/golden.rs](file:///Users/gilnobrega/git/carbon/tests/bin/golden.rs), is used to automatically load the pages and capture individual elements. It captures:
+A headless Chrome browser driver, located in [tests/bin/golden/main.rs](file:///Users/gilnobrega/git/carbon/tests/bin/golden/main.rs), is used to automatically load the pages and capture individual elements. It captures:
 - Key global layouts (`header`, `#sidebar`, `footer`, `.article-card-wrapper`).
 - Granular elements from the welcome article (`blockquote`, `table`, `pre` codeblocks, `.tipped-image-container` wrapper, `ul` lists, `hr` separators, and headings `h1` through `h6`).
 

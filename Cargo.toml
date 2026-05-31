@@ -22,4 +22,4 @@ headless_chrome = "1.0.21"
 
 [[bin]]
 name = "golden"
-path = "tests/bin/golden.rs"
+path = "tests/bin/golden/main.rs"
