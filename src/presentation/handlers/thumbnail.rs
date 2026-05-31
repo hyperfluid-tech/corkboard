@@ -23,17 +23,20 @@ pub async fn thumbnail_handler(
 pub async fn generate_startup_thumbnail(port: u16, _title: String) {
     let cache_path = std::path::Path::new("templates/thumbnails").join("thumbnail.webp");
     
-    let result = tokio::task::spawn_blocking(move || capture_screenshot(port)).await;
+    let result = tokio::task::spawn_blocking(move || capture_screenshot(port))
+        .await
+        .map_err(|e| format!("Task error generating startup thumbnail: {}", e))
+        .and_then(|r| r.map_err(|e| format!("Failed to capture startup thumbnail: {}", e)));
+
     match result {
-        Ok(Ok(image_bytes)) => {
+        Ok(image_bytes) => {
             if let Err(e) = std::fs::write(&cache_path, &image_bytes) {
                 tracing::error!("Failed to save startup thumbnail {:?}: {}", cache_path, e);
             } else {
                 tracing::info!("Successfully generated startup thumbnail: {:?}", cache_path);
             }
         }
-        Ok(Err(err)) => tracing::error!("Failed to capture startup thumbnail: {}", err),
-        Err(e) => tracing::error!("Task error generating startup thumbnail: {}", e),
+        Err(err) => tracing::error!("{}", err),
     }
 }
 
