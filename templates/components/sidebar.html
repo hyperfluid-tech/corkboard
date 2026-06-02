@@ -10,8 +10,8 @@
         {% else %}
         {% for article in articles %}
         <li class="sidebar-item">
-          <a class="block hover:bg-white/30 p-2 rounded transition-colors sidebar-link font-semibold overflow-hidden" href="#{{ article.slug }}"
-            data-slug="{{ article.slug }}">
+          <a class="block hover:bg-white/30 p-2 rounded transition-colors sidebar-link font-semibold overflow-hidden"
+            href="#{{ article.slug }}" data-slug="{{ article.slug }}">
             <span class="sidebar-link-text block lg:truncate">{{ article.title }}</span>
           </a>
         </li>

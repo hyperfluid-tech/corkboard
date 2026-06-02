@@ -323,7 +323,7 @@ body {
     margin-bottom: -8px;
 }
 
-.sidebar-list > li {
+.sidebar-list>li {
     padding-top: 8px;
     padding-bottom: 8px;
 }
@@ -382,7 +382,7 @@ body {
         overflow: visible;
     }
 
-    #sidebar > nav {
+    #sidebar>nav {
         overflow-x: visible;
         overflow-y: auto;
     }

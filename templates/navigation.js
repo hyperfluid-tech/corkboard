@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const indicator = document.getElementById('sidebar-active-indicator');
       if (indicator && indicator.style.opacity !== '0') {
         const wrapper = document.querySelector('.sidebar-relative-wrapper');
-        
+
         if (link.getAttribute('aria-current') === 'true') {
           indicator.style.setProperty('--indicator-angle', `-15deg`);
           if (wrapper) {
@@ -107,16 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
           const linksArray = Array.from(sidebarLinks);
           const hoveredIndex = linksArray.indexOf(link);
           const activeIndex = linksArray.findIndex(l => l.getAttribute('aria-current') === 'true');
-          
+
           if (activeIndex !== -1) {
             const distance = hoveredIndex - activeIndex;
             let angle = -15 + (distance * 15);
-            
+
             if (angle > 45) angle = 45;
             if (angle < -45) angle = -45;
 
             indicator.style.setProperty('--indicator-angle', `${angle}deg`);
-            
+
             if (wrapper) {
               const rect = link.getBoundingClientRect();
               const wrapperRect = wrapper.getBoundingClientRect();
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const indicator = document.getElementById('sidebar-active-indicator');
       const activeLink = document.querySelector('.sidebar-link[aria-current="true"]');
       const wrapper = document.querySelector('.sidebar-relative-wrapper');
-      
+
       if (indicator && activeLink && wrapper) {
         indicator.style.setProperty('--indicator-angle', `-15deg`);
         const activeRect = activeLink.getBoundingClientRect();
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const activeRect = activeLink.getBoundingClientRect();
       const wrapperRect = wrapper.getBoundingClientRect();
       const relativeTop = activeRect.top - wrapperRect.top + (activeRect.height / 2);
-      
+
       indicator.style.setProperty('--indicator-top', `${relativeTop}px`);
       indicator.style.opacity = '1';
     } else if (indicator) {
