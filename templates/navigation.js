@@ -23,10 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       sidebar.setAttribute('aria-hidden', String(!isOpen));
 
+      const mainContainer = document.getElementById('main-container');
+      const headerContainer = document.getElementById('header-container');
+      const skipLink = document.querySelector('.skip-link');
       if (isOpen) {
-        document.querySelector('.flex-grow')?.toggleAttribute('inert', true);
+        mainContainer?.setAttribute('inert', '');
+        headerContainer?.setAttribute('inert', '');
+        skipLink?.setAttribute('inert', '');
       } else {
-        document.querySelector('.flex-grow')?.toggleAttribute('inert', false);
+        mainContainer?.removeAttribute('inert');
+        headerContainer?.removeAttribute('inert');
+        skipLink?.removeAttribute('inert');
       }
     }
   }

@@ -30,7 +30,7 @@
   <div
     class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:pl-0 lg:pr-gutter pt-stack-lg pb-gutter flex flex-col gap-6 lg:grid lg:grid-cols-[16rem_1fr] min-[1376px]:grid-cols-[16rem_1fr_14.5rem] lg:gap-x-8 lg:gap-y-8 relative">
 
-    <div class="w-full max-w-[800px] mx-auto lg:mx-0 lg:col-start-2 lg:row-start-1">
+    <div class="w-full max-w-[800px] mx-auto lg:mx-0 lg:col-start-2 lg:row-start-1" id="header-container">
       {% include "components/header.html" %}
     </div>
 
@@ -38,7 +38,7 @@
       {% include "components/sidebar.html" %}
     </div>
 
-    <div
+    <div id="main-container"
       class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col mt-[-24px] lg:mt-[-32px] lg:col-start-2 lg:row-start-2">
       {% include "components/string_connector.html" %}
 
