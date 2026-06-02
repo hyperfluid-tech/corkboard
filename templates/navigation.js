@@ -62,7 +62,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    link.addEventListener('mouseenter', () => {
+
+
+    const textSpan = link.querySelector('.sidebar-link-text');
+    if (textSpan) {
+      link.addEventListener('mouseenter', () => {
+        if (window.innerWidth < 1024) return;
+
+        const textWidth = textSpan.scrollWidth;
+        const containerWidth = link.clientWidth - 16;
+        if (textWidth > containerWidth) {
+          const scrollDist = textWidth - containerWidth + 4;
+          const duration = scrollDist / 40;
+          link.style.setProperty('--scroll-dist', `-${scrollDist}px`);
+          link.style.setProperty('--scroll-duration', `${duration}s`);
+        }
+      });
+
+      link.addEventListener('mouseleave', () => {
+        link.style.removeProperty('--scroll-dist');
+        link.style.removeProperty('--scroll-duration');
+      });
+    }
+  });
+
+  const sidebarItems = document.querySelectorAll('.sidebar-item');
+  sidebarItems.forEach(item => {
+    const link = item.querySelector('.sidebar-link');
+    if (!link) return;
+
+    item.addEventListener('mouseenter', () => {
       const indicator = document.getElementById('sidebar-active-indicator');
       if (indicator && indicator.style.opacity !== '0') {
         const wrapper = document.querySelector('.sidebar-relative-wrapper');
@@ -98,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    link.addEventListener('mouseleave', () => {
+    item.addEventListener('mouseleave', () => {
       const indicator = document.getElementById('sidebar-active-indicator');
       const activeLink = document.querySelector('.sidebar-link[aria-current="true"]');
       const wrapper = document.querySelector('.sidebar-relative-wrapper');
@@ -110,27 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
         indicator.style.setProperty('--indicator-top', `${activeRect.top - wrapperRect.top + activeRect.height / 2}px`);
       }
     });
-
-    const textSpan = link.querySelector('.sidebar-link-text');
-    if (textSpan) {
-      link.addEventListener('mouseenter', () => {
-        if (window.innerWidth < 1024) return;
-
-        const textWidth = textSpan.scrollWidth;
-        const containerWidth = link.clientWidth - 16;
-        if (textWidth > containerWidth) {
-          const scrollDist = textWidth - containerWidth + 4;
-          const duration = scrollDist / 40;
-          link.style.setProperty('--scroll-dist', `-${scrollDist}px`);
-          link.style.setProperty('--scroll-duration', `${duration}s`);
-        }
-      });
-
-      link.addEventListener('mouseleave', () => {
-        link.style.removeProperty('--scroll-dist');
-        link.style.removeProperty('--scroll-duration');
-      });
-    }
   });
 
   if (articles.length === 0 || sidebarLinks.length === 0) return;

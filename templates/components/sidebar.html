@@ -4,12 +4,12 @@
   <img id="sidebar-active-indicator" src="/static/image/pencil-tip.svg" alt="" aria-hidden="true" />
   <nav class="flex-grow p-4 overflow-y-auto bg-white/10 backdrop-blur-sm" aria-label="Articles">
     <div class="relative">
-      <ul class="space-y-4 font-body-md text-primary">
+      <ul class="sidebar-list font-body-md text-primary">
         {% if articles.is_empty() %}
         <li><span class="block p-2 text-outline italic">No entries</span></li>
         {% else %}
         {% for article in articles %}
-        <li>
+        <li class="sidebar-item">
           <a class="block hover:bg-white/30 p-2 rounded transition-colors sidebar-link font-semibold overflow-hidden" href="#{{ article.slug }}"
             data-slug="{{ article.slug }}">
             <span class="sidebar-link-text block lg:truncate">{{ article.title }}</span>

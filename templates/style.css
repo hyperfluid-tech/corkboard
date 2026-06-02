@@ -318,6 +318,10 @@ body {
 }
 
 /* ===== SIDEBAR NAVIGATION ===== */
+.sidebar-list > li + li {
+    padding-top: 16px;
+}
+
 .sidebar-link {
     transition: font-weight 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
     position: relative;
