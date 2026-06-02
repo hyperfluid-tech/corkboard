@@ -347,7 +347,7 @@ body {
     --indicator-angle: -15deg;
     transform: translateY(var(--indicator-top)) translateY(-50%) rotate(var(--indicator-angle));
     transform-origin: right center;
-    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
+    transition: transform 0.35s ease-in-out, opacity 0.25s ease;
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
     overflow: visible;
 }
