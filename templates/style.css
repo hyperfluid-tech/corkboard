@@ -326,14 +326,15 @@ body {
 
 #sidebar-active-indicator {
     position: absolute;
-    left: -28px;
+    right: calc(100% - 10px);
     top: 0;
-    width: 40px;
+    width: 120px;
     height: 12px;
     pointer-events: none;
     z-index: 10;
     opacity: 0;
-    transform: scaleX(-1) translateY(0) translateY(-50%) rotate(-15deg);
+    transform: translateY(0) translateY(-50%) rotate(-15deg);
+    transform-origin: right center;
     transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
     overflow: visible;
@@ -366,6 +367,16 @@ body {
         height: auto;
         max-height: calc(100vh - 4rem);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        overflow: visible;
+    }
+
+    #sidebar > nav {
+        overflow-x: visible;
+        overflow-y: auto;
+    }
+
+    .sidebar-relative-wrapper {
+        overflow: visible;
     }
 }
 
@@ -378,6 +389,10 @@ body {
 @media (min-width: 1376px) {
     .sidebar-spacer {
         display: block;
+    }
+
+    #sidebar-active-indicator {
+        width: 350px;
     }
 }
 

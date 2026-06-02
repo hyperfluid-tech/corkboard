@@ -1,52 +1,104 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="155 86 130 28" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="155 75 595 55">
   <defs>
-    <filter id="pencilShadow" x="-10%" y="-20%" width="120%" height="160%">
-      <feGaussianBlur stdDeviation="1.5" />
+    <filter id="pencilShadow" x="-5%" y="-5%" width="110%" height="150%">
+      <feGaussianBlur stdDeviation="4" />
     </filter>
-    <linearGradient id="indicatorWoodGrad" x1="0" y1="0" x2="0" y2="1">
+
+    <linearGradient id="woodGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#b58a5c" />
       <stop offset="20%" stop-color="#ebd2b0" />
       <stop offset="50%" stop-color="#d9b68a" />
       <stop offset="80%" stop-color="#b88a57" />
       <stop offset="100%" stop-color="#8a5c29" />
     </linearGradient>
-    <linearGradient id="indicatorLeadGrad" x1="0" y1="0" x2="0" y2="1">
+
+    <linearGradient id="leadGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#333333" />
       <stop offset="20%" stop-color="#888888" />
       <stop offset="50%" stop-color="#444444" />
       <stop offset="80%" stop-color="#222222" />
       <stop offset="100%" stop-color="#111111" />
     </linearGradient>
-    <linearGradient id="indicatorYellowTop" x1="0" y1="0" x2="0" y2="1">
+
+    <linearGradient id="yellowTop" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#fce28b" />
       <stop offset="100%" stop-color="#f7b733" />
     </linearGradient>
-    <linearGradient id="indicatorYellowMid" x1="0" y1="0" x2="0" y2="1">
+
+    <linearGradient id="yellowMid" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#f4ab1f" />
       <stop offset="50%" stop-color="#ffcd40" />
       <stop offset="100%" stop-color="#e69900" />
     </linearGradient>
-    <linearGradient id="indicatorYellowBot" x1="0" y1="0" x2="0" y2="1">
+
+    <linearGradient id="yellowBot" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#cc8400" />
       <stop offset="100%" stop-color="#7a4f00" />
     </linearGradient>
+
+    <linearGradient id="ferruleLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.6)" />
+      <stop offset="15%" stop-color="rgba(255,255,255,0.7)" />
+      <stop offset="30%" stop-color="rgba(255,255,255,0.9)" />
+      <stop offset="45%" stop-color="rgba(255,255,255,0.0)" />
+      <stop offset="70%" stop-color="rgba(0,0,0,0.3)" />
+      <stop offset="90%" stop-color="rgba(0,0,0,0.6)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0.85)" />
+    </linearGradient>
+
+    <linearGradient id="eraserLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.2)" />
+      <stop offset="20%" stop-color="rgba(255,255,255,0.4)" />
+      <stop offset="50%" stop-color="rgba(255,255,255,0.0)" />
+      <stop offset="80%" stop-color="rgba(0,0,0,0.1)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0.5)" />
+    </linearGradient>
   </defs>
-  <!-- Shadow -->
-  <path d="M 165 110 L 220 120 L 280 120 L 280 124 L 220 124 L 165 114 Z"
-        fill="rgba(0,0,0,0.15)" filter="url(#pencilShadow)" />
-  <!-- Wood taper -->
-  <polygon points="184,92 220,80 270,80 270,120 220,120 184,108" fill="url(#indicatorWoodGrad)" />
-  <!-- Wood grain lines -->
-  <path d="M 195 89.5 Q 205 100 195 110.5" fill="none" stroke="#a3784d" stroke-width="0.5" opacity="0.6"/>
-  <path d="M 210 84 Q 225 100 210 116" fill="none" stroke="#a3784d" stroke-width="0.5" opacity="0.6"/>
-  <!-- Graphite lead tip -->
-  <path d="M 185 92.2 L 165 99 Q 163 100 165 101 L 185 107.8 Z" fill="url(#indicatorLeadGrad)" />
-  <path d="M 166 99.5 L 180 96.5" stroke="white" stroke-width="0.75" opacity="0.4" />
-  <!-- Yellow body facets -->
-  <path d="M 220 80 Q 250 86.5 220 93 L 280 93 L 280 80 Z" fill="url(#indicatorYellowTop)" />
-  <path d="M 220 93 Q 250 100 220 107 L 280 107 L 280 93 Z" fill="url(#indicatorYellowMid)" />
-  <path d="M 220 107 Q 250 113.5 220 120 L 280 120 L 280 107 Z" fill="url(#indicatorYellowBot)" />
-  <!-- Edge highlights -->
-  <line x1="220" y1="93" x2="280" y2="93" stroke="white" stroke-width="1.5" opacity="0.4" />
-  <line x1="220" y1="107" x2="280" y2="107" stroke="black" stroke-width="1.5" opacity="0.15" />
+
+  <!-- Mirror all content so tip is on the right -->
+  <g transform="translate(905, 0) scale(-1, 1)">
+    <!-- Shadow -->
+    <path d="M 165 114 L 220 128 L 730 128 C 745 128 745 133 730 133 L 220 133 L 165 117 Z"
+          fill="rgba(0,0,0,0.18)" filter="url(#pencilShadow)" />
+
+    <!-- Eraser -->
+    <rect x="690" y="82" width="50" height="36" fill="#e88b94" rx="4" />
+    <rect x="690" y="82" width="50" height="36" fill="url(#eraserLight)" rx="4" />
+
+    <!-- Wood taper -->
+    <polygon points="184,92 220,80 270,80 270,120 220,120 184,108" fill="url(#woodGrad)" />
+
+    <!-- Wood grain lines -->
+    <path d="M 195 89.5 Q 205 100 195 110.5" fill="none" stroke="#a3784d" stroke-width="0.5" opacity="0.6"/>
+    <path d="M 210 84 Q 225 100 210 116" fill="none" stroke="#a3784d" stroke-width="0.5" opacity="0.6"/>
+
+    <!-- Graphite lead tip -->
+    <path d="M 185 92.2 L 165 99 Q 163 100 165 101 L 185 107.8 Z" fill="url(#leadGrad)" />
+    <path d="M 166 99.5 L 180 96.5" stroke="white" stroke-width="0.75" opacity="0.4" />
+
+    <!-- Yellow body — top facet -->
+    <path d="M 220 80 Q 250 86.5 220 93 L 660 93 L 660 80 Z" fill="url(#yellowTop)" />
+    <!-- Yellow body — middle facet -->
+    <path d="M 220 93 Q 250 100 220 107 L 660 107 L 660 93 Z" fill="url(#yellowMid)" />
+    <!-- Yellow body — bottom facet -->
+    <path d="M 220 107 Q 250 113.5 220 120 L 660 120 L 660 107 Z" fill="url(#yellowBot)" />
+
+    <!-- Edge highlights between facets -->
+    <line x1="220" y1="93" x2="660" y2="93" stroke="white" stroke-width="1.5" opacity="0.4" />
+    <line x1="220" y1="107" x2="660" y2="107" stroke="black" stroke-width="1.5" opacity="0.15" />
+
+    <!-- Metal ferrule -->
+    <rect x="660" y="79" width="45" height="42" fill="#d4a32a" rx="2" />
+    <!-- Ferrule bands -->
+    <rect x="666" y="79" width="3" height="42" fill="#805a10" />
+    <rect x="672" y="79" width="3" height="42" fill="#805a10" />
+    <rect x="690" y="79" width="3" height="42" fill="#805a10" />
+    <rect x="696" y="79" width="3" height="42" fill="#805a10" />
+    <!-- Ferrule lighting overlay -->
+    <rect x="660" y="79" width="45" height="42" fill="url(#ferruleLight)" rx="2" />
+    <!-- Ferrule top highlight -->
+    <rect x="660" y="79.5" width="45" height="1" fill="white" opacity="0.6" />
+    <!-- Ferrule left edge -->
+    <line x1="660" y1="80" x2="660" y2="120" stroke="black" stroke-width="1.5" opacity="0.25" />
+  </g>
 </svg>
