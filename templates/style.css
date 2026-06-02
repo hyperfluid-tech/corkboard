@@ -326,17 +326,17 @@ body {
 
 #sidebar-active-indicator {
     position: absolute;
-    left: -8px;
+    left: -28px;
     top: 0;
+    width: 40px;
+    height: 12px;
     pointer-events: none;
-    text-shadow: none;
-    font-size: 13px;
-    line-height: 1;
-    color: #236580;
     z-index: 10;
     opacity: 0;
-    transform: translateY(0) translateY(-50%);
+    transform: scaleX(-1) translateY(0) translateY(-50%);
     transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
+    overflow: visible;
 }
 
 .sidebar-link-text {
@@ -837,6 +837,7 @@ body {
 .read-more-container:active .read-more-flag {
     transform: translate(0px, 0px) rotate(0deg) scale(0.98) !important;
 }
+
 .read-more-container:active {
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.15)) !important;
 }
@@ -903,6 +904,7 @@ body {
 .back-home-container:hover .back-home-flag {
     transform: translate(-2px, -3px) rotate(-1.5deg) scale(1.04) !important;
 }
+
 .back-home-container:hover {
     filter: drop-shadow(-4px 6px 4px rgba(0, 0, 0, 0.22)) !important;
 }
