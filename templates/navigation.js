@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('sidebar-toggle');
   const articles = document.querySelectorAll('article');
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
+  
+  let activeSlug = '';
+  let isClickNavigating = false;
+  let clickTimeout = null;
 
   if (sidebar) {
     sidebar.setAttribute('aria-hidden', 'true');
@@ -57,6 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   sidebarLinks.forEach(link => {
     link.addEventListener('click', () => {
+      isClickNavigating = true;
+      activeSlug = link.getAttribute('data-slug');
+      updateActiveLink();
+
+      clearTimeout(clickTimeout);
+      clickTimeout = setTimeout(() => {
+        isClickNavigating = false;
+      }, 800);
+
       if (window.innerWidth < 1024) {
         toggleSidebar();
       }
@@ -145,19 +158,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const observerOptions = {
     root: null,
-    rootMargin: '-20% 0px -60% 0px',
+    rootMargin: '-10% 0px -40% 0px',
     threshold: 0
   };
 
-  let activeSlug = '';
+  const intersectingArticles = new Set();
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        activeSlug = entry.target.id;
-        updateActiveLink();
+        intersectingArticles.add(entry.target);
+      } else {
+        intersectingArticles.delete(entry.target);
       }
     });
+
+    if (isClickNavigating) return;
+
+    if (intersectingArticles.size > 0) {
+      const active = Array.from(intersectingArticles).sort((a, b) => {
+        return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
+      })[0];
+      
+      if (active.id !== activeSlug) {
+        activeSlug = active.id;
+        updateActiveLink();
+      }
+    }
   }, observerOptions);
 
   articles.forEach(article => observer.observe(article));
@@ -165,12 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateActiveLink() {
     let currentActive = activeSlug;
     const scrollPosition = window.scrollY;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
     if (scrollPosition < 50) {
       currentActive = articles[0].id;
-    } else if (scrollPosition >= maxScroll - 50) {
-      currentActive = articles[articles.length - 1].id;
     }
 
     sidebarLinks.forEach(link => {
