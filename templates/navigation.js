@@ -5,10 +5,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const articles = document.querySelectorAll('article');
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
+  if (sidebar) {
+    sidebar.setAttribute('aria-hidden', 'true');
+  }
+
   function toggleSidebar() {
     if (sidebar && overlay) {
       sidebar.classList.toggle('open');
       overlay.classList.toggle('open');
+
+      const isOpen = sidebar.classList.contains('open');
+
+      if (toggleBtn) {
+        toggleBtn.setAttribute('aria-expanded', String(isOpen));
+        toggleBtn.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+      }
+
+      sidebar.setAttribute('aria-hidden', String(!isOpen));
+
+      const mainContainer = document.getElementById('main-container');
+      const headerContainer = document.getElementById('header-container');
+      const skipLink = document.querySelector('.skip-link');
+      if (isOpen) {
+        mainContainer?.setAttribute('inert', '');
+        headerContainer?.setAttribute('inert', '');
+        skipLink?.setAttribute('inert', '');
+      } else {
+        mainContainer?.removeAttribute('inert');
+        headerContainer?.removeAttribute('inert');
+        skipLink?.removeAttribute('inert');
+      }
     }
   }
 
@@ -19,6 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (overlay) {
     overlay.addEventListener('click', toggleSidebar);
   }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebar && sidebar.classList.contains('open')) {
+      toggleSidebar();
+      if (toggleBtn) {
+        toggleBtn.focus();
+      }
+    }
+  });
 
   sidebarLinks.forEach(link => {
     link.addEventListener('click', () => {
@@ -85,7 +120,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const isCurrent = link.getAttribute('data-slug') === currentActive;
       link.classList.toggle('font-bold', isCurrent);
       link.classList.toggle('font-semibold', !isCurrent);
+
+      if (isCurrent) {
+        link.setAttribute('aria-current', 'true');
+      } else {
+        link.removeAttribute('aria-current');
+      }
     });
+
+    const activeLink = document.querySelector('.sidebar-link[aria-current="true"]');
+    const indicator = document.getElementById('sidebar-active-indicator');
+    const wrapper = document.querySelector('.sidebar-relative-wrapper');
+    if (activeLink && indicator && wrapper) {
+      const activeRect = activeLink.getBoundingClientRect();
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const relativeTop = activeRect.top - wrapperRect.top + (activeRect.height / 2);
+      
+      indicator.style.transform = `scaleX(-1) translateY(${relativeTop}px) translateY(-50%) rotate(-15deg)`;
+      indicator.style.opacity = '1';
+    } else if (indicator) {
+      indicator.style.opacity = '0';
+    }
   }
 
   let ticking = false;
@@ -98,6 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ticking = true;
     }
   });
+
+  window.addEventListener('resize', updateActiveLink);
 
   updateActiveLink();
 });

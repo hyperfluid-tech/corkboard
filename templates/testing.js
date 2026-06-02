@@ -5,8 +5,8 @@
   if (typeof window !== "undefined" && new URLSearchParams(window.location.search).has('deterministic')) {
     let seed = 42;
     let resetQueued = false;
-    
-    Math.random = function() {
+
+    Math.random = function () {
       if (!resetQueued) {
         resetQueued = true;
         // Reset the seed at the end of the current microtask execution queue
@@ -23,7 +23,7 @@
     const replacePicsumImages = () => {
       document.querySelectorAll('img').forEach(img => {
         if (img.src && img.src.includes('picsum.photos')) {
-          img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Pride_of_Madeira.%28Echium_candicans%29_%2814327908576%29.jpg/1280px-Pride_of_Madeira.%28Echium_candicans%29_%2814327908576%29.jpg';
+          img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Solid_red.svg/1280px-Solid_red.svg.png';
         }
       });
     };

@@ -387,6 +387,8 @@ void main() {
 
       const canvas = document.createElement("canvas");
       canvas.classList.add("paper-shader-canvas");
+      canvas.setAttribute("aria-hidden", "true");
+      canvas.setAttribute("role", "presentation");
       card.appendChild(canvas);
 
       const isCodeBlock = card.classList.contains("torn-paper-front");

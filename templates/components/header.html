@@ -1,5 +1,12 @@
-<header class="text-center py-8 paper-card p-8 rounded-sm rotate-neg shadow-xl cursor-pointer relative hover:shadow-2xl transition-all duration-300 z-10">
+<header
+  class="text-center py-8 paper-card p-8 rounded-sm rotate-neg shadow-xl cursor-pointer relative hover:shadow-2xl transition-all duration-300 z-10">
   <a href="/" class="absolute inset-0 z-10" aria-label="Go to homepage"></a>
   <img class="pushpin" src="/static/image/pushpin.svg" alt="Pushpin">
-  <h1 class="font-headline-xl text-headline-xl text-primary tracking-tight"><span class="title-highlight">{{ header.blog_title }}</span></h1>
+  {% if is_single_article_page %}
+  <p class="font-headline-xl text-headline-xl text-primary tracking-tight mb-0" role="banner"><span
+      class="title-highlight">{{ header.blog_title }}</span></p>
+  {% else %}
+  <h1 class="font-headline-xl text-headline-xl text-primary tracking-tight"><span class="title-highlight">{{
+      header.blog_title }}</span></h1>
+  {% endif %}
 </header>
