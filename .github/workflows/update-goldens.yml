@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
@@ -52,6 +54,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to golden reference images."
           else
-            git commit -m "chore: update golden reference images [skip ci]"
+            git commit -m "chore: update golden reference images"
             git push origin HEAD:${{ github.ref_name }}
           fi
