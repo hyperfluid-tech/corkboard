@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const wrapperRect = wrapper.getBoundingClientRect();
       const relativeTop = activeRect.top - wrapperRect.top + (activeRect.height / 2);
       
-      indicator.style.transform = `scaleX(-1) translateY(${relativeTop}px) translateY(-50%)`;
+      indicator.style.transform = `scaleX(-1) translateY(${relativeTop}px) translateY(-50%) rotate(-15deg)`;
       indicator.style.opacity = '1';
     } else if (indicator) {
       indicator.style.opacity = '0';
