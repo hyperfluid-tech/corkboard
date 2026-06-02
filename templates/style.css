@@ -318,8 +318,14 @@ body {
 }
 
 /* ===== SIDEBAR NAVIGATION ===== */
-.sidebar-list > li + li {
-    padding-top: 16px;
+.sidebar-list {
+    margin-top: -8px;
+    margin-bottom: -8px;
+}
+
+.sidebar-list > li {
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .sidebar-link {
