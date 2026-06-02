@@ -326,10 +326,10 @@ body {
 
 #sidebar-active-indicator {
     position: absolute;
-    right: calc(100% - 10px);
+    right: calc(100% - 24px);
     top: 0;
-    width: 120px;
-    height: 12px;
+    width: auto;
+    height: 18px;
     pointer-events: none;
     z-index: 10;
     opacity: 0;
@@ -389,10 +389,6 @@ body {
 @media (min-width: 1376px) {
     .sidebar-spacer {
         display: block;
-    }
-
-    #sidebar-active-indicator {
-        width: 350px;
     }
 }
 
