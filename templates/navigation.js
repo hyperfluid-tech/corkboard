@@ -62,6 +62,55 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    link.addEventListener('mouseenter', () => {
+      const indicator = document.getElementById('sidebar-active-indicator');
+      if (indicator && indicator.style.opacity !== '0') {
+        const wrapper = document.querySelector('.sidebar-relative-wrapper');
+        
+        if (link.getAttribute('aria-current') === 'true') {
+          indicator.style.setProperty('--indicator-angle', `-15deg`);
+          if (wrapper) {
+            const rect = link.getBoundingClientRect();
+            const wrapperRect = wrapper.getBoundingClientRect();
+            indicator.style.setProperty('--indicator-top', `${rect.top - wrapperRect.top + rect.height / 2}px`);
+          }
+        } else {
+          const linksArray = Array.from(sidebarLinks);
+          const hoveredIndex = linksArray.indexOf(link);
+          const activeIndex = linksArray.findIndex(l => l.getAttribute('aria-current') === 'true');
+          
+          if (activeIndex !== -1) {
+            const distance = hoveredIndex - activeIndex;
+            let angle = -15 + (distance * 15);
+            
+            if (angle > 45) angle = 45;
+            if (angle < -45) angle = -45;
+
+            indicator.style.setProperty('--indicator-angle', `${angle}deg`);
+            
+            if (wrapper) {
+              const rect = link.getBoundingClientRect();
+              const wrapperRect = wrapper.getBoundingClientRect();
+              indicator.style.setProperty('--indicator-top', `${rect.top - wrapperRect.top + rect.height / 2}px`);
+            }
+          }
+        }
+      }
+    });
+
+    link.addEventListener('mouseleave', () => {
+      const indicator = document.getElementById('sidebar-active-indicator');
+      const activeLink = document.querySelector('.sidebar-link[aria-current="true"]');
+      const wrapper = document.querySelector('.sidebar-relative-wrapper');
+      
+      if (indicator && activeLink && wrapper) {
+        indicator.style.setProperty('--indicator-angle', `-15deg`);
+        const activeRect = activeLink.getBoundingClientRect();
+        const wrapperRect = wrapper.getBoundingClientRect();
+        indicator.style.setProperty('--indicator-top', `${activeRect.top - wrapperRect.top + activeRect.height / 2}px`);
+      }
+    });
+
     const textSpan = link.querySelector('.sidebar-link-text');
     if (textSpan) {
       link.addEventListener('mouseenter', () => {
@@ -136,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const wrapperRect = wrapper.getBoundingClientRect();
       const relativeTop = activeRect.top - wrapperRect.top + (activeRect.height / 2);
       
-      indicator.style.transform = `translateY(${relativeTop}px) translateY(-50%) rotate(-15deg)`;
+      indicator.style.setProperty('--indicator-top', `${relativeTop}px`);
       indicator.style.opacity = '1';
     } else if (indicator) {
       indicator.style.opacity = '0';
