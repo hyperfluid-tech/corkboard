@@ -1,4 +1,4 @@
-use crate::presentation::templates::index::HeaderView;
+use crate::presentation::templates::index::{ArticleView, HeaderView};
 use askama::Template;
 use axum::response::{Html, IntoResponse, Response};
 
@@ -8,6 +8,7 @@ pub struct ThumbnailTemplate {
     pub header: HeaderView,
     pub current_title: String,
     pub is_single_article_page: bool,
+    pub articles: Vec<ArticleView>,
 }
 
 impl IntoResponse for ThumbnailTemplate {
