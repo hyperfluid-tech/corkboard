@@ -6,7 +6,8 @@
   <title>Thumbnail Source - {{ current_title }}</title>
 
   <style>
-    html, body {
+    html,
+    body {
       margin: 0 !important;
       padding: 0 !important;
       width: 1200px !important;
@@ -31,18 +32,123 @@
       pointer-events: none !important;
       transition: none !important;
       cursor: default !important;
+      z-index: 10 !important;
     }
 
     header h1 {
       font-size: 72px !important;
       line-height: 1.2 !important;
     }
+
+    .pushpin {
+      top: -24px !important;
+      width: 128px !important;
+    }
+
+    .thumbnail-pencil {
+      position: absolute !important;
+      bottom: 70px !important;
+      left: 90px !important;
+      width: 800px !important;
+      transform: rotate(-20deg) !important;
+      transform-origin: center center !important;
+      pointer-events: none !important;
+      z-index: 10 !important;
+      filter: drop-shadow(4px 6px 6px rgba(0, 0, 0, 0.35)) !important;
+    }
+
+    /* Article snippet cards — spread towards corners, stackable */
+    .thumb-article {
+      --stack: 0;
+      position: absolute !important;
+      background: #ffffff !important;
+      border: 1px solid #e4e2dd !important;
+      padding: 28px 36px !important;
+      width: 500px !important;
+      pointer-events: none !important;
+      z-index: 5 !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14) !important;
+    }
+
+    .thumb-article-title {
+      font-family: "Playfair Display", Georgia, serif !important;
+      font-size: 26px !important;
+      font-weight: 700 !important;
+      color: #162839 !important;
+      line-height: 1.3 !important;
+      margin: 0 0 6px 0 !important;
+    }
+
+    .thumb-article-sub {
+      font-family: "Source Sans 3", system-ui, sans-serif !important;
+      font-size: 15px !important;
+      font-style: italic !important;
+      color: #4a4e54 !important;
+      line-height: 1.4 !important;
+      margin: 0 !important;
+      opacity: 0.85 !important;
+    }
+
+    /* Top-left corner — steep angle */
+    .thumb-pos-0 {
+      top: calc(-60px + var(--stack) * 18px) !important;
+      left: calc(-80px + var(--stack) * 25px) !important;
+      transform: rotate(calc(-8deg + var(--stack) * 2deg)) !important;
+    }
+
+    /* Top-center — slight tilt */
+    .thumb-pos-1 {
+      top: calc(-70px + var(--stack) * 18px) !important;
+      left: calc(50% - 250px + var(--stack) * 20px) !important;
+      transform: rotate(calc(4deg - var(--stack) * 1.5deg)) !important;
+    }
+
+    /* Top-right corner — steep angle */
+    .thumb-pos-2 {
+      top: calc(-55px + var(--stack) * 18px) !important;
+      right: calc(-70px + var(--stack) * 25px) !important;
+      transform: rotate(calc(7deg - var(--stack) * 2deg)) !important;
+    }
+
+    /* Bottom-left corner — steep angle */
+    .thumb-pos-3 {
+      bottom: calc(-65px + var(--stack) * 18px) !important;
+      left: calc(-70px + var(--stack) * 25px) !important;
+      transform: rotate(calc(6deg - var(--stack) * 1.5deg)) !important;
+    }
+
+    /* Bottom-center — slight tilt */
+    .thumb-pos-4 {
+      bottom: calc(-75px + var(--stack) * 18px) !important;
+      left: calc(50% - 250px - var(--stack) * 15px) !important;
+      transform: rotate(calc(-3deg + var(--stack) * 1deg)) !important;
+    }
+
+    /* Bottom-right corner — steep angle */
+    .thumb-pos-5 {
+      bottom: calc(-55px + var(--stack) * 18px) !important;
+      right: calc(-60px + var(--stack) * 25px) !important;
+      transform: rotate(calc(-7deg + var(--stack) * 2deg)) !important;
+    }
   </style>
 </head>
 
 <body>
-  {% include "components/header.html" %}
-  <script src="/static/paper-shader.js?v=2"></script>
+  <div class="thumbnail">
+    {% for article in articles %}
+    <div class="thumb-article thumb-pos-{{ loop.index0 % 6 }} paper-card" style="--stack: {{ loop.index0 / 6 }}">
+      <p class="thumb-article-title">{{ article.title }}</p>
+      {% if let Some(sub) = article.subheading %}
+      <p class="thumb-article-sub">{{ sub }}</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    {% include "components/header.html" %}
+    <script src="/static/testing.js"></script>
+    <script src="/static/paper-shader.js?v=2"></script>
+    <img class="thumbnail-pencil" src="/static/image/pencil.svg" alt="pencil" />
+  </div>
 </body>
 
 </html>

@@ -27,6 +27,7 @@ blog_license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
 articles_dir = "articles"
 port = 3000
 truncate_lines = 15
+thumbnail_show_articles = false
 
 # github_url = "https://github.com/your-username"
 # linkedin_url = "https://linkedin.com/in/your-username"

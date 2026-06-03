@@ -19,6 +19,7 @@ mod list;
 mod separator;
 mod sidebar;
 mod table;
+mod thumbnail;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
@@ -64,7 +65,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     all_matched &= footer::assert_footer(&tab, override_main)?;
     all_matched &= article_card::assert_article_card(&tab, override_main)?;
 
-    // 2. Capture Welcome Article Components
+    // 2. Capture Thumbnail Page
+    all_matched &= thumbnail::assert_thumbnail(&tab, override_main)?;
+
+    // 3. Capture Welcome Article Components
     let url_article = format!(
         "http://localhost:{}/article/welcome-to-corkboard?deterministic=true",
         port

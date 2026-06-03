@@ -14,6 +14,7 @@ pub struct Settings {
     pub linkedin_url: Option<String>,
     pub github_url: Option<String>,
     pub twitter_url: Option<String>,
+    pub thumbnail_show_articles: bool,
 }
 
 impl Settings {
@@ -30,6 +31,7 @@ impl Settings {
             )?
             .set_default("truncate_lines", 15)?
             .set_default("lang", "en")?
+            .set_default("thumbnail_show_articles", false)?
             .add_source(File::with_name("config").required(false))
             .add_source(config::Environment::with_prefix("CORKBOARD"))
             .build()?;
