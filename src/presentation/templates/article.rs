@@ -8,7 +8,6 @@ pub struct ArticleTemplate {
     pub header: HeaderView,
     pub footer: FooterView,
     pub article: ArticleView,
-    pub articles: Vec<ArticleView>,
     pub is_single_article_page: bool,
 }
 
