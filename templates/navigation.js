@@ -4,10 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('sidebar-toggle');
   const articles = document.querySelectorAll('article');
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
-  
+
   let activeSlug = '';
   let isClickNavigating = false;
   let clickTimeout = null;
+
+  const hash = window.location.hash.substring(1);
+  if (hash && document.getElementById(hash)) {
+    activeSlug = hash;
+    isClickNavigating = true;
+    setTimeout(() => {
+      isClickNavigating = false;
+      checkActiveArticle();
+    }, 1500);
+  }
 
   if (sidebar) {
     sidebar.setAttribute('aria-hidden', 'true');
@@ -156,49 +166,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (articles.length === 0 || sidebarLinks.length === 0) return;
 
-  const observerOptions = {
-    root: null,
-    rootMargin: '-10% 0px -40% 0px',
-    threshold: 0
-  };
+  let scrollTimeout = false;
+  window.addEventListener('scroll', () => {
+    if (isClickNavigating || articles.length === 0) return;
 
-  const intersectingArticles = new Set();
+    if (!scrollTimeout) {
+      window.requestAnimationFrame(() => {
+        checkActiveArticle();
+        scrollTimeout = false;
+      });
+      scrollTimeout = true;
+    }
+  }, { passive: true });
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        intersectingArticles.add(entry.target);
-      } else {
-        intersectingArticles.delete(entry.target);
-      }
-    });
+  function getActiveArticleId() {
+    if (articles.length === 0) return null;
 
-    if (isClickNavigating) return;
+    const scrollPosition = window.scrollY;
+    if (scrollPosition < 50) return articles[0].id;
 
-    if (intersectingArticles.size > 0) {
-      const active = Array.from(intersectingArticles).sort((a, b) => {
-        return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
-      })[0];
-      
-      if (active.id !== activeSlug) {
-        activeSlug = active.id;
-        updateActiveLink();
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollPosition >= maxScroll - 10 && articles.length > 1) {
+      const secondToLast = articles[articles.length - 2];
+      const isSecondToLastFading = secondToLast.getBoundingClientRect().bottom < window.innerHeight * 0.7;
+      return isSecondToLastFading ? articles[articles.length - 1].id : secondToLast.id;
+    }
+
+    const threshold = window.innerHeight * 0.4;
+    let activeId = articles[0].id;
+
+    for (const article of articles) {
+      if (article.getBoundingClientRect().top <= threshold) {
+        activeId = article.id;
       }
     }
-  }, observerOptions);
 
-  articles.forEach(article => observer.observe(article));
+    return activeId;
+  }
+
+  function checkActiveArticle() {
+    const currentId = getActiveArticleId();
+    if (!currentId || currentId === activeSlug) return;
+
+    activeSlug = currentId;
+    updateActiveLink();
+  }
+
+  if (!isClickNavigating) {
+    checkActiveArticle();
+  } else {
+    updateActiveLink();
+  }
 
   function updateActiveLink() {
-    let currentActive = activeSlug;
-    const scrollPosition = window.scrollY;
-
-    if (scrollPosition < 50) {
-      currentActive = articles[0].id;
-    }
-
     sidebarLinks.forEach(link => {
-      const isCurrent = link.getAttribute('data-slug') === currentActive;
+      const isCurrent = link.getAttribute('data-slug') === activeSlug;
       link.classList.toggle('font-bold', isCurrent);
       link.classList.toggle('font-semibold', !isCurrent);
 
