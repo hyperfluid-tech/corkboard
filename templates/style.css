@@ -318,6 +318,16 @@ body {
 }
 
 /* ===== SIDEBAR NAVIGATION ===== */
+.sidebar-list {
+    margin-top: -8px;
+    margin-bottom: -8px;
+}
+
+.sidebar-list>li {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
 .sidebar-link {
     transition: font-weight 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
     position: relative;
@@ -326,15 +336,18 @@ body {
 
 #sidebar-active-indicator {
     position: absolute;
-    left: -28px;
+    right: calc(100% - 24px);
     top: 0;
-    width: 40px;
-    height: 12px;
+    width: auto;
+    height: 18px;
     pointer-events: none;
     z-index: 10;
     opacity: 0;
-    transform: scaleX(-1) translateY(0) translateY(-50%) rotate(-15deg);
-    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
+    --indicator-top: 0px;
+    --indicator-angle: -15deg;
+    transform: translateY(var(--indicator-top)) translateY(-50%) rotate(var(--indicator-angle));
+    transform-origin: right center;
+    transition: transform 0.35s ease-in-out, opacity 0.25s ease;
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
     overflow: visible;
 }
@@ -366,6 +379,16 @@ body {
         height: auto;
         max-height: calc(100vh - 4rem);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        overflow: visible;
+    }
+
+    #sidebar>nav {
+        overflow-x: visible;
+        overflow-y: auto;
+    }
+
+    .sidebar-relative-wrapper {
+        overflow: visible;
     }
 }
 

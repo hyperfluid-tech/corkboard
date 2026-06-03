@@ -5,6 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const articles = document.querySelectorAll('article');
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
+  let activeSlug = '';
+  let isClickNavigating = false;
+  let clickTimeout = null;
+
+  const hash = window.location.hash.substring(1);
+  if (hash && document.getElementById(hash)) {
+    activeSlug = hash;
+    isClickNavigating = true;
+    setTimeout(() => {
+      isClickNavigating = false;
+      checkActiveArticle();
+    }, 1500);
+  }
+
   if (sidebar) {
     sidebar.setAttribute('aria-hidden', 'true');
   }
@@ -57,10 +71,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   sidebarLinks.forEach(link => {
     link.addEventListener('click', () => {
+      isClickNavigating = true;
+      activeSlug = link.getAttribute('data-slug');
+      updateActiveLink();
+
+      clearTimeout(clickTimeout);
+      clickTimeout = setTimeout(() => {
+        isClickNavigating = false;
+      }, 800);
+
       if (window.innerWidth < 1024) {
         toggleSidebar();
       }
     });
+
+
 
     const textSpan = link.querySelector('.sidebar-link-text');
     if (textSpan) {
@@ -84,40 +109,118 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  if (articles.length === 0 || sidebarLinks.length === 0) return;
+  const sidebarItems = document.querySelectorAll('.sidebar-item');
+  sidebarItems.forEach(item => {
+    const link = item.querySelector('.sidebar-link');
+    if (!link) return;
 
-  const observerOptions = {
-    root: null,
-    rootMargin: '-20% 0px -60% 0px',
-    threshold: 0
-  };
+    item.addEventListener('mouseenter', () => {
+      const indicator = document.getElementById('sidebar-active-indicator');
+      if (indicator && indicator.style.opacity !== '0') {
+        const wrapper = document.querySelector('.sidebar-relative-wrapper');
 
-  let activeSlug = '';
+        if (link.getAttribute('aria-current') === 'true') {
+          indicator.style.setProperty('--indicator-angle', `-15deg`);
+          if (wrapper) {
+            const rect = link.getBoundingClientRect();
+            const wrapperRect = wrapper.getBoundingClientRect();
+            indicator.style.setProperty('--indicator-top', `${rect.top - wrapperRect.top + rect.height / 2}px`);
+          }
+        } else {
+          const linksArray = Array.from(sidebarLinks);
+          const hoveredIndex = linksArray.indexOf(link);
+          const activeIndex = linksArray.findIndex(l => l.getAttribute('aria-current') === 'true');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        activeSlug = entry.target.id;
-        updateActiveLink();
+          if (activeIndex !== -1) {
+            const distance = hoveredIndex - activeIndex;
+            let angle = -15 + (distance * 15);
+
+            if (angle > 45) angle = 45;
+            if (angle < -45) angle = -45;
+
+            indicator.style.setProperty('--indicator-angle', `${angle}deg`);
+
+            if (wrapper) {
+              const rect = link.getBoundingClientRect();
+              const wrapperRect = wrapper.getBoundingClientRect();
+              indicator.style.setProperty('--indicator-top', `${rect.top - wrapperRect.top + rect.height / 2}px`);
+            }
+          }
+        }
       }
     });
-  }, observerOptions);
 
-  articles.forEach(article => observer.observe(article));
+    item.addEventListener('mouseleave', () => {
+      const indicator = document.getElementById('sidebar-active-indicator');
+      const activeLink = document.querySelector('.sidebar-link[aria-current="true"]');
+      const wrapper = document.querySelector('.sidebar-relative-wrapper');
 
-  function updateActiveLink() {
-    let currentActive = activeSlug;
+      if (indicator && activeLink && wrapper) {
+        indicator.style.setProperty('--indicator-angle', `-15deg`);
+        const activeRect = activeLink.getBoundingClientRect();
+        const wrapperRect = wrapper.getBoundingClientRect();
+        indicator.style.setProperty('--indicator-top', `${activeRect.top - wrapperRect.top + activeRect.height / 2}px`);
+      }
+    });
+  });
+
+  if (articles.length === 0 || sidebarLinks.length === 0) return;
+
+  let scrollTimeout = false;
+  window.addEventListener('scroll', () => {
+    if (isClickNavigating || articles.length === 0) return;
+
+    if (!scrollTimeout) {
+      window.requestAnimationFrame(() => {
+        checkActiveArticle();
+        scrollTimeout = false;
+      });
+      scrollTimeout = true;
+    }
+  }, { passive: true });
+
+  function getActiveArticleId() {
+    if (articles.length === 0) return null;
+
     const scrollPosition = window.scrollY;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollPosition < 50) return articles[0].id;
 
-    if (scrollPosition < 50) {
-      currentActive = articles[0].id;
-    } else if (scrollPosition >= maxScroll - 50) {
-      currentActive = articles[articles.length - 1].id;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollPosition >= maxScroll - 10 && articles.length > 1) {
+      const secondToLast = articles[articles.length - 2];
+      const isSecondToLastFading = secondToLast.getBoundingClientRect().bottom < window.innerHeight * 0.7;
+      return isSecondToLastFading ? articles[articles.length - 1].id : secondToLast.id;
     }
 
+    const threshold = window.innerHeight * 0.4;
+    let activeId = articles[0].id;
+
+    for (const article of articles) {
+      if (article.getBoundingClientRect().top <= threshold) {
+        activeId = article.id;
+      }
+    }
+
+    return activeId;
+  }
+
+  function checkActiveArticle() {
+    const currentId = getActiveArticleId();
+    if (!currentId || currentId === activeSlug) return;
+
+    activeSlug = currentId;
+    updateActiveLink();
+  }
+
+  if (!isClickNavigating) {
+    checkActiveArticle();
+  } else {
+    updateActiveLink();
+  }
+
+  function updateActiveLink() {
     sidebarLinks.forEach(link => {
-      const isCurrent = link.getAttribute('data-slug') === currentActive;
+      const isCurrent = link.getAttribute('data-slug') === activeSlug;
       link.classList.toggle('font-bold', isCurrent);
       link.classList.toggle('font-semibold', !isCurrent);
 
@@ -135,8 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const activeRect = activeLink.getBoundingClientRect();
       const wrapperRect = wrapper.getBoundingClientRect();
       const relativeTop = activeRect.top - wrapperRect.top + (activeRect.height / 2);
-      
-      indicator.style.transform = `scaleX(-1) translateY(${relativeTop}px) translateY(-50%) rotate(-15deg)`;
+
+      indicator.style.setProperty('--indicator-top', `${relativeTop}px`);
       indicator.style.opacity = '1';
     } else if (indicator) {
       indicator.style.opacity = '0';
