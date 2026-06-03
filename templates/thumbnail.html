@@ -6,7 +6,8 @@
   <title>Thumbnail Source - {{ current_title }}</title>
 
   <style>
-    html, body {
+    html,
+    body {
       margin: 0 !important;
       padding: 0 !important;
       width: 1200px !important;
@@ -37,12 +38,19 @@
       font-size: 72px !important;
       line-height: 1.2 !important;
     }
+
+    .pushpin {
+      top: -24px !important;
+      width: 128px !important;
+    }
   </style>
 </head>
 
 <body>
-  {% include "components/header.html" %}
-  <script src="/static/paper-shader.js?v=2"></script>
+  <div class="thumbnail">
+    {% include "components/header.html" %}
+    <script src="/static/paper-shader.js?v=2"></script>
+  </div>
 </body>
 
 </html>
