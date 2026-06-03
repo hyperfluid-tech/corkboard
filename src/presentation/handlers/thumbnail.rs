@@ -13,19 +13,23 @@ pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoRespon
         lang: state.settings.lang.clone(),
     };
 
-    let articles: Vec<ArticleView> = state
-        .articles
-        .iter()
-        .map(|a| ArticleView {
-            slug: a.slug.clone(),
-            title: a.title.clone(),
-            date: a.date,
-            content: String::new(),
-            has_more_content: false,
-            subheading: a.subheading.clone(),
-            thumbnail: a.thumbnail.clone(),
-        })
-        .collect();
+    let articles: Vec<ArticleView> = if state.settings.thumbnail_show_articles {
+        state
+            .articles
+            .iter()
+            .map(|a| ArticleView {
+                slug: a.slug.clone(),
+                title: a.title.clone(),
+                date: a.date,
+                content: String::new(),
+                has_more_content: false,
+                subheading: a.subheading.clone(),
+                thumbnail: a.thumbnail.clone(),
+            })
+            .collect()
+    } else {
+        Vec::new()
+    };
 
     ThumbnailTemplate {
         header,
