@@ -43,6 +43,18 @@
       top: -24px !important;
       width: 128px !important;
     }
+
+    .thumbnail-pencil {
+      position: absolute !important;
+      bottom: 70px !important;
+      left: 90px !important;
+      width: 800px !important;
+      transform: rotate(-20deg) !important;
+      transform-origin: center center !important;
+      pointer-events: none !important;
+      z-index: 10 !important;
+      filter: drop-shadow(4px 6px 6px rgba(0, 0, 0, 0.35)) !important;
+    }
   </style>
 </head>
 
@@ -50,6 +62,7 @@
   <div class="thumbnail">
     {% include "components/header.html" %}
     <script src="/static/paper-shader.js?v=2"></script>
+    <img class="thumbnail-pencil" src="/static/image/pencil.svg" alt="pencil" />
   </div>
 </body>
 
