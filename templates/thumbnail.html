@@ -57,8 +57,9 @@
       filter: drop-shadow(4px 6px 6px rgba(0, 0, 0, 0.35)) !important;
     }
 
-    /* Article snippet cards — spread towards corners */
+    /* Article snippet cards — spread towards corners, stackable */
     .thumb-article {
+      --stack: 0;
       position: absolute !important;
       background: #ffffff !important;
       border: 1px solid #e4e2dd !important;
@@ -88,46 +89,46 @@
       opacity: 0.85 !important;
     }
 
-    /* Top-left corner */
-    .thumb-article:nth-child(1) {
-      top: -30px !important;
-      left: -40px !important;
-      transform: rotate(3deg) !important;
+    /* Top-left corner — steep angle */
+    .thumb-pos-0 {
+      top: calc(-60px + var(--stack) * 18px) !important;
+      left: calc(-80px + var(--stack) * 25px) !important;
+      transform: rotate(calc(-8deg + var(--stack) * 2deg)) !important;
     }
 
-    /* Top-right corner */
-    .thumb-article:nth-child(2) {
-      top: -25px !important;
-      right: -30px !important;
-      transform: rotate(-2.5deg) !important;
+    /* Top-center — slight tilt */
+    .thumb-pos-1 {
+      top: calc(-70px + var(--stack) * 18px) !important;
+      left: calc(50% - 250px + var(--stack) * 20px) !important;
+      transform: rotate(calc(4deg - var(--stack) * 1.5deg)) !important;
     }
 
-    /* Bottom-right corner */
-    .thumb-article:nth-child(3) {
-      bottom: -35px !important;
-      right: -20px !important;
-      transform: rotate(2deg) !important;
+    /* Top-right corner — steep angle */
+    .thumb-pos-2 {
+      top: calc(-55px + var(--stack) * 18px) !important;
+      right: calc(-70px + var(--stack) * 25px) !important;
+      transform: rotate(calc(7deg - var(--stack) * 2deg)) !important;
     }
 
-    /* Bottom-left corner */
-    .thumb-article:nth-child(4) {
-      bottom: -30px !important;
-      left: -35px !important;
-      transform: rotate(-3deg) !important;
+    /* Bottom-left corner — steep angle */
+    .thumb-pos-3 {
+      bottom: calc(-65px + var(--stack) * 18px) !important;
+      left: calc(-70px + var(--stack) * 25px) !important;
+      transform: rotate(calc(6deg - var(--stack) * 1.5deg)) !important;
     }
 
-    /* Left edge */
-    .thumb-article:nth-child(5) {
-      top: 50% !important;
-      left: -60px !important;
-      transform: translateY(-50%) rotate(2.5deg) !important;
+    /* Bottom-center — slight tilt */
+    .thumb-pos-4 {
+      bottom: calc(-75px + var(--stack) * 18px) !important;
+      left: calc(50% - 250px - var(--stack) * 15px) !important;
+      transform: rotate(calc(-3deg + var(--stack) * 1deg)) !important;
     }
 
-    /* Right edge */
-    .thumb-article:nth-child(6) {
-      top: 50% !important;
-      right: -50px !important;
-      transform: translateY(-50%) rotate(-2deg) !important;
+    /* Bottom-right corner — steep angle */
+    .thumb-pos-5 {
+      bottom: calc(-55px + var(--stack) * 18px) !important;
+      right: calc(-60px + var(--stack) * 25px) !important;
+      transform: rotate(calc(-7deg + var(--stack) * 2deg)) !important;
     }
   </style>
 </head>
@@ -135,7 +136,7 @@
 <body>
   <div class="thumbnail">
     {% for article in articles %}
-    <div class="thumb-article paper-card">
+    <div class="thumb-article thumb-pos-{{ loop.index0 % 6 }} paper-card" style="--stack: {{ loop.index0 / 6 }}">
       <p class="thumb-article-title">{{ article.title }}</p>
       {% if let Some(sub) = article.subheading %}
       <p class="thumb-article-sub">{{ sub }}</p>
