@@ -61,6 +61,7 @@ pub async fn article_handler(
                 header,
                 footer,
                 article: article_view,
+                articles: Vec::new(),
                 is_single_article_page: true,
             };
             template.into_response()

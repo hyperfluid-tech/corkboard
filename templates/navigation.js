@@ -1,8 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const isArticlePage = document.body.dataset.pageType === 'article';
+
+  if (isArticlePage) {
+    generateTableOfContents();
+  }
+
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
   const toggleBtn = document.getElementById('sidebar-toggle');
-  const articles = document.querySelectorAll('article');
+
+  const spyTargets = isArticlePage
+    ? document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6')
+    : document.querySelectorAll('article');
+
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
   let activeSlug = '';
@@ -85,8 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-
-
     const textSpan = link.querySelector('.sidebar-link-text');
     if (textSpan) {
       link.addEventListener('mouseenter', () => {
@@ -164,11 +172,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (articles.length === 0 || sidebarLinks.length === 0) return;
+  if (spyTargets.length === 0 || sidebarLinks.length === 0) return;
 
   let scrollTimeout = false;
   window.addEventListener('scroll', () => {
-    if (isClickNavigating || articles.length === 0) return;
+    if (isClickNavigating || spyTargets.length === 0) return;
 
     if (!scrollTimeout) {
       window.requestAnimationFrame(() => {
@@ -179,25 +187,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 
-  function getActiveArticleId() {
-    if (articles.length === 0) return null;
+  function getActiveId() {
+    if (spyTargets.length === 0) return null;
 
     const scrollPosition = window.scrollY;
-    if (scrollPosition < 50) return articles[0].id;
+    if (scrollPosition < 50) return spyTargets[0].id;
 
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    if (scrollPosition >= maxScroll - 10 && articles.length > 1) {
-      const secondToLast = articles[articles.length - 2];
-      const isSecondToLastFading = secondToLast.getBoundingClientRect().bottom < window.innerHeight * 0.7;
-      return isSecondToLastFading ? articles[articles.length - 1].id : secondToLast.id;
+    if (scrollPosition >= maxScroll - 10 && spyTargets.length > 1) {
+      if (isArticlePage) {
+        return spyTargets[spyTargets.length - 1].id;
+      } else {
+        const secondToLast = spyTargets[spyTargets.length - 2];
+        const isSecondToLastFading = secondToLast.getBoundingClientRect().bottom < window.innerHeight * 0.7;
+        return isSecondToLastFading ? spyTargets[spyTargets.length - 1].id : secondToLast.id;
+      }
     }
 
     const threshold = window.innerHeight * 0.4;
-    let activeId = articles[0].id;
+    let activeId = spyTargets[0].id;
 
-    for (const article of articles) {
-      if (article.getBoundingClientRect().top <= threshold) {
-        activeId = article.id;
+    for (const target of spyTargets) {
+      if (target.getBoundingClientRect().top <= threshold) {
+        activeId = target.id;
       }
     }
 
@@ -205,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function checkActiveArticle() {
-    const currentId = getActiveArticleId();
+    const currentId = getActiveId();
     if (!currentId || currentId === activeSlug) return;
 
     activeSlug = currentId;
@@ -260,4 +272,66 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateActiveLink);
 
   updateActiveLink();
+
+  // TOC Generator function
+  function generateTableOfContents() {
+    const sidebarList = document.querySelector('.sidebar-list');
+    if (!sidebarList) return;
+
+    sidebarList.innerHTML = '';
+
+    const articleBody = document.querySelector('.prose');
+    if (!articleBody) return;
+
+    const headings = articleBody.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    if (headings.length === 0) {
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="block p-2 text-outline italic">No headings</span>';
+      sidebarList.appendChild(li);
+      return;
+    }
+
+    headings.forEach((heading, index) => {
+      if (!heading.id) {
+        const text = heading.textContent.trim();
+        const slug = text.toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+        heading.id = slug || `heading-${index + 1}`;
+      }
+
+      const level = parseInt(heading.tagName.substring(1));
+
+      const li = document.createElement('li');
+      li.className = 'sidebar-item';
+
+      const a = document.createElement('a');
+      a.className = 'block hover:bg-white/30 p-2 rounded transition-colors sidebar-link font-semibold overflow-hidden';
+      a.href = `#${heading.id}`;
+      a.setAttribute('data-slug', heading.id);
+
+      // Indent: H1 = 0px, H2 = 12px, H3 = 24px, etc.
+      const indent = (level - 1) * 12;
+      a.style.setProperty('--toc-indent', `${indent}px`);
+
+      // Style hierarchy:
+      if (level >= 5) {
+        a.classList.add('text-xs', 'font-normal', 'text-primary/75', 'italic');
+        a.classList.remove('font-semibold');
+      } else if (level >= 3) {
+        a.classList.add('text-sm', 'font-medium', 'text-primary/90');
+        a.classList.remove('font-semibold');
+      } else {
+        a.classList.add('font-semibold', 'text-primary');
+      }
+
+      const span = document.createElement('span');
+      span.className = 'sidebar-link-text block lg:truncate';
+      span.textContent = heading.textContent.trim();
+
+      a.appendChild(span);
+      li.appendChild(a);
+      sidebarList.appendChild(li);
+    });
+  }
 });
