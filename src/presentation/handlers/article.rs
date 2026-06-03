@@ -1,3 +1,4 @@
+use crate::domain::sidebar_entry::SidebarEntry;
 use crate::presentation::state::AppState;
 use crate::presentation::templates::article::ArticleTemplate;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView};
@@ -57,10 +58,17 @@ pub async fn article_handler(
                 version: env!("CARGO_PKG_VERSION").to_string(),
             };
 
+            let sidebar_entries: Vec<SidebarEntry> = article
+                .toc
+                .iter()
+                .map(SidebarEntry::from_toc_entry)
+                .collect();
+
             let template = ArticleTemplate {
                 header,
                 footer,
                 article: article_view,
+                sidebar_entries,
                 is_single_article_page: true,
             };
             template.into_response()

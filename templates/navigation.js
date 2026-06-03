@@ -1,14 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const isArticlePage = document.body.dataset.pageType === 'article';
 
-  if (isArticlePage) {
-    generateTableOfContents();
-  }
-
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
   const toggleBtn = document.getElementById('sidebar-toggle');
 
+  // On article pages we track the headings; on the index page we track article cards.
   const spyTargets = isArticlePage
     ? document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6')
     : document.querySelectorAll('article');
@@ -272,66 +269,4 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateActiveLink);
 
   updateActiveLink();
-
-  // TOC Generator function
-  function generateTableOfContents() {
-    const sidebarList = document.querySelector('.sidebar-list');
-    if (!sidebarList) return;
-
-    sidebarList.innerHTML = '';
-
-    const articleBody = document.querySelector('.prose');
-    if (!articleBody) return;
-
-    const headings = articleBody.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    if (headings.length === 0) {
-      const li = document.createElement('li');
-      li.innerHTML = '<span class="block p-2 text-outline italic">No headings</span>';
-      sidebarList.appendChild(li);
-      return;
-    }
-
-    headings.forEach((heading, index) => {
-      if (!heading.id) {
-        const text = heading.textContent.trim();
-        const slug = text.toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)/g, '');
-        heading.id = slug || `heading-${index + 1}`;
-      }
-
-      const level = parseInt(heading.tagName.substring(1));
-
-      const li = document.createElement('li');
-      li.className = 'sidebar-item';
-
-      const a = document.createElement('a');
-      a.className = 'block hover:bg-white/30 p-2 rounded transition-colors sidebar-link font-semibold overflow-hidden';
-      a.href = `#${heading.id}`;
-      a.setAttribute('data-slug', heading.id);
-
-      // Indent: H1 = 0px, H2 = 12px, H3 = 24px, etc.
-      const indent = (level - 1) * 12;
-      a.style.setProperty('--toc-indent', `${indent}px`);
-
-      // Style hierarchy:
-      if (level >= 5) {
-        a.classList.add('text-xs', 'font-normal', 'text-primary/75', 'italic');
-        a.classList.remove('font-semibold');
-      } else if (level >= 3) {
-        a.classList.add('text-sm', 'font-medium', 'text-primary/90');
-        a.classList.remove('font-semibold');
-      } else {
-        a.classList.add('font-semibold', 'text-primary');
-      }
-
-      const span = document.createElement('span');
-      span.className = 'sidebar-link-text block lg:truncate';
-      span.textContent = heading.textContent.trim();
-
-      a.appendChild(span);
-      li.appendChild(a);
-      sidebarList.appendChild(li);
-    });
-  }
 });

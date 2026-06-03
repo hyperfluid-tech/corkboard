@@ -2,17 +2,18 @@
   class="fixed lg:sticky inset-y-0 lg:inset-y-auto left-0 w-64 border-r border-primary/20 shadow-2xl z-50 flex flex-col paper-card sidebar-relative-wrapper"
   id="sidebar">
   <img id="sidebar-active-indicator" src="/static/image/pencil.svg" alt="" aria-hidden="true" />
-  <nav class="flex-grow p-4 overflow-y-auto bg-white/10 backdrop-blur-sm" aria-label="Articles">
+  <nav class="flex-grow p-4 overflow-y-auto bg-white/10 backdrop-blur-sm"
+    aria-label="{% if is_single_article_page %}Table of Contents{% else %}Articles{% endif %}">
     <div class="relative">
       <ul class="sidebar-list font-body-md text-primary">
-        {% if articles.is_empty() %}
+        {% if sidebar_entries.is_empty() %}
         <li><span class="block p-2 text-outline italic">No entries</span></li>
         {% else %}
-        {% for article in articles %}
+        {% for entry in sidebar_entries %}
         <li class="sidebar-item">
-          <a class="block hover:bg-white/30 p-2 rounded transition-colors sidebar-link font-semibold overflow-hidden"
-            href="#{{ article.slug }}" data-slug="{{ article.slug }}">
-            <span class="sidebar-link-text block lg:truncate">{{ article.title }}</span>
+          <a class="block hover:bg-white/30 p-2 rounded transition-colors sidebar-link {{ entry.font_class }} overflow-hidden"
+            href="{{ entry.url }}" data-slug="{{ entry.slug }}" style="--toc-indent: {{ entry.indent_level * 12 }}px;">
+            <span class="sidebar-link-text block lg:truncate">{{ entry.title }}</span>
           </a>
         </li>
         {% endfor %}

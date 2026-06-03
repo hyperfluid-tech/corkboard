@@ -8,6 +8,7 @@ pub struct Article {
     pub has_more_content: bool,
     pub subheading: Option<String>,
     pub thumbnail: Option<String>,
+    pub toc: Vec<super::toc_entry::TocEntry>,
 }
 
 #[derive(serde::Deserialize)]
