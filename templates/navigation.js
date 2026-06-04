@@ -1,8 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const isArticlePage = document.body.dataset.pageType === 'article';
+
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
   const toggleBtn = document.getElementById('sidebar-toggle');
-  const articles = document.querySelectorAll('article');
+
+  // On article pages we track the headings; on the index page we track article cards.
+  const spyTargets = isArticlePage
+    ? document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6')
+    : document.querySelectorAll('article');
+
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
   let activeSlug = '';
@@ -85,8 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-
-
     const textSpan = link.querySelector('.sidebar-link-text');
     if (textSpan) {
       link.addEventListener('mouseenter', () => {
@@ -164,11 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (articles.length === 0 || sidebarLinks.length === 0) return;
+  if (spyTargets.length === 0 || sidebarLinks.length === 0) return;
 
   let scrollTimeout = false;
   window.addEventListener('scroll', () => {
-    if (isClickNavigating || articles.length === 0) return;
+    if (isClickNavigating || spyTargets.length === 0) return;
 
     if (!scrollTimeout) {
       window.requestAnimationFrame(() => {
@@ -179,25 +184,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 
-  function getActiveArticleId() {
-    if (articles.length === 0) return null;
+  function getActiveId() {
+    if (spyTargets.length === 0) return null;
 
     const scrollPosition = window.scrollY;
-    if (scrollPosition < 50) return articles[0].id;
+    if (scrollPosition < 50) return spyTargets[0].id;
 
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    if (scrollPosition >= maxScroll - 10 && articles.length > 1) {
-      const secondToLast = articles[articles.length - 2];
-      const isSecondToLastFading = secondToLast.getBoundingClientRect().bottom < window.innerHeight * 0.7;
-      return isSecondToLastFading ? articles[articles.length - 1].id : secondToLast.id;
+    if (scrollPosition >= maxScroll - 10 && spyTargets.length > 1) {
+      if (isArticlePage) {
+        return spyTargets[spyTargets.length - 1].id;
+      } else {
+        const secondToLast = spyTargets[spyTargets.length - 2];
+        const isSecondToLastFading = secondToLast.getBoundingClientRect().bottom < window.innerHeight * 0.7;
+        return isSecondToLastFading ? spyTargets[spyTargets.length - 1].id : secondToLast.id;
+      }
     }
 
     const threshold = window.innerHeight * 0.4;
-    let activeId = articles[0].id;
+    let activeId = spyTargets[0].id;
 
-    for (const article of articles) {
-      if (article.getBoundingClientRect().top <= threshold) {
-        activeId = article.id;
+    for (const target of spyTargets) {
+      if (target.getBoundingClientRect().top <= threshold) {
+        activeId = target.id;
       }
     }
 
@@ -205,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function checkActiveArticle() {
-    const currentId = getActiveArticleId();
+    const currentId = getActiveId();
     if (!currentId || currentId === activeSlug) return;
 
     activeSlug = currentId;

@@ -1,3 +1,4 @@
+use crate::domain::sidebar_entry::SidebarEntry;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView};
 use askama::Template;
 use axum::response::{Html, IntoResponse, Response};
@@ -8,6 +9,7 @@ pub struct ArticleTemplate {
     pub header: HeaderView,
     pub footer: FooterView,
     pub article: ArticleView,
+    pub sidebar_entries: Vec<SidebarEntry>,
     pub is_single_article_page: bool,
 }
 

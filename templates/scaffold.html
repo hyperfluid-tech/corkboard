@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html class="light" lang="{{ header.lang }}">
+
+<head>
+  {% include "components/head.html" %}
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% endblock %}">
+
+  <meta property="og:title" content="{% block og_title %}{% endblock %}" />
+  <meta property="og:type" content="{% block og_type %}{% endblock %}" />
+  <meta property="og:url" content="{% block og_url %}{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}{% endblock %}" />
+  <meta property="og:site_name" content="{{ header.blog_title }}" />
+  {% block thumbnail_meta %}{% endblock %}
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{% block twitter_title %}{% endblock %}" />
+  <meta name="twitter:description" content="{% block twitter_description %}{% endblock %}" />
+</head>
+
+<body class="text-on-surface antialiased flex flex-col min-h-screen"
+  data-page-type="{% block page_type %}{% endblock %}">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  {% if !sidebar_entries.is_empty() %}
+  <button
+    class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
+    id="sidebar-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
+    <span class="material-symbols-outlined text-[20px]" aria-hidden="true">menu_book</span>
+  </button>
+  <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay"></div>
+  {% else if is_single_article_page %}
+  <a href="/"
+    class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
+    id="back-button" aria-label="Back to homepage">
+    <span class="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_back</span>
+  </a>
+  {% endif %}
+
+  <div
+    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile pt-stack-lg pb-gutter flex flex-col gap-6 lg:gap-8 relative {% if sidebar_entries.is_empty() %}lg:px-gutter{% else %}lg:pl-0 lg:pr-gutter lg:grid lg:grid-cols-[16rem_1fr] min-[1376px]:grid-cols-[16rem_1fr_14.5rem] lg:gap-x-8 lg:gap-y-8{% endif %}">
+
+    <div
+      class="w-full max-w-[800px] mx-auto {% if !sidebar_entries.is_empty() %}lg:mx-0 lg:col-start-2 lg:row-start-1{% endif %}"
+      id="header-container">
+      {% include "components/header.html" %}
+    </div>
+
+    {% if !sidebar_entries.is_empty() %}
+    <div class="contents lg:block lg:w-64 lg:flex-shrink-0 lg:-mt-2 lg:col-start-1 lg:row-start-2">
+      {% include "components/sidebar.html" %}
+    </div>
+    {% endif %}
+
+    <div id="main-container"
+      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto flex flex-col mt-[-24px] lg:mt-[-32px] {% if !sidebar_entries.is_empty() %}lg:mx-0 lg:col-start-2 lg:row-start-2{% endif %}">
+      {% include "components/string_connector.html" %}
+
+      <main id="main-content" class="w-full flex flex-col relative">
+        {% block content %}{% endblock %}
+      </main>
+
+      {% include "components/string_connector.html" %}
+
+      {% include "components/footer.html" %}
+    </div>
+
+    {% if !sidebar_entries.is_empty() %}
+    <div class="sidebar-spacer lg:col-start-3 lg:row-start-2"></div>
+    {% endif %}
+
+  </div>
+
+  {% include "components/scripts.html" %}
+</body>
+
+</html>

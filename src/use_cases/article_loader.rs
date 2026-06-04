@@ -1,12 +1,9 @@
+use super::helpers::close_open_fences;
+use super::markdown_renderer::render_markdown;
 use crate::domain::article::{Article, FrontMatter};
-use crate::presentation::templates::code_block::CodeBlockTemplate;
-use crate::presentation::templates::markdown_image::MarkdownImageTemplate;
-use askama::Template;
-use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag, TagEnd};
 use std::fs;
 use std::path::Path;
 use syntect::highlighting::{Theme, ThemeSet};
-use syntect::html::highlighted_html_for_string;
 use syntect::parsing::SyntaxSet;
 
 pub fn load_articles(
@@ -62,13 +59,14 @@ fn parse_article(
     let date = chrono::NaiveDate::parse_from_str(fm.date.trim(), "%Y-%m-%d")?;
     let slug = slug::slugify(&fm.title);
 
-    let content = render_markdown(markdown_content, ps, theme);
+    let (content, toc) = render_markdown(markdown_content, ps, theme);
 
     let lines: Vec<&str> = markdown_content.lines().collect();
     let (preview, has_more_content) = if lines.len() > truncate_lines {
         let truncated_md = lines[..truncate_lines].join("\n");
         let safe_md = close_open_fences(&truncated_md);
-        (render_markdown(&safe_md, ps, theme), true)
+        let (p, _) = render_markdown(&safe_md, ps, theme);
+        (p, true)
     } else {
         (content.clone(), false)
     };
@@ -82,148 +80,6 @@ fn parse_article(
         has_more_content,
         subheading: fm.subheading,
         thumbnail: fm.thumbnail,
+        toc,
     })
-}
-
-fn render_markdown(markdown_content: &str, ps: &SyntaxSet, theme: &Theme) -> String {
-    let mut options = Options::empty();
-    options.insert(Options::ENABLE_TABLES);
-    options.insert(Options::ENABLE_FOOTNOTES);
-    options.insert(Options::ENABLE_STRIKETHROUGH);
-    options.insert(Options::ENABLE_TASKLISTS);
-    options.insert(Options::ENABLE_HEADING_ATTRIBUTES);
-
-    let parser = Parser::new_ext(markdown_content, options);
-
-    let mut in_code_block = false;
-    let mut code_block_lang = String::new();
-    let mut code_block_content = String::new();
-
-    let mut in_image = false;
-    let mut image_dest = String::new();
-    let mut image_title = String::new();
-    let mut image_alt = String::new();
-
-    let mut new_events = Vec::new();
-
-    for event in parser {
-        if in_image {
-            match event {
-                Event::End(TagEnd::Image) => {
-                    in_image = false;
-                    let display_caption = if !image_title.is_empty() {
-                        &image_title
-                    } else {
-                        ""
-                    };
-
-                    let template = MarkdownImageTemplate {
-                        src: &image_dest,
-                        alt: &image_alt,
-                        caption: display_caption,
-                    };
-
-                    let html = template.render().unwrap();
-                    new_events.push(Event::Html(html.into()));
-                }
-                Event::Text(text) => {
-                    image_alt.push_str(&text);
-                }
-                _ => {}
-            }
-            continue;
-        }
-
-        match event {
-            Event::Start(Tag::Image {
-                dest_url, title, ..
-            }) => {
-                in_image = true;
-                image_dest = dest_url.to_string();
-                image_title = title.to_string();
-                image_alt.clear();
-            }
-            Event::Start(Tag::CodeBlock(kind)) => {
-                in_code_block = true;
-                code_block_content.clear();
-                code_block_lang = match kind {
-                    CodeBlockKind::Fenced(lang) => lang.to_string(),
-                    _ => String::new(),
-                };
-            }
-            Event::End(TagEnd::CodeBlock) => {
-                in_code_block = false;
-                let syntax = ps
-                    .find_syntax_by_token(&code_block_lang)
-                    .unwrap_or_else(|| ps.find_syntax_plain_text());
-
-                let highlighted =
-                    match highlighted_html_for_string(&code_block_content, ps, syntax, theme) {
-                        Ok(html) => html,
-                        Err(_) => {
-                            format!(
-                                "<pre><code>{}</code></pre>",
-                                escape_html(&code_block_content)
-                            )
-                        }
-                    };
-                let template = CodeBlockTemplate {
-                    content: &highlighted,
-                };
-                let html = template.render().unwrap();
-                new_events.push(Event::Html(html.into()));
-            }
-            Event::Start(Tag::Table(aligns)) => {
-                new_events.push(Event::Html(
-                    "<div class=\"table-scroll-container\" tabindex=\"0\" role=\"region\" aria-label=\"Scrollable table\">".into()
-                ));
-                new_events.push(Event::Start(Tag::Table(aligns)));
-            }
-            Event::End(TagEnd::Table) => {
-                new_events.push(Event::End(TagEnd::Table));
-                new_events.push(Event::Html("</div>".into()));
-            }
-            Event::Text(text) if in_code_block => code_block_content.push_str(&text),
-            Event::Text(text) => new_events.push(Event::Text(text)),
-            Event::SoftBreak | Event::HardBreak if in_code_block => code_block_content.push('\n'),
-            Event::SoftBreak => new_events.push(Event::SoftBreak),
-            Event::HardBreak => new_events.push(Event::HardBreak),
-            other if !in_code_block => new_events.push(other),
-            _ => {}
-        }
-    }
-
-    let mut html_output = String::new();
-    pulldown_cmark::html::push_html(&mut html_output, new_events.into_iter());
-
-    html_output
-}
-
-fn escape_html(s: &str) -> String {
-    let mut escaped = String::new();
-    for c in s.chars() {
-        match c {
-            '<' => escaped.push_str("&lt;"),
-            '>' => escaped.push_str("&gt;"),
-            '&' => escaped.push_str("&amp;"),
-            '"' => escaped.push_str("&quot;"),
-            '\'' => escaped.push_str("&#x27;"),
-            _ => escaped.push(c),
-        }
-    }
-    escaped
-}
-
-fn close_open_fences(markdown: &str) -> String {
-    let mut in_code_block = false;
-    for line in markdown.lines() {
-        if line.trim().starts_with("```") {
-            in_code_block = !in_code_block;
-        }
-    }
-    if in_code_block {
-        format!("{}\n```", markdown)
-    } else {
-        markdown.to_string()
-    }
 }

@@ -1,3 +1,4 @@
+use crate::domain::sidebar_entry::SidebarEntry;
 use crate::presentation::state::AppState;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView, IndexTemplate};
 use axum::extract::State;
@@ -53,10 +54,17 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
         version: env!("CARGO_PKG_VERSION").to_string(),
     };
 
+    let sidebar_entries: Vec<SidebarEntry> = state
+        .articles
+        .iter()
+        .map(SidebarEntry::from_article)
+        .collect();
+
     IndexTemplate {
         header,
         footer,
         articles,
+        sidebar_entries,
         is_single_article_page: false,
     }
 }

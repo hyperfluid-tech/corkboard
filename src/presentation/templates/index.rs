@@ -30,12 +30,15 @@ pub struct FooterView {
     pub version: String,
 }
 
+use crate::domain::sidebar_entry::SidebarEntry;
+
 #[derive(Template)]
 #[template(path = "index.html")]
 pub struct IndexTemplate {
     pub header: HeaderView,
     pub footer: FooterView,
     pub articles: Vec<ArticleView>,
+    pub sidebar_entries: Vec<SidebarEntry>,
     pub is_single_article_page: bool,
 }
 
