@@ -9,6 +9,12 @@ target
 .DS_Store
 templates/thumbnails/
 
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
 tests/golden/*_gen.png
 tests/golden/diffs/
 tests/snapshots/
