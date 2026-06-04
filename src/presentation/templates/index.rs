@@ -16,6 +16,7 @@ pub struct HeaderView {
     pub blog_title: String,
     pub blog_author: String,
     pub lang: String,
+    pub is_dev: bool,
 }
 
 #[derive(Debug, Clone)]

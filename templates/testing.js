@@ -2,7 +2,8 @@
   "use strict";
 
   // Test Mode: Deterministic PRNG to freeze procedural generation for visual regression tests
-  if (typeof window !== "undefined" && new URLSearchParams(window.location.search).has('deterministic')) {
+  if (typeof window !== "undefined") {
+
     let seed = 42;
     let resetQueued = false;
 

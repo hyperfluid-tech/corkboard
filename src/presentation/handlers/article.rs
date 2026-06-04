@@ -30,6 +30,7 @@ pub async fn article_handler(
                 blog_title: state.settings.blog_title.clone(),
                 blog_author: state.settings.blog_author.clone(),
                 lang: state.settings.lang.clone(),
+                is_dev: cfg!(debug_assertions),
             };
 
             let footer = FooterView {
