@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y musl-tools && rm -rf /var/lib/apt/lists
 RUN rustup target add x86_64-unknown-linux-musl
 
 COPY . .
-COPY --from=tailwind-builder /build/templates/tailwind.css /usr/src/corkboard/templates/tailwind.css
+COPY --from=tailwind-builder /build/templates/style/tailwind.css /usr/src/corkboard/templates/style/tailwind.css
 
 RUN cargo build --release --target x86_64-unknown-linux-musl
 
