@@ -37,7 +37,13 @@ A headless Chrome browser driver, located in [tests/bin/golden/main.rs](file:///
 
 ### Prerequisite
 
-Make sure the local development server is running in the background:
+First, compile the Tailwind CSS stylesheet:
+
+```bash
+npm run build:css
+```
+
+Next, make sure the local development server is running in the background:
 
 ```bash
 cargo run

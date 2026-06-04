@@ -1,5 +1,6 @@
 use crate::domain::sidebar_entry::SidebarEntry;
 use crate::presentation::state::AppState;
+use crate::presentation::templates::app_context::AppContext;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView, IndexTemplate};
 use axum::extract::State;
 use axum::response::IntoResponse;
@@ -22,11 +23,12 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
         })
         .collect();
 
+    let app = AppContext::new();
+
     let header = HeaderView {
         blog_title: state.settings.blog_title.clone(),
         blog_author: state.settings.blog_author.clone(),
         lang: state.settings.lang.clone(),
-        is_dev: cfg!(debug_assertions),
     };
 
     let footer = FooterView {
@@ -52,7 +54,6 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
             .as_ref()
             .filter(|s| !s.is_empty())
             .cloned(),
-        version: env!("CARGO_PKG_VERSION").to_string(),
     };
 
     let sidebar_entries: Vec<SidebarEntry> = state
@@ -62,6 +63,7 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
         .collect();
 
     IndexTemplate {
+        app,
         header,
         footer,
         articles,

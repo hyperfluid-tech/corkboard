@@ -1,3 +1,14 @@
+FROM node:20-alpine AS tailwind-builder
+
+WORKDIR /build
+
+COPY package*.json ./
+COPY tailwind.config.js ./
+COPY templates ./templates
+COPY src ./src
+
+RUN npm ci && npm run build:css
+
 FROM rust:1-slim-bookworm AS builder
 
 WORKDIR /usr/src/corkboard
@@ -6,6 +17,7 @@ RUN apt-get update && apt-get install -y musl-tools && rm -rf /var/lib/apt/lists
 RUN rustup target add x86_64-unknown-linux-musl
 
 COPY . .
+COPY --from=tailwind-builder /build/templates/style/tailwind.css /usr/src/corkboard/templates/style/tailwind.css
 
 RUN cargo build --release --target x86_64-unknown-linux-musl
 
@@ -32,8 +44,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENV RUST_LOG=corkboard=info,axum=info
 ENV CORKBOARD_PORT=3000
-ENV CORKBOARD_BLOG_TITLE="My blog"
-ENV CORKBOARD_BLOG_AUTHOR="Author"
 ENV CORKBOARD_ARTICLES_DIR=/app/articles
 ENV CORKBOARD_TRUNCATE_LINES=15
 ENV CORKBOARD_THUMBNAIL_SHOW_ARTICLES=false

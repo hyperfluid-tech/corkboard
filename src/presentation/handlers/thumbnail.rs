@@ -1,5 +1,6 @@
 use crate::presentation::state::AppState;
-use crate::presentation::templates::index::ArticleView;
+use crate::presentation::templates::app_context::AppContext;
+use crate::presentation::templates::index::{ArticleView, HeaderView};
 use crate::presentation::templates::thumbnail::ThumbnailTemplate;
 use axum::extract::State;
 use axum::response::IntoResponse;
@@ -7,11 +8,12 @@ use axum::response::IntoResponse;
 pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoResponse {
     let current_title = state.settings.blog_title.clone();
 
-    let header = crate::presentation::templates::index::HeaderView {
+    let app = AppContext::new();
+
+    let header = HeaderView {
         blog_title: current_title.clone(),
         blog_author: state.settings.blog_author.clone(),
         lang: state.settings.lang.clone(),
-        is_dev: cfg!(debug_assertions),
     };
 
     let articles: Vec<ArticleView> = if state.settings.thumbnail_show_articles {
@@ -33,6 +35,7 @@ pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoRespon
     };
 
     ThumbnailTemplate {
+        app,
         header,
         current_title,
         is_single_article_page: false,

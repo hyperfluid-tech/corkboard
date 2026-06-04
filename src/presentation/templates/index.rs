@@ -10,13 +10,13 @@ pub struct ArticleView {
     pub subheading: Option<String>,
     pub thumbnail: Option<String>,
 }
+use super::app_context::AppContext;
 
 #[derive(Debug, Clone)]
 pub struct HeaderView {
     pub blog_title: String,
     pub blog_author: String,
     pub lang: String,
-    pub is_dev: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -28,7 +28,6 @@ pub struct FooterView {
     pub linkedin_url: Option<String>,
     pub github_url: Option<String>,
     pub twitter_url: Option<String>,
-    pub version: String,
 }
 
 use crate::domain::sidebar_entry::SidebarEntry;
@@ -36,6 +35,7 @@ use crate::domain::sidebar_entry::SidebarEntry;
 #[derive(Template)]
 #[template(path = "index.html")]
 pub struct IndexTemplate {
+    pub app: AppContext,
     pub header: HeaderView,
     pub footer: FooterView,
     pub articles: Vec<ArticleView>,
