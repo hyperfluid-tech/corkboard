@@ -1,78 +1,48 @@
-<!DOCTYPE html>
-<html class="light" lang="{{ header.lang }}">
+{% extends "scaffold.html" %}
 
-<head>
-  {% include "components/head.html" %}
-  <title>{{ article.title }} | {{ header.blog_title }}</title>
-  {% if let Some(subheading) = article.subheading %}
-  <meta name="description" content="{{ subheading }}">
-  {% else %}
-  <meta name="description" content="Read {{ article.title }} on {{ header.blog_title }}.">
-  {% endif %}
+{% block title %}{{ article.title }} | {{ header.blog_title }}{% endblock %}
 
-  <meta property="og:title" content="{{ article.title }}" />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="/article/{{ article.slug }}" />
-  <meta property="og:site_name" content="{{ header.blog_title }}" />
-  {% if let Some(subheading) = article.subheading %}
-  <meta property="og:description" content="{{ subheading }}" />
-  {% else %}
-  <meta property="og:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
-  {% endif %}
-  {% if let Some(thumb) = article.thumbnail %}
-  <meta property="og:image" content="{{ thumb }}" />
-  <meta name="twitter:image" content="{{ thumb }}" />
-  {% else %}
-  {% include "components/default_thumbnail_meta.html" %}
-  {% endif %}
+{% block description %}
+{% if let Some(subheading) = article.subheading %}
+{{ subheading }}
+{% else %}
+Read {{ article.title }} on {{ header.blog_title }}.
+{% endif %}
+{% endblock %}
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="{{ article.title }}" />
-  {% if let Some(subheading) = article.subheading %}
-  <meta name="twitter:description" content="{{ subheading }}" />
-  {% else %}
-  <meta name="twitter:description" content="Read {{ article.title }} on {{ header.blog_title }}." />
-  {% endif %}
-</head>
+{% block og_title %}{{ article.title }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_url %}/article/{{ article.slug }}{% endblock %}
 
-<body class="text-on-surface antialiased flex flex-col min-h-screen" data-page-type="article">
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  <button
-    class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
-    id="sidebar-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
-    <span class="material-symbols-outlined text-[20px]" aria-hidden="true">menu_book</span>
-  </button>
-  <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay"></div>
+{% block og_description %}
+{% if let Some(subheading) = article.subheading %}
+{{ subheading }}
+{% else %}
+Read {{ article.title }} on {{ header.blog_title }}.
+{% endif %}
+{% endblock %}
 
-  <div
-    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:pl-0 lg:pr-gutter pt-stack-lg pb-gutter flex flex-col gap-6 lg:grid lg:grid-cols-[16rem_1fr] min-[1376px]:grid-cols-[16rem_1fr_14.5rem] lg:gap-x-8 lg:gap-y-8 relative">
+{% block thumbnail_meta %}
+{% if let Some(thumb) = article.thumbnail %}
+<meta property="og:image" content="{{ thumb }}" />
+<meta name="twitter:image" content="{{ thumb }}" />
+{% else %}
+{% include "components/default_thumbnail_meta.html" %}
+{% endif %}
+{% endblock %}
 
-    <div class="w-full max-w-[800px] mx-auto lg:mx-0 lg:col-start-2 lg:row-start-1" id="header-container">
-      {% include "components/header.html" %}
-    </div>
+{% block twitter_title %}{{ article.title }}{% endblock %}
 
-    <div class="contents lg:block lg:w-64 lg:flex-shrink-0 lg:-mt-2 lg:col-start-1 lg:row-start-2">
-      {% include "components/sidebar.html" %}
-    </div>
+{% block twitter_description %}
+{% if let Some(subheading) = article.subheading %}
+{{ subheading }}
+{% else %}
+Read {{ article.title }} on {{ header.blog_title }}.
+{% endif %}
+{% endblock %}
 
-    <div id="main-container"
-      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col mt-[-24px] lg:mt-[-32px] lg:col-start-2 lg:row-start-2">
-      {% include "components/string_connector.html" %}
+{% block page_type %}article{% endblock %}
 
-      <main id="main-content" class="w-full flex flex-col relative">
-        {% include "components/article_card.html" %}
-      </main>
-
-      {% include "components/string_connector.html" %}
-
-      {% include "components/footer.html" %}
-    </div>
-
-    <div class="sidebar-spacer lg:col-start-3 lg:row-start-2"></div>
-
-  </div>
-
-  {% include "components/scripts.html" %}
-</body>
-
-</html>
+{% block content %}
+{% include "components/article_card.html" %}
+{% endblock %}

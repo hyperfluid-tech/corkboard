@@ -1,70 +1,31 @@
-<!DOCTYPE html>
-<html class="light" lang="{{ header.lang }}">
+{% extends "scaffold.html" %}
 
-<head>
-  {% include "components/head.html" %}
-  <title>{{ header.blog_title }}</title>
-  <meta name="description" content="Read articles on {{ header.blog_title }} by {{ header.blog_author }}.">
+{% block title %}{{ header.blog_title }}{% endblock %}
+{% block description %}Read articles on {{ header.blog_title }} by {{ header.blog_author }}.{% endblock %}
 
-  <meta property="og:title" content="{{ header.blog_title }}" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="/" />
-  <meta property="og:description" content="Read articles on {{ header.blog_title }} by {{ header.blog_author }}." />
-  <meta property="og:site_name" content="{{ header.blog_title }}" />
-  {% include "components/default_thumbnail_meta.html" %}
+{% block og_title %}{{ header.blog_title }}{% endblock %}
+{% block og_type %}website{% endblock %}
+{% block og_url %}/{% endblock %}
+{% block og_description %}Read articles on {{ header.blog_title }} by {{ header.blog_author }}.{% endblock %}
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="{{ header.blog_title }}" />
-  <meta name="twitter:description" content="Read articles on {{ header.blog_title }} by {{ header.blog_author }}." />
-</head>
+{% block thumbnail_meta %}
+{% include "components/default_thumbnail_meta.html" %}
+{% endblock %}
 
-<body class="text-on-surface antialiased flex flex-col min-h-screen" data-page-type="index">
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  <button
-    class="fixed top-6 left-0 z-50 lg:hidden bg-white text-primary pl-3 pr-4 py-2 border-r border-y border-primary/20 shadow-[4px_4px_10px_rgba(0,0,0,0.15)] rounded-r-md hover:bg-surface-container-low transition-all flex items-center gap-2"
-    id="sidebar-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
-    <span class="material-symbols-outlined text-[20px]" aria-hidden="true">menu_book</span>
-  </button>
-  <div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-40 lg:hidden" id="overlay"></div>
+{% block twitter_title %}{{ header.blog_title }}{% endblock %}
+{% block twitter_description %}Read articles on {{ header.blog_title }} by {{ header.blog_author }}.{% endblock %}
 
-  <div
-    class="flex-grow w-full max-w-[1376px] mx-auto px-margin-mobile lg:pl-0 lg:pr-gutter pt-stack-lg pb-gutter flex flex-col gap-6 lg:grid lg:grid-cols-[16rem_1fr] min-[1376px]:grid-cols-[16rem_1fr_14.5rem] lg:gap-x-8 lg:gap-y-8 relative">
+{% block page_type %}index{% endblock %}
 
-    <div class="w-full max-w-[800px] mx-auto lg:mx-0 lg:col-start-2 lg:row-start-1" id="header-container">
-      {% include "components/header.html" %}
-    </div>
-
-    <div class="contents lg:block lg:w-64 lg:flex-shrink-0 lg:-mt-2 lg:col-start-1 lg:row-start-2">
-      {% include "components/sidebar.html" %}
-    </div>
-
-    <div id="main-container"
-      class="flex-grow w-full max-w-[800px] min-w-0 mx-auto lg:mx-0 flex flex-col mt-[-24px] lg:mt-[-32px] lg:col-start-2 lg:row-start-2">
-      {% include "components/string_connector.html" %}
-
-      <main id="main-content" class="w-full flex flex-col relative">
-        {% if articles.is_empty() %}
-        {% include "components/article_welcome.html" %}
-        {% else %}
-        {% for article in articles %}
-        {% if !loop.first %}
-        {% include "components/string_connector.html" %}
-        {% endif %}
-        {% include "components/article_card.html" %}
-        {% endfor %}
-        {% endif %}
-      </main>
-
-      {% include "components/string_connector.html" %}
-
-      {% include "components/footer.html" %}
-    </div>
-
-    <div class="sidebar-spacer lg:col-start-3 lg:row-start-2"></div>
-
-  </div>
-
-  {% include "components/scripts.html" %}
-</body>
-
-</html>
+{% block content %}
+{% if articles.is_empty() %}
+{% include "components/article_welcome.html" %}
+{% else %}
+{% for article in articles %}
+{% if !loop.first %}
+{% include "components/string_connector.html" %}
+{% endif %}
+{% include "components/article_card.html" %}
+{% endfor %}
+{% endif %}
+{% endblock %}
