@@ -26,6 +26,7 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
         blog_title: state.settings.blog_title.clone(),
         blog_author: state.settings.blog_author.clone(),
         lang: state.settings.lang.clone(),
+        is_dev: cfg!(debug_assertions),
     };
 
     let footer = FooterView {

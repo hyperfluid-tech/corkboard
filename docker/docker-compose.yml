@@ -17,6 +17,8 @@ services:
       # - PGID=1000
       - RUST_LOG=corkboard=info,axum=info
       - CORKBOARD_PORT=3000
+      - CORKBOARD_BLOG_TITLE=My blog
+      - CORKBOARD_BLOG_AUTHOR=Author
       - CORKBOARD_ARTICLES_DIR=/app/articles
       - CORKBOARD_TRUNCATE_LINES=15
       # - CORKBOARD_THUMBNAIL_SHOW_ARTICLES=false

@@ -9,7 +9,9 @@
   </defs>
 </svg>
 
+{% if header.is_dev %}
 <script src="/static/testing.js"></script>
+{% endif %}
 <script src="/static/navigation.js"></script>
 <script src="/static/torn-paper.js"></script>
 <script src="/static/paper-shader.js?v=2"></script>

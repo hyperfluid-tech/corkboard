@@ -11,6 +11,7 @@ pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoRespon
         blog_title: current_title.clone(),
         blog_author: state.settings.blog_author.clone(),
         lang: state.settings.lang.clone(),
+        is_dev: cfg!(debug_assertions),
     };
 
     let articles: Vec<ArticleView> = if state.settings.thumbnail_show_articles {

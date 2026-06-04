@@ -10,7 +10,7 @@ Golden tests compare the current rendering of the website against a set of "gold
 
 ```mermaid
 graph TD
-    A[Seeded PRNG in templates/testing.js] -->|deterministic=true| B(Stable Shaders & Torn Edges)
+    A[Seeded PRNG in templates/testing.js] -->|Dev Mode| B(Stable Shaders & Torn Edges)
     B --> C[tests/bin/golden.rs Runner]
     C -->|Normal Mode| D[Generate *_gen.png images]
     C -->|Override Mode| E[Overwrite *_main.png reference goldens]
@@ -21,7 +21,7 @@ graph TD
 
 ### 1. Deterministic Rendering
 
-Skeuomorphic components (like WebGL paper grains and procedural torn paper edges) are generated using randomized noise. To make pixel-by-pixel image comparison possible, a testing helper script overrides `Math.random()` with a seeded pseudo-random number generator (PRNG) when the query parameter `?deterministic=true` is present in the URL.
+Skeuomorphic components (like WebGL paper grains and procedural torn paper edges) are generated using randomized noise. To make pixel-by-pixel image comparison possible, a testing helper script overrides `Math.random()` with a seeded pseudo-random number generator (PRNG) when running in development mode (as `testing.js` is only loaded in dev mode and excluded from production).
 
 This locks down the visual noise patterns so they are identical across test runs.
 

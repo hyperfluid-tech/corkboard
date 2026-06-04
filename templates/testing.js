@@ -2,7 +2,8 @@
   "use strict";
 
   // Test Mode: Deterministic PRNG to freeze procedural generation for visual regression tests
-  if (typeof window !== "undefined" && new URLSearchParams(window.location.search).has('deterministic')) {
+  if (typeof window !== "undefined") {
+
     let seed = 42;
     let resetQueued = false;
 
@@ -28,10 +29,28 @@
       });
     };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', replacePicsumImages);
-    } else {
+    // Hardcode version in footer to 0.1.3 to avoid test breakage when version bumps
+    const overrideFooterVersion = () => {
+      const footerLink = document.querySelector('footer a[href="https://github.com/hyperfluid-tech/corkboard"]');
+      if (footerLink) {
+        for (const child of footerLink.childNodes) {
+          if (child.nodeType === Node.TEXT_NODE && child.nodeValue.includes('Corkboard v')) {
+            child.nodeValue = 'Corkboard v0.1.3';
+            break;
+          }
+        }
+      }
+    };
+
+    const runTestingOverrides = () => {
       replacePicsumImages();
+      overrideFooterVersion();
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runTestingOverrides);
+    } else {
+      runTestingOverrides();
     }
   }
 })();

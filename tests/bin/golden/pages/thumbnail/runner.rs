@@ -1,7 +1,6 @@
+use crate::helper::capture_full_page;
 use headless_chrome::Tab;
 use std::time::Duration;
-
-use crate::helper::capture_full_page;
 
 pub fn assert_thumbnail_group(
     tab: &Tab,
