@@ -15,8 +15,8 @@ A skeuomorphic blog platform built with Rust. Write Markdown files, and Corkboar
 ## Table of Contents
 
 - [Getting Started](#getting-started)
+  - [Deploying with Docker (Recommended)](#deploying-with-docker)
   - [Running Locally](#running-locally)
-  - [Deploying with Docker](#deploying-with-docker)
 - [Writing Articles](#writing-articles)
 - [Tech Stack](#tech-stack)
 - [Configuration](#configuration)
@@ -26,17 +26,7 @@ A skeuomorphic blog platform built with Rust. Write Markdown files, and Corkboar
 
 ## Getting Started
 
-### Running Locally
-
-*Requires [Rust and Cargo](https://rustup.rs/) installed on your machine.*
-
-```bash
-cargo run
-```
-
-Once running, navigate to `http://localhost:3000` in your browser.
-
-### Deploying with Docker
+### Deploying with Docker (Recommended)
 
 Create a `docker-compose.yml` file:
 
@@ -68,6 +58,31 @@ docker-compose up -d
 Once the container is up, navigate to `http://localhost:8080` in your browser.
 
 The `articles` directory will be created if it does not exist, and a welcome post will be generated automatically. You can configure any setting using environment variables prefixed with `CORKBOARD_`. For more advanced control, see the reference [docker/docker-compose.yml](docker/docker-compose.yml).
+
+### Running Locally
+
+*Requires [Rust and Cargo](https://rustup.rs/) and [Node.js and NPM](https://nodejs.org/) installed on your machine.*
+
+First, install the frontend dependencies and compile the Tailwind CSS stylesheet:
+
+```bash
+npm install
+npm run build:css
+```
+
+Then run the application:
+
+```bash
+cargo run
+```
+
+If you are modifying HTML templates or styles, you can run the CSS compiler in watch mode in a separate terminal:
+
+```bash
+npm run watch:css
+```
+
+Once running, navigate to `http://localhost:3000` in your browser.
 
 ## Writing Articles
 

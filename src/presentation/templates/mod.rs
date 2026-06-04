@@ -1,3 +1,4 @@
+pub mod app_context;
 pub mod article;
 pub mod code_block;
 pub mod index;

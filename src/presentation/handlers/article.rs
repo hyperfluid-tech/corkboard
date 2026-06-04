@@ -1,5 +1,6 @@
 use crate::domain::sidebar_entry::SidebarEntry;
 use crate::presentation::state::AppState;
+use crate::presentation::templates::app_context::AppContext;
 use crate::presentation::templates::article::ArticleTemplate;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView};
 use axum::extract::{Path, State};
@@ -26,11 +27,12 @@ pub async fn article_handler(
                 thumbnail: article.thumbnail.clone(),
             };
 
+            let app = AppContext::new();
+
             let header = HeaderView {
                 blog_title: state.settings.blog_title.clone(),
                 blog_author: state.settings.blog_author.clone(),
                 lang: state.settings.lang.clone(),
-                is_dev: cfg!(debug_assertions),
             };
 
             let footer = FooterView {
@@ -56,7 +58,6 @@ pub async fn article_handler(
                     .as_ref()
                     .filter(|s| !s.is_empty())
                     .cloned(),
-                version: env!("CARGO_PKG_VERSION").to_string(),
             };
 
             let sidebar_entries: Vec<SidebarEntry> = article
@@ -66,6 +67,7 @@ pub async fn article_handler(
                 .collect();
 
             let template = ArticleTemplate {
+                app,
                 header,
                 footer,
                 article: article_view,
