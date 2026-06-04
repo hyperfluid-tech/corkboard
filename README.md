@@ -3,6 +3,8 @@
 [![Docker Status](https://img.shields.io/docker/v/gilnobrega/corkboard?label=Docker%20Image&style=flat-square&color=blue)](https://hub.docker.com/r/gilnobrega/corkboard)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-lightgrey.svg?style=flat-square)](https://opensource.org/licenses/MPL-2.0)
 
+✨ **Live Demo:** [corkboard.hyperfluid.tech](https://corkboard.hyperfluid.tech)
+
 A skeuomorphic blog platform built with Rust. Write Markdown files, and Corkboard turns them into a fully styled website that looks and feels like paper notes pinned to a cork board.
 
 - **Zero friction:** Drop `.md` files into a folder and run. No database, no build step, no JavaScript framework.
