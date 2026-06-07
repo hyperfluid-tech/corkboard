@@ -18,7 +18,7 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
             date: a.date,
             content: a.preview.clone(),
             has_more_content: a.has_more_content,
-            subheading: a.subheading.clone(),
+            description: a.description.clone(),
             thumbnail: a.thumbnail.clone(),
         })
         .collect();

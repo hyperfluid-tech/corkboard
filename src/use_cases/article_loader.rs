@@ -57,7 +57,19 @@ fn parse_article(
 
     let fm: FrontMatter = serde_yaml::from_str(yaml_str)?;
     let date = chrono::NaiveDate::parse_from_str(fm.date.trim(), "%Y-%m-%d")?;
-    let slug = slug::slugify(&fm.title);
+
+    let title = match fm.title.or(fm.heading) {
+        Some(t) => t,
+        None => {
+            return Err(format!(
+                "Article in {:?} is missing both 'title' and 'heading'",
+                file_path
+            )
+            .into());
+        }
+    };
+
+    let slug = slug::slugify(&title);
 
     let (content, toc) = render_markdown(markdown_content, ps, theme);
 
@@ -71,14 +83,16 @@ fn parse_article(
         (content.clone(), false)
     };
 
+    let description = fm.description.or(fm.subheading);
+
     Ok(Article {
         slug,
-        title: fm.title,
+        title,
         date,
         content,
         preview,
         has_more_content,
-        subheading: fm.subheading,
+        description,
         thumbnail: fm.thumbnail,
         toc,
     })

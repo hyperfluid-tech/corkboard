@@ -26,7 +26,7 @@ pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoRespon
                 date: a.date,
                 content: String::new(),
                 has_more_content: false,
-                subheading: a.subheading.clone(),
+                description: a.description.clone(),
                 thumbnail: a.thumbnail.clone(),
             })
             .collect()

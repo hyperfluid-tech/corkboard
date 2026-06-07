@@ -23,7 +23,7 @@ pub async fn article_handler(
                 date: article.date,
                 content: article.content.clone(),
                 has_more_content: article.has_more_content,
-                subheading: article.subheading.clone(),
+                description: article.description.clone(),
                 thumbnail: article.thumbnail.clone(),
             };
 
