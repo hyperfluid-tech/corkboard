@@ -297,6 +297,36 @@ body {
     border-radius: 4px;
 }
 
+header.paper-card {
+    container-type: inline-size;
+}
+
+.header-title {
+    font-size: clamp(1rem, 6.5cqw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    header.paper-card {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    header.paper-card {
+        padding-top: 1.25rem !important;
+        padding-bottom: 1.25rem !important;
+        padding-left: 0.625rem !important;
+        padding-right: 0.625rem !important;
+    }
+}
+
 .title-highlight {
     background: linear-gradient(104deg,
             rgba(253, 224, 71, 0.15) 0.9%,
