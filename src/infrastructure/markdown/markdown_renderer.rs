@@ -1,6 +1,6 @@
 use super::heading_parser::parse_and_rewrite_headings;
 use super::helpers::escape_html;
-use crate::domain::toc_entry::TocEntry;
+use crate::domain::model::toc_entry::TocEntry;
 use crate::presentation::templates::code_block::CodeBlockTemplate;
 use crate::presentation::templates::markdown_image::MarkdownImageTemplate;
 use askama::Template;

@@ -1,4 +1,4 @@
-use crate::domain::article::Article;
+use crate::domain::model::article::Article;
 use crate::infrastructure::config::Settings;
 use std::sync::Arc;
 

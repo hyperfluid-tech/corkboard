@@ -1,15 +1,17 @@
 use std::sync::Arc;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
+mod data;
 mod domain;
 mod infrastructure;
 mod presentation;
-mod use_cases;
 
+use data::data_source::markdown::local_storage_markdown_data_source::LocalStorageMarkdownDataSource;
+use data::repository::markdown_article_repository::MarkdownArticleRepository;
+use domain::repository::article_repository::ArticleRepository;
 use infrastructure::config::Settings;
 use presentation::handlers;
 use presentation::state::AppState;
-use use_cases::article_loader::load_articles;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -46,7 +48,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     tracing::info!("Parsing articles from '{}'...", settings.articles_dir);
-    let articles = load_articles(&settings.articles_dir, settings.truncate_lines).map_err(|e| {
+    let data_source = LocalStorageMarkdownDataSource::new(settings.articles_dir.clone());
+    let repo = MarkdownArticleRepository::new(data_source, settings.truncate_lines);
+    let articles = repo.load_all().map_err(|e| {
         tracing::error!("Failed to load articles: {}", e);
         e
     })?;

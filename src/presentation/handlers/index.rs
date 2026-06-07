@@ -1,4 +1,4 @@
-use crate::domain::sidebar_entry::SidebarEntry;
+use crate::presentation::model::sidebar_entry::SidebarEntry;
 use crate::presentation::state::AppState;
 use crate::presentation::templates::app_context::AppContext;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView, IndexTemplate};

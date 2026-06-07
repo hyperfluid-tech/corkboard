@@ -10,16 +10,3 @@ pub struct Article {
     pub thumbnail: Option<String>,
     pub toc: Vec<super::toc_entry::TocEntry>,
 }
-
-#[derive(serde::Deserialize)]
-pub struct FrontMatter {
-    pub title: Option<String>,
-    pub heading: Option<String>,
-    pub date: String,
-    #[serde(default)]
-    pub subheading: Option<String>,
-    #[serde(default)]
-    pub description: Option<String>,
-    #[serde(default)]
-    pub thumbnail: Option<String>,
-}
