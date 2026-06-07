@@ -7,7 +7,7 @@ pub struct ArticleView {
     pub date: chrono::NaiveDate,
     pub content: String,
     pub has_more_content: bool,
-    pub subheading: Option<String>,
+    pub description: Option<String>,
     pub thumbnail: Option<String>,
 }
 use super::app_context::AppContext;
@@ -30,7 +30,7 @@ pub struct FooterView {
     pub twitter_url: Option<String>,
 }
 
-use crate::domain::sidebar_entry::SidebarEntry;
+use crate::presentation::model::sidebar_entry::SidebarEntry;
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -47,7 +47,7 @@ impl IntoResponse for IndexTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),
-            Err(err) => crate::domain::error::AppError::TemplateError(err).into_response(),
+            Err(err) => crate::domain::model::error::AppError::TemplateError(err).into_response(),
         }
     }
 }

@@ -3,8 +3,8 @@
 {% block title %}{{ article.title }} | {{ header.blog_title }}{% endblock %}
 
 {% block description %}
-{% if let Some(subheading) = article.subheading %}
-{{ subheading }}
+{% if let Some(description) = article.description %}
+{{ description }}
 {% else %}
 Read {{ article.title }} on {{ header.blog_title }}.
 {% endif %}
@@ -15,8 +15,8 @@ Read {{ article.title }} on {{ header.blog_title }}.
 {% block og_url %}/article/{{ article.slug }}{% endblock %}
 
 {% block og_description %}
-{% if let Some(subheading) = article.subheading %}
-{{ subheading }}
+{% if let Some(description) = article.description %}
+{{ description }}
 {% else %}
 Read {{ article.title }} on {{ header.blog_title }}.
 {% endif %}
@@ -34,8 +34,8 @@ Read {{ article.title }} on {{ header.blog_title }}.
 {% block twitter_title %}{{ article.title }}{% endblock %}
 
 {% block twitter_description %}
-{% if let Some(subheading) = article.subheading %}
-{{ subheading }}
+{% if let Some(description) = article.description %}
+{{ description }}
 {% else %}
 Read {{ article.title }} on {{ header.blog_title }}.
 {% endif %}

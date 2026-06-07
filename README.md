@@ -92,7 +92,7 @@ Place Markdown files inside the `articles/` directory. Each file needs a YAML fr
 ---
 title: "My First Post"
 date: "2026-01-15"
-subheading: "An optional subtitle shown below the title"
+description: "An optional description shown below the title"
 ---
 
 Your content goes here. Standard Markdown is supported:

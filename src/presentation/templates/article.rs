@@ -1,5 +1,5 @@
 use super::app_context::AppContext;
-use crate::domain::sidebar_entry::SidebarEntry;
+use crate::presentation::model::sidebar_entry::SidebarEntry;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView};
 use askama::Template;
 use axum::response::{Html, IntoResponse, Response};
@@ -19,7 +19,7 @@ impl IntoResponse for ArticleTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),
-            Err(err) => crate::domain::error::AppError::TemplateError(err).into_response(),
+            Err(err) => crate::domain::model::error::AppError::TemplateError(err).into_response(),
         }
     }
 }

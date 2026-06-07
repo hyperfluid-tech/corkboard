@@ -138,8 +138,8 @@
     {% for article in articles %}
     <div class="thumb-article thumb-pos-{{ loop.index0 % 6 }} paper-card" style="--stack: {{ loop.index0 / 6 }}">
       <p class="thumb-article-title">{{ article.title }}</p>
-      {% if let Some(sub) = article.subheading %}
-      <p class="thumb-article-sub">{{ sub }}</p>
+      {% if let Some(desc) = article.description %}
+      <p class="thumb-article-sub">{{ desc }}</p>
       {% endif %}
     </div>
     {% endfor %}

@@ -1,4 +1,4 @@
-use crate::domain::toc_entry::TocEntry;
+use crate::domain::model::toc_entry::TocEntry;
 use pulldown_cmark::{Event, HeadingLevel, Tag, TagEnd};
 use std::collections::{HashMap, HashSet};
 

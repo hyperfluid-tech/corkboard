@@ -1,4 +1,4 @@
-use crate::domain::sidebar_entry::SidebarEntry;
+use crate::presentation::model::sidebar_entry::SidebarEntry;
 use crate::presentation::state::AppState;
 use crate::presentation::templates::app_context::AppContext;
 use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView, IndexTemplate};
@@ -18,7 +18,7 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
             date: a.date,
             content: a.preview.clone(),
             has_more_content: a.has_more_content,
-            subheading: a.subheading.clone(),
+            description: a.description.clone(),
             thumbnail: a.thumbnail.clone(),
         })
         .collect();

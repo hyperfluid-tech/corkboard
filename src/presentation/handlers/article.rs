@@ -1,4 +1,4 @@
-use crate::domain::sidebar_entry::SidebarEntry;
+use crate::presentation::model::sidebar_entry::SidebarEntry;
 use crate::presentation::state::AppState;
 use crate::presentation::templates::app_context::AppContext;
 use crate::presentation::templates::article::ArticleTemplate;
@@ -23,7 +23,7 @@ pub async fn article_handler(
                 date: article.date,
                 content: article.content.clone(),
                 has_more_content: article.has_more_content,
-                subheading: article.subheading.clone(),
+                description: article.description.clone(),
                 thumbnail: article.thumbnail.clone(),
             };
 
@@ -76,6 +76,6 @@ pub async fn article_handler(
             };
             template.into_response()
         }
-        None => crate::domain::error::AppError::ArticleNotFound.into_response(),
+        None => crate::domain::model::error::AppError::ArticleNotFound.into_response(),
     }
 }

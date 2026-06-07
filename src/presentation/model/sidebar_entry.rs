@@ -1,5 +1,5 @@
-use super::article::Article;
-use super::toc_entry::TocEntry;
+use crate::domain::model::article::Article;
+use crate::domain::model::toc_entry::TocEntry;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SidebarEntry {
