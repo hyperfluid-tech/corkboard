@@ -23,3 +23,5 @@ services:
       - CORKBOARD_TRUNCATE_LINES=15
       # - CORKBOARD_THUMBNAIL_SHOW_ARTICLES=false
       # - CORKBOARD_SOCIAL_LINKS=https://github.com/your-username,https://linkedin.com/in/your-username,https://twitter.com/your-username
+      # - CORKBOARD_BLOG_LICENSE=CC 4.0 BY-SA
+      # - CORKBOARD_BLOG_LICENSE_URL=https://creativecommons.org/licenses/by-sa/4.0/
