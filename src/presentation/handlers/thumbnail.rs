@@ -1,19 +1,22 @@
+use crate::presentation::model::app_context::AppContext;
 use crate::presentation::state::AppState;
-use crate::presentation::templates::app_context::AppContext;
-use crate::presentation::templates::index::{ArticleView, HeaderView};
-use crate::presentation::templates::thumbnail::ThumbnailTemplate;
+use crate::presentation::templates::components::header_template::HeaderTemplate;
+use crate::presentation::templates::index_template::ArticleView;
+use crate::presentation::templates::thumbnail_template::ThumbnailTemplate;
 use axum::extract::State;
 use axum::response::IntoResponse;
+use url::Url;
 
 pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoResponse {
     let current_title = state.settings.blog_title.clone();
 
     let app = AppContext::new();
 
-    let header = HeaderView {
+    let header = HeaderTemplate {
         blog_title: current_title.clone(),
         blog_author: state.settings.blog_author.clone(),
         lang: state.settings.lang.clone(),
+        is_single_article_page: false,
     };
 
     let articles: Vec<ArticleView> = if state.settings.thumbnail_show_articles {
@@ -38,7 +41,6 @@ pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoRespon
         app,
         header,
         current_title,
-        is_single_article_page: false,
         articles,
     }
 }
@@ -113,7 +115,12 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
     )
     .map_err(|e| format!("Failed to set device metrics: {:?}", e))?;
 
-    let url = format!("http://127.0.0.1:{}/thumbnail", port);
+    let mut parsed_url = Url::parse("http://127.0.0.1/thumbnail")
+        .map_err(|e| format!("Failed to parse base local URL: {}", e))?;
+    parsed_url
+        .set_port(Some(port))
+        .map_err(|_| "Failed to set port on local URL".to_string())?;
+    let url = parsed_url.to_string();
 
     tracing::debug!("Headless browser navigating to: {}", url);
     tab.navigate_to(&url)

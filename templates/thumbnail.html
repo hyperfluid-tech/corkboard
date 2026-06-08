@@ -144,7 +144,7 @@
     </div>
     {% endfor %}
 
-    {% include "components/header.html" %}
+    {{ header|safe }}
     {% if app.is_dev %}
     <script src="/static/script/testing.js?v={{ app.version }}"></script>
     {% endif %}

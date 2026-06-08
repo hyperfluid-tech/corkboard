@@ -124,9 +124,11 @@ port = 3000
 truncate_lines = 15
 thumbnail_show_articles = false
 
-# github_url = "https://github.com/your-username"
-# linkedin_url = "https://linkedin.com/in/your-username"
-# twitter_url = "https://twitter.com/your-username"
+# social_links = [
+#     "https://github.com/your-username",
+#     "https://linkedin.com/in/your-username",
+#     "https://twitter.com/your-username"
+# ]
 ```
 
 Every setting can be configured via a `config.toml` file or overridden using an environment variable prefixed with `CORKBOARD_`.
@@ -141,9 +143,7 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | `port` | `CORKBOARD_PORT` | `3000` | HTTP port |
 | `truncate_lines` | `CORKBOARD_TRUNCATE_LINES` | `15` | Markdown lines shown per card before truncation |
 | `thumbnail_show_articles` | `CORKBOARD_THUMBNAIL_SHOW_ARTICLES` | `false` | Whether to show article snippets in the blog's generated thumbnail |
-| `github_url` | `CORKBOARD_GITHUB_URL` | *(empty)* | GitHub link in the footer |
-| `linkedin_url` | `CORKBOARD_LINKEDIN_URL` | *(empty)* | LinkedIn link in the footer |
-| `twitter_url` | `CORKBOARD_TWITTER_URL` | *(empty)* | Twitter/X link in the footer |
+| `social_links` | `CORKBOARD_SOCIAL_LINKS` | *(empty list)* | List of social/external URLs to show in the footer (comma-separated in env) |
 
 ## Contributing
 

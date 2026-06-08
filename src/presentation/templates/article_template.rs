@@ -1,6 +1,8 @@
-use super::app_context::AppContext;
+use super::components::footer_template::FooterTemplate;
+use super::components::header_template::HeaderTemplate;
+use crate::presentation::model::app_context::AppContext;
 use crate::presentation::model::sidebar_entry::SidebarEntry;
-use crate::presentation::templates::index::{ArticleView, FooterView, HeaderView};
+use crate::presentation::templates::index_template::ArticleView;
 use askama::Template;
 use axum::response::{Html, IntoResponse, Response};
 
@@ -8,8 +10,8 @@ use axum::response::{Html, IntoResponse, Response};
 #[template(path = "article.html")]
 pub struct ArticleTemplate {
     pub app: AppContext,
-    pub header: HeaderView,
-    pub footer: FooterView,
+    pub header: HeaderTemplate,
+    pub footer: FooterTemplate,
     pub article: ArticleView,
     pub sidebar_entries: Vec<SidebarEntry>,
     pub is_single_article_page: bool,

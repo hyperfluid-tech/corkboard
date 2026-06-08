@@ -29,9 +29,11 @@ port = 3000
 truncate_lines = 15
 thumbnail_show_articles = false
 
-# github_url = "https://github.com/your-username"
-# linkedin_url = "https://linkedin.com/in/your-username"
-# twitter_url = "https://twitter.com/your-username"
+# social_links = [
+#     "https://github.com/your-username",
+#     "https://linkedin.com/in/your-username",
+#     "https://twitter.com/your-username"
+# ]
 EOF
 fi
 

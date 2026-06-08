@@ -1,6 +1,4 @@
-pub mod app_context;
-pub mod article;
-pub mod code_block;
-pub mod index;
-pub mod markdown_image;
-pub mod thumbnail;
+pub mod article_template;
+pub mod components;
+pub mod index_template;
+pub mod thumbnail_template;
