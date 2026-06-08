@@ -445,6 +445,7 @@ void main() {
     });
 
     cards.forEach((card) => resizeObserver.observe(card));
+    document.body.setAttribute("data-shaders-ready", "true");
   }
 
   if (document.readyState === "loading") {
