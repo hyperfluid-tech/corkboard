@@ -1,5 +1,6 @@
-use super::app_context::AppContext;
-use crate::presentation::templates::index::{ArticleView, HeaderView};
+use super::components::header_template::HeaderTemplate;
+use crate::presentation::model::app_context::AppContext;
+use crate::presentation::templates::index_template::ArticleView;
 use askama::Template;
 use axum::response::{Html, IntoResponse, Response};
 
@@ -7,9 +8,8 @@ use axum::response::{Html, IntoResponse, Response};
 #[template(path = "thumbnail.html")]
 pub struct ThumbnailTemplate {
     pub app: AppContext,
-    pub header: HeaderView,
+    pub header: HeaderTemplate,
     pub current_title: String,
-    pub is_single_article_page: bool,
     pub articles: Vec<ArticleView>,
 }
 

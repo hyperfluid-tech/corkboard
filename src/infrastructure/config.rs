@@ -11,10 +11,57 @@ pub struct Settings {
     pub port: u16,
     pub truncate_lines: usize,
     pub lang: String,
-    pub linkedin_url: Option<String>,
-    pub github_url: Option<String>,
-    pub twitter_url: Option<String>,
+    #[serde(default, deserialize_with = "deserialize_social_links")]
+    pub social_links: Vec<String>,
     pub thumbnail_show_articles: bool,
+}
+
+pub use deserializers::deserialize_social_links;
+
+mod deserializers {
+    use serde::Deserializer;
+    use serde::de::{SeqAccess, Visitor};
+
+    pub fn deserialize_social_links<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct SocialLinksVisitor;
+
+        impl<'de> Visitor<'de> for SocialLinksVisitor {
+            type Value = Vec<String>;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("a sequence of strings or a comma-separated string")
+            }
+
+            fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+            where
+                E: serde::de::Error,
+            {
+                Ok(v.split(',')
+                    .map(|s| s.trim().to_string())
+                    .filter(|s| !s.is_empty())
+                    .collect())
+            }
+
+            fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
+            where
+                A: SeqAccess<'de>,
+            {
+                let mut links = Vec::new();
+                while let Some(value) = seq.next_element::<String>()? {
+                    let trimmed = value.trim().to_string();
+                    if !trimmed.is_empty() {
+                        links.push(trimmed);
+                    }
+                }
+                Ok(links)
+            }
+        }
+
+        deserializer.deserialize_any(SocialLinksVisitor)
+    }
 }
 
 impl Settings {

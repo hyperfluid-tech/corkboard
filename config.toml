@@ -9,7 +9,9 @@ truncate_lines = 15
 thumbnail_show_articles = false
 
 # Social media links (leave commented out or empty to hide respective icons in footer)
-# github_url = "https://github.com/your-username"
-# linkedin_url = "https://linkedin.com/in/your-username"
-# twitter_url = "https://twitter.com/your-username"
+# social_links = [
+#     "https://github.com/your-username",
+#     "https://linkedin.com/in/your-username",
+#     "https://twitter.com/your-username"
+# ]
 

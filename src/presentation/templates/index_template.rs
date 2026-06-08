@@ -1,5 +1,10 @@
+use super::components::footer_template::FooterTemplate;
+use super::components::header_template::HeaderTemplate;
+use crate::presentation::model::app_context::AppContext;
+use crate::presentation::model::sidebar_entry::SidebarEntry;
 use askama::Template;
 use axum::response::{Html, IntoResponse, Response};
+
 #[derive(Debug, Clone)]
 pub struct ArticleView {
     pub slug: String,
@@ -10,34 +15,13 @@ pub struct ArticleView {
     pub description: Option<String>,
     pub thumbnail: Option<String>,
 }
-use super::app_context::AppContext;
-
-#[derive(Debug, Clone)]
-pub struct HeaderView {
-    pub blog_title: String,
-    pub blog_author: String,
-    pub lang: String,
-}
-
-#[derive(Debug, Clone)]
-pub struct FooterView {
-    pub blog_author: String,
-    pub blog_license: String,
-    pub blog_license_url: String,
-    pub current_year: i32,
-    pub linkedin_url: Option<String>,
-    pub github_url: Option<String>,
-    pub twitter_url: Option<String>,
-}
-
-use crate::presentation::model::sidebar_entry::SidebarEntry;
 
 #[derive(Template)]
 #[template(path = "index.html")]
 pub struct IndexTemplate {
     pub app: AppContext,
-    pub header: HeaderView,
-    pub footer: FooterView,
+    pub header: HeaderTemplate,
+    pub footer: FooterTemplate,
     pub articles: Vec<ArticleView>,
     pub sidebar_entries: Vec<SidebarEntry>,
     pub is_single_article_page: bool,
