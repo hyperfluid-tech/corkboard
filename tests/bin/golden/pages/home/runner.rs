@@ -1,5 +1,4 @@
 use headless_chrome::Tab;
-use std::time::Duration;
 
 use super::components;
 
@@ -12,8 +11,8 @@ pub fn assert_home_group(
     println!("Navigating to: {}", url_home);
     tab.navigate_to(&url_home)?;
 
-    // Wait for page to load and procedural shaders to render
-    std::thread::sleep(Duration::from_millis(2000));
+    // Wait for the WebGL paper shader to signal it has finished rendering
+    tab.wait_for_element("body[data-shaders-ready]")?;
 
     let mut all_matched = true;
     all_matched &= components::header::assert_header(tab, override_main)?;

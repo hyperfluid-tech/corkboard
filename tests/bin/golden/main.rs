@@ -50,6 +50,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 3. Capture Welcome Article Components
     all_matched &= pages::article::assert_article_group(&tab, &base_url, override_main)?;
 
+    // 4. Capture 404 Page Components
+    all_matched &= pages::not_found::assert_not_found_group(&tab, &base_url, override_main)?;
+
     if !all_matched {
         eprintln!("Golden test failed: visual mismatches detected.");
         std::process::exit(1);
