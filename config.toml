@@ -7,8 +7,6 @@ articles_dir = "articles"
 port = 3000
 truncate_lines = 15
 thumbnail_show_articles = false
-
-# Social media links (leave commented out or empty to hide respective icons in footer)
 # social_links = [
 #     "https://github.com/your-username",
 #     "https://linkedin.com/in/your-username",
