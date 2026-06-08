@@ -1,3 +1,5 @@
+use url::Url;
+
 const GITHUB_HOST: &str = "github.com";
 const LINKEDIN_HOST: &str = "linkedin.com";
 const TWITTER_HOSTS: &[&str] = &["twitter.com", "x.com"];
@@ -40,14 +42,11 @@ fn is_matching_host(hostname: &str, expected: &str) -> bool {
 }
 
 pub fn get_hostname(url: &str) -> String {
-    let without_scheme = url.split_once("://").map(|(_, rest)| rest).unwrap_or(url);
-    let host_and_port = without_scheme
-        .split_once('/')
-        .map(|(host, _)| host)
-        .unwrap_or(without_scheme);
-    let host = host_and_port
-        .split_once(':')
-        .map(|(host, _)| host)
-        .unwrap_or(host_and_port);
-    host.strip_prefix("www.").unwrap_or(host).to_string()
+    let parsed = Url::parse(url).or_else(|_| Url::parse(&format!("https://{}", url)));
+    if let Ok(u) = parsed {
+        if let Some(host) = u.host_str() {
+            return host.strip_prefix("www.").unwrap_or(host).to_string();
+        }
+    }
+    url.to_string()
 }
