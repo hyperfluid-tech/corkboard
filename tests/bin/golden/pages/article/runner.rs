@@ -10,6 +10,7 @@ pub fn assert_article_group(
     let url_article = format!("{}/article/welcome-to-corkboard", base_url);
     println!("Navigating to: {}", url_article);
     tab.navigate_to(&url_article)?;
+    tab.wait_until_navigated()?;
 
     // Wait for the WebGL paper shader to signal it has finished rendering
     tab.wait_for_element("body[data-shaders-ready]")?;

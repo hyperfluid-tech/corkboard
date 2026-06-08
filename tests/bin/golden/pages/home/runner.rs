@@ -10,6 +10,7 @@ pub fn assert_home_group(
     let url_home = format!("{}/", base_url);
     println!("Navigating to: {}", url_home);
     tab.navigate_to(&url_home)?;
+    tab.wait_until_navigated()?;
 
     // Wait for the WebGL paper shader to signal it has finished rendering
     tab.wait_for_element("body[data-shaders-ready]")?;
