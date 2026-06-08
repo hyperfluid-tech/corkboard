@@ -15,6 +15,7 @@ pub async fn thumbnail_handler(State(state): State<AppState>) -> impl IntoRespon
     let header = HeaderTemplate {
         blog_title: current_title.clone(),
         blog_author: state.settings.blog_author.clone(),
+        base_url: state.settings.base_url.clone(),
         lang: state.settings.lang.clone(),
         is_single_article_page: false,
     };

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>{{ blog_title }}</title>
+  <link>{{ base_url }}/</link>
+  <description>Articles from {{ blog_title }}</description>
+  <atom:link href="{{ base_url }}/feed.xml" rel="self" type="application/rss+xml" />
+  {% for article in articles %}
+  <item>
+    <title>{{ article.title }}</title>
+    <link>{{ base_url }}/article/{{ article.slug }}</link>
+    <guid>{{ base_url }}/article/{{ article.slug }}</guid>
+    <pubDate>{{ article.date.format("%a, %d %b %Y 00:00:00 +0000") }}</pubDate>
+    <author>{{ blog_author }}</author>
+    <description>{% if let Some(desc) = article.description %}{{ desc }}{% else %}No description{% endif %}</description>
+  </item>
+  {% endfor %}
+</channel>
+</rss>

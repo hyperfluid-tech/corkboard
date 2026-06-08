@@ -345,6 +345,7 @@ dependencies = [
  "headless_chrome",
  "pulldown-cmark",
  "serde",
+ "serde_json",
  "serde_yaml",
  "slug",
  "syntect",

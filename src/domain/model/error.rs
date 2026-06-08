@@ -4,7 +4,6 @@ use axum::response::{IntoResponse, Response};
 #[derive(Debug)]
 pub enum AppError {
     TemplateError(askama::Error),
-    ArticleNotFound,
     InvalidConfig(String),
 }
 
@@ -12,7 +11,6 @@ impl std::fmt::Display for AppError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             AppError::TemplateError(err) => write!(f, "Template error: {}", err),
-            AppError::ArticleNotFound => write!(f, "Article not found"),
             AppError::InvalidConfig(err) => write!(f, "Invalid configuration: {}", err),
         }
     }
@@ -27,9 +25,6 @@ impl IntoResponse for AppError {
                 let error_message = format!("Failed to render template: {}", err);
                 tracing::error!("{}", error_message);
                 (StatusCode::INTERNAL_SERVER_ERROR, error_message).into_response()
-            }
-            AppError::ArticleNotFound => {
-                (StatusCode::NOT_FOUND, "Article not found").into_response()
             }
             AppError::InvalidConfig(err) => {
                 let error_message = format!("Invalid configuration: {}", err);

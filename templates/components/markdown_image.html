@@ -1,5 +1,5 @@
 <figure class="tipped-image-container">
-<img src="{{ src }}" alt="{{ alt }}" class="w-full h-auto object-cover" />
+<img src="{{ src }}" alt="{{ alt }}" class="w-full h-auto object-cover" loading="lazy" decoding="async" />
 {% if !caption.is_empty() %}
 <figcaption class="mt-2 text-center text-outline font-body-md text-sm italic">{{ caption }}</figcaption>
 {% endif %}

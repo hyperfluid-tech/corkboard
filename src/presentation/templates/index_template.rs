@@ -25,6 +25,7 @@ pub struct IndexTemplate {
     pub articles: Vec<ArticleView>,
     pub sidebar_entries: Vec<SidebarEntry>,
     pub is_single_article_page: bool,
+    pub structured_data: super::components::structured_data_template::StructuredDataTemplate,
 }
 
 impl IntoResponse for IndexTemplate {

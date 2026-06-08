@@ -6,6 +6,7 @@ use serde::Deserialize;
 pub struct Settings {
     pub blog_title: String,
     pub blog_author: String,
+    pub base_url: String,
     pub blog_license: String,
     pub blog_license_url: url::Url,
     pub articles_dir: String,
@@ -28,6 +29,7 @@ impl Settings {
             .set_default("articles_dir", "articles")?
             .set_default("blog_title", "My blog")?
             .set_default("blog_author", "Author")?
+            .set_default("base_url", "http://localhost:3000")?
             .set_default("blog_license", "CC 4.0 BY-SA")?
             .set_default(
                 "blog_license_url",

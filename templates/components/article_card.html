@@ -8,7 +8,8 @@
       <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{{ article.title }}
       </h1>
       {% else %}
-      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{{ article.title }}
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">
+        <a href="/article/{{ article.slug }}" class="hover:underline">{{ article.title }}</a>
       </h2>
       {% endif %}
       {% if let Some(description) = article.description %}
