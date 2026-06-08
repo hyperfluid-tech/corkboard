@@ -129,8 +129,14 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
     tab.wait_until_navigated()
         .map_err(|e| format!("Navigation timed out: {:?}", e))?;
 
-    // Wait for the WebGL paper shader to load and paint
-    std::thread::sleep(Duration::from_millis(750));
+    // Wait for the WebGL paper shader to signal it has finished rendering
+    if let Err(_) = tab
+        .wait_for_element_with_custom_timeout("body[data-shaders-ready]", Duration::from_secs(30))
+    {
+        tracing::warn!(
+            "Shader readiness signal not detected within timeout, proceeding with screenshot"
+        );
+    }
 
     let image_bytes = tab
         .capture_screenshot(
