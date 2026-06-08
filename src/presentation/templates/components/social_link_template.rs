@@ -1,5 +1,6 @@
 use crate::domain::model::social_link_type::SocialLinkType;
 use askama::Template;
+use url::Url;
 
 #[derive(Template, Debug, Clone)]
 #[template(path = "components/social_link.html")]
@@ -10,7 +11,8 @@ pub struct SocialLinkTemplate {
 }
 
 impl SocialLinkTemplate {
-    pub fn new(url: String) -> Self {
+    pub fn new(url: Url) -> Self {
+        let url_str = url.to_string();
         let link_type = SocialLinkType::from_url(&url);
         let alt_text = match link_type {
             SocialLinkType::GitHub => "GitHub".to_string(),
@@ -19,7 +21,7 @@ impl SocialLinkTemplate {
             SocialLinkType::Generic => crate::domain::model::social_link_type::get_hostname(&url),
         };
         Self {
-            url,
+            url: url_str,
             link_type,
             alt_text,
         }

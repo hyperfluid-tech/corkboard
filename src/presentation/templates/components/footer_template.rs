@@ -1,6 +1,7 @@
 use super::social_link_template::SocialLinkTemplate;
 use crate::presentation::model::app_context::AppContext;
 use askama::Template;
+use url::Url;
 
 #[derive(Template, Debug, Clone)]
 #[template(path = "components/footer.html")]
@@ -18,9 +19,9 @@ impl FooterTemplate {
         app: AppContext,
         blog_author: String,
         blog_license: String,
-        blog_license_url: String,
+        blog_license_url: Url,
         current_year: i32,
-        social_links: &[String],
+        social_links: &[Url],
     ) -> Self {
         let social_links = social_links
             .iter()
@@ -31,7 +32,7 @@ impl FooterTemplate {
             app,
             blog_author,
             blog_license,
-            blog_license_url,
+            blog_license_url: blog_license_url.to_string(),
             current_year,
             social_links,
         }

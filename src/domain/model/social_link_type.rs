@@ -13,7 +13,7 @@ pub enum SocialLinkType {
 }
 
 impl SocialLinkType {
-    pub fn from_url(url: &str) -> Self {
+    pub fn from_url(url: &Url) -> Self {
         let hostname = get_hostname(url);
         if is_matching_host(&hostname, GITHUB_HOST) {
             return Self::GitHub;
@@ -41,12 +41,9 @@ fn is_matching_host(hostname: &str, expected: &str) -> bool {
     false
 }
 
-pub fn get_hostname(url: &str) -> String {
-    let parsed = Url::parse(url).or_else(|_| Url::parse(&format!("https://{}", url)));
-    if let Ok(u) = parsed {
-        if let Some(host) = u.host_str() {
-            return host.strip_prefix("www.").unwrap_or(host).to_string();
-        }
+pub fn get_hostname(url: &Url) -> String {
+    if let Some(host) = url.host_str() {
+        return host.strip_prefix("www.").unwrap_or(host).to_string();
     }
     url.to_string()
 }
