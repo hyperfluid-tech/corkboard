@@ -10,6 +10,7 @@ pub fn assert_not_found_group(
     let url_404 = format!("{}/this-page-does-not-exist", base_url);
     println!("Navigating to: {}", url_404);
     tab.navigate_to(&url_404)?;
+    tab.wait_until_navigated()?;
 
     // Wait for the WebGL paper shader to signal it has finished rendering
     tab.wait_for_element("body[data-shaders-ready]")?;

@@ -21,7 +21,9 @@ pub fn capture_selector_padded(
             let el = document.querySelector('{}');
             if (!el) return "";
             let r = el.getBoundingClientRect();
-            return `${{r.x + window.scrollX - {}}},${{r.y + window.scrollY - {}}},${{r.width + {}}},${{r.height + {}}}`;
+            let x = Math.max(0, r.x + window.scrollX - {});
+            let y = Math.max(0, r.y + window.scrollY - {});
+            return `${{x}},${{y}},${{r.width + {}}},${{r.height + {}}}`;
         }})()"#,
         selector,
         padding,
