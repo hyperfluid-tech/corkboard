@@ -24,6 +24,7 @@ blog_title = "My blog"
 blog_author = "Author"
 blog_license = "CC 4.0 BY-SA"
 blog_license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+base_url = "http://localhost:3000"
 articles_dir = "articles"
 port = 3000
 truncate_lines = 15

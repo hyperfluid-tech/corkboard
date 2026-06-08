@@ -47,6 +47,7 @@ services:
       - PGID=1000
       - CORKBOARD_BLOG_TITLE=My blog
       - CORKBOARD_BLOG_AUTHOR=Author
+      - CORKBOARD_BASE_URL=http://localhost:8080
 ```
 
 Then start the service:
@@ -119,6 +120,7 @@ blog_title = "My blog"
 blog_author = "Author"
 blog_license = "CC 4.0 BY-SA"
 blog_license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+base_url = "http://localhost:3000"
 articles_dir = "articles"
 port = 3000
 truncate_lines = 15
@@ -139,8 +141,9 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | `blog_author` | `CORKBOARD_BLOG_AUTHOR` | `Author` | Shown in the footer copyright |
 | `blog_license` | `CORKBOARD_BLOG_LICENSE` | `CC 4.0 BY-SA` | License name in the footer |
 | `blog_license_url` | `CORKBOARD_BLOG_LICENSE_URL` | *(CC link)* | URL the license links to |
+| `base_url` | `CORKBOARD_BASE_URL` | `http://localhost:3000` | The public/external URL of the blog (used for RSS, sitemaps, social cards) |
 | `articles_dir` | `CORKBOARD_ARTICLES_DIR` | `articles` | Directory to scan for `.md` files |
-| `port` | `CORKBOARD_PORT` | `3000` | HTTP port |
+| `port` | `CORKBOARD_PORT` | `3000` | Internal HTTP port the application listens on |
 | `truncate_lines` | `CORKBOARD_TRUNCATE_LINES` | `15` | Markdown lines shown per card before truncation |
 | `thumbnail_show_articles` | `CORKBOARD_THUMBNAIL_SHOW_ARTICLES` | `false` | Whether to show article snippets in the blog's generated thumbnail |
 | `social_links` | `CORKBOARD_SOCIAL_LINKS` | *(empty list)* | List of social/external URLs to show in the footer (comma-separated in env) |

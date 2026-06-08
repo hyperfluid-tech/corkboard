@@ -16,7 +16,10 @@ services:
       # - PUID=1000
       # - PGID=1000
       - RUST_LOG=corkboard=info,axum=info
+      # The internal port the application listens on inside the container
       - CORKBOARD_PORT=3000
+      # The external URL used to access the blog (matches host port 8080)
+      - CORKBOARD_BASE_URL=http://localhost:8080
       - CORKBOARD_BLOG_TITLE=My blog
       - CORKBOARD_BLOG_AUTHOR=Author
       - CORKBOARD_ARTICLES_DIR=/app/articles
