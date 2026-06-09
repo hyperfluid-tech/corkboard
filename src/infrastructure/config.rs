@@ -9,7 +9,7 @@ pub const DEFAULT_BLOG_AUTHOR: &str = "Author";
 pub const DEFAULT_BASE_URL: &str = "http://localhost:3000";
 pub const DEFAULT_BLOG_LICENSE: &str = "CC 4.0 BY-SA";
 pub const DEFAULT_BLOG_LICENSE_URL: &str = "https://creativecommons.org/licenses/by-sa/4.0/";
-pub const DEFAULT_TRUNCATE_LINES: usize = 15;
+pub const DEFAULT_TRUNCATE_LINES: i64 = 15;
 pub const DEFAULT_LANG: &str = "en";
 pub const DEFAULT_THUMBNAIL_SHOW_ARTICLES: bool = false;
 
