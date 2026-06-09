@@ -46,11 +46,11 @@ pub fn capture_selector_padded(
 
     // Expand the headless browser's viewport so it can render the full height of the element
     // without clipping it to the default 1000px window height.
-    let required_height = (parts[1] + parts[3]).ceil() as u32;
+    let element_height = parts[3].ceil() as u32;
     tab.call_method(
         headless_chrome::protocol::cdp::Emulation::SetDeviceMetricsOverride {
             width: 1400,
-            height: std::cmp::max(1000_u32, required_height),
+            height: std::cmp::max(1000_u32, element_height),
             device_scale_factor: 1.0,
             mobile: false,
             scale: None,
@@ -65,6 +65,11 @@ pub fn capture_selector_padded(
             device_posture: None,
         },
     )?;
+
+    // Scroll to the element to make sure it's in the viewport, 
+    // avoiding massive viewport heights that crash the Linux Chrome GPU process
+    let scroll_js = format!("window.scrollTo({}, {});", parts[0], parts[1]);
+    tab.evaluate(&scroll_js, false)?;
 
     // Give it a tiny moment to reflow the layout with the new viewport height
     std::thread::sleep(Duration::from_millis(200));
