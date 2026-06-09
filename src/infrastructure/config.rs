@@ -2,6 +2,20 @@ use crate::domain::model::error::AppError;
 use config::{Config, File};
 use serde::Deserialize;
 
+pub const DEFAULT_PORT: u16 = 3000;
+pub const DEFAULT_ARTICLES_DIR: &str = "articles";
+pub const DEFAULT_BLOG_TITLE: &str = "My blog";
+pub const DEFAULT_BLOG_AUTHOR: &str = "Author";
+pub const DEFAULT_BASE_URL: &str = "http://localhost:3000";
+pub const DEFAULT_BLOG_LICENSE: &str = "CC 4.0 BY-SA";
+pub const DEFAULT_BLOG_LICENSE_URL: &str = "https://creativecommons.org/licenses/by-sa/4.0/";
+pub const DEFAULT_TRUNCATE_LINES: usize = 15;
+pub const DEFAULT_LANG: &str = "en";
+pub const DEFAULT_THUMBNAIL_SHOW_ARTICLES: bool = false;
+
+pub const LOCALHOST_PLACEHOLDER: &str = "localhost";
+pub const DOMAIN_PLACEHOLDER: &str = "your-domain-here.com";
+
 #[derive(Debug, Deserialize, Clone)]
 pub struct Settings {
     pub blog_title: String,
@@ -25,19 +39,16 @@ impl Settings {
 
     fn load() -> Result<Self, config::ConfigError> {
         let s = Config::builder()
-            .set_default("port", 3000)?
-            .set_default("articles_dir", "articles")?
-            .set_default("blog_title", "My blog")?
-            .set_default("blog_author", "Author")?
-            .set_default("base_url", "http://localhost:3000")?
-            .set_default("blog_license", "CC 4.0 BY-SA")?
-            .set_default(
-                "blog_license_url",
-                "https://creativecommons.org/licenses/by-sa/4.0/",
-            )?
-            .set_default("truncate_lines", 15)?
-            .set_default("lang", "en")?
-            .set_default("thumbnail_show_articles", false)?
+            .set_default("port", DEFAULT_PORT)?
+            .set_default("articles_dir", DEFAULT_ARTICLES_DIR)?
+            .set_default("blog_title", DEFAULT_BLOG_TITLE)?
+            .set_default("blog_author", DEFAULT_BLOG_AUTHOR)?
+            .set_default("base_url", DEFAULT_BASE_URL)?
+            .set_default("blog_license", DEFAULT_BLOG_LICENSE)?
+            .set_default("blog_license_url", DEFAULT_BLOG_LICENSE_URL)?
+            .set_default("truncate_lines", DEFAULT_TRUNCATE_LINES)?
+            .set_default("lang", DEFAULT_LANG)?
+            .set_default("thumbnail_show_articles", DEFAULT_THUMBNAIL_SHOW_ARTICLES)?
             .add_source(File::with_name("config").required(false))
             .add_source(
                 config::Environment::with_prefix("CORKBOARD")
@@ -48,5 +59,33 @@ impl Settings {
             .build()?;
 
         s.try_deserialize()
+    }
+
+    pub fn check_defaults(&self) {
+        if self.base_url == DEFAULT_BASE_URL || self.base_url.contains(LOCALHOST_PLACEHOLDER) {
+            tracing::warn!(
+                "Using default or localhost for base_url ('{}'). Sitemaps, RSS feeds, and social cards may have incorrect links in production.",
+                self.base_url
+            );
+        } else if self.base_url.contains(DOMAIN_PLACEHOLDER) {
+            tracing::warn!(
+                "Placeholder '{}' detected in base_url. Please update it with your actual domain in production.",
+                DOMAIN_PLACEHOLDER
+            );
+        }
+
+        if self.blog_title == DEFAULT_BLOG_TITLE {
+            tracing::warn!(
+                "Using default blog_title ('{}'). Please customize this in your configuration.",
+                DEFAULT_BLOG_TITLE
+            );
+        }
+
+        if self.blog_author == DEFAULT_BLOG_AUTHOR {
+            tracing::warn!(
+                "Using default blog_author ('{}'). Please customize this in your configuration.",
+                DEFAULT_BLOG_AUTHOR
+            );
+        }
     }
 }
