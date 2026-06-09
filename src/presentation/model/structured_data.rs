@@ -30,7 +30,7 @@ pub enum StructuredData {
         headline: String,
         url: String,
         #[serde(rename = "datePublished")]
-        date_published: String,
+        date_published: chrono::NaiveDate,
         author: Person,
         publisher: Organization,
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -56,7 +56,7 @@ impl StructuredData {
     pub fn blog_posting(
         headline: String,
         url: String,
-        date_published: String,
+        date_published: chrono::NaiveDate,
         author_name: String,
         publisher_name: String,
         description: Option<String>,
