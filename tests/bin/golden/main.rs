@@ -26,6 +26,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             OsStr::new("--no-sandbox"),
             OsStr::new("--ignore-gpu-blocklist"),
             OsStr::new("--enable-webgl"),
+            OsStr::new("--disable-dev-shm-usage"),
         ])
         .build()?;
 
