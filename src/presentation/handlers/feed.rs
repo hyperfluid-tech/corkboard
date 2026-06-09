@@ -1,32 +1,13 @@
-use crate::domain::model::article::Article;
-use crate::domain::model::error::AppError;
 use crate::presentation::state::AppState;
-use askama::Template;
+use crate::presentation::templates::feed_template::FeedTemplate;
 use axum::extract::State;
-use axum::http::header;
-use axum::response::{IntoResponse, Response};
+use axum::response::IntoResponse;
 
-#[derive(Template)]
-#[template(path = "feed.xml")]
-struct FeedTemplate<'a> {
-    base_url: &'a str,
-    blog_title: &'a str,
-    blog_author: &'a str,
-    articles: &'a [Article],
-}
-
-pub async fn feed_handler(State(state): State<AppState>) -> Result<impl IntoResponse, AppError> {
-    let template = FeedTemplate {
-        base_url: &state.settings.base_url,
-        blog_title: &state.settings.blog_title,
-        blog_author: &state.settings.blog_author,
-        articles: &state.articles,
-    };
-
-    let xml = template.render().map_err(AppError::FeedGeneration)?;
-
-    Ok((
-        [(header::CONTENT_TYPE, "application/rss+xml; charset=utf-8")],
-        xml,
-    ))
+pub async fn feed_handler(State(state): State<AppState>) -> impl IntoResponse {
+    FeedTemplate {
+        base_url: state.settings.base_url.clone(),
+        blog_title: state.settings.blog_title.clone(),
+        blog_author: state.settings.blog_author.clone(),
+        articles: (*state.articles).clone(),
+    }
 }
