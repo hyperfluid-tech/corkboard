@@ -19,7 +19,7 @@ services:
       # The internal port the application listens on inside the container
       - CORKBOARD_PORT=3000
       # The external URL used to access the blog (matches host port 8080)
-      - CORKBOARD_BASE_URL=http://localhost:8080
+      - CORKBOARD_BASE_URL=http://your-domain-here.com:8080
       - CORKBOARD_BLOG_TITLE=My blog
       - CORKBOARD_BLOG_AUTHOR=Author
       - CORKBOARD_ARTICLES_DIR=/app/articles
