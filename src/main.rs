@@ -30,6 +30,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         e
     })?;
 
+    settings.check_defaults();
+
     if !std::path::Path::new(&settings.articles_dir).exists() {
         tracing::warn!(
             "Articles directory '{}' not found, creating it.",

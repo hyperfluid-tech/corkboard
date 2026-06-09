@@ -1,0 +1,34 @@
+{% extends "scaffold.html" %}
+
+{% block title %}Page Not Found | {{ header.blog_title }}{% endblock %}
+{% block description %}The page you're looking for doesn't exist.{% endblock %}
+
+{% block og_title %}Page Not Found{% endblock %}
+{% block og_type %}website{% endblock %}
+{% block og_url %}{% endblock %}
+{% block og_description %}The page you're looking for doesn't exist.{% endblock %}
+
+{% block thumbnail_meta %}
+{% include "components/default_thumbnail_meta.html" %}
+{% endblock %}
+
+{% block twitter_title %}Page Not Found{% endblock %}
+{% block twitter_description %}The page you're looking for doesn't exist.{% endblock %}
+
+{% block page_type %}error{% endblock %}
+
+{% block content %}
+<div class="article-card-wrapper relative">
+  <article class="paper-card p-margin-mobile md:p-gutter rounded-sm pb-16 md:pb-24">
+    <header class="mb-stack-sm border-b border-surface-variant pb-unit">
+      <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Page Not Found</h1>
+    </header>
+    <div class="prose">
+      <p>Sorry, the page you're looking for doesn't exist or may have been moved.</p>
+    </div>
+  </article>
+  <div class="tape-container back-home-container">
+    <a href="/" class="tape-flag back-home-flag">Back</a>
+  </div>
+</div>
+{% endblock %}

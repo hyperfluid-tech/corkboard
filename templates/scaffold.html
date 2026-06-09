@@ -5,6 +5,7 @@
   {% include "components/head.html" %}
   <title>{% block title %}{% endblock %}</title>
   <meta name="description" content="{% block description %}{% endblock %}">
+  <link rel="canonical" href="{% block canonical %}{% endblock %}">
 
   <meta property="og:title" content="{% block og_title %}{% endblock %}" />
   <meta property="og:type" content="{% block og_type %}{% endblock %}" />
@@ -16,6 +17,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{% block twitter_title %}{% endblock %}" />
   <meta name="twitter:description" content="{% block twitter_description %}{% endblock %}" />
+  {% block structured_data %}{% endblock %}
 </head>
 
 <body class="text-on-surface antialiased flex flex-col min-h-screen"

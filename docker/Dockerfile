@@ -44,6 +44,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENV RUST_LOG=corkboard=info,axum=info
 ENV CORKBOARD_PORT=3000
+ENV CORKBOARD_BASE_URL="http://localhost:3000"
 ENV CORKBOARD_ARTICLES_DIR=/app/articles
 ENV CORKBOARD_TRUNCATE_LINES=15
 ENV CORKBOARD_THUMBNAIL_SHOW_ARTICLES=false

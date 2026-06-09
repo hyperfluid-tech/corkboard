@@ -347,6 +347,34 @@ header.paper-card {
     display: inline;
 }
 
+.article-title-link {
+    text-decoration: none;
+    position: relative;
+    display: inline;
+    padding: 0.1em 0.35em;
+    margin: 0 -0.35em;
+    border-radius: 0.5em 1.2em 0.8em 1.5em / 0.5em 0.8em 1.2em 0.5em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    mix-blend-mode: multiply;
+    background: linear-gradient(104deg,
+            rgba(253, 224, 71, 0.15) 0.9%,
+            rgba(253, 224, 71, 0.75) 2.4%,
+            rgba(253, 224, 71, 0.65) 5.8%,
+            rgba(253, 224, 71, 0.75) 93%,
+            rgba(253, 224, 71, 0.35) 96%,
+            rgba(253, 224, 71, 0) 98%);
+    background-repeat: no-repeat;
+    background-position: 100% 85%;
+    background-size: 0% 88%;
+    transition: background-size 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.article-title-link:hover {
+    background-position: 0% 85%;
+    background-size: 100% 88%;
+}
+
 /* ===== SIDEBAR NAVIGATION ===== */
 .sidebar-list {
     margin-top: -8px;

@@ -10,8 +10,8 @@
 </svg>
 
 {% if app.is_dev %}
-<script src="/static/script/testing.js?v={{ app.version }}"></script>
+<script defer src="/static/script/testing.js?v={{ app.version }}"></script>
 {% endif %}
-<script src="/static/script/navigation.js?v={{ app.version }}"></script>
-<script src="/static/script/torn-paper.js?v={{ app.version }}"></script>
-<script src="/static/script/paper-shader.js?v={{ app.version }}"></script>
+<script defer src="/static/script/navigation.js?v={{ app.version }}"></script>
+<script defer src="/static/script/torn-paper.js?v={{ app.version }}"></script>
+<script defer src="/static/script/paper-shader.js?v={{ app.version }}"></script>

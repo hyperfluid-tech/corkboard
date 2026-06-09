@@ -2,10 +2,11 @@
 
 {% block title %}{{ header.blog_title }}{% endblock %}
 {% block description %}Read articles on {{ header.blog_title }} by {{ header.blog_author }}.{% endblock %}
+{% block canonical %}{{ header.base_url }}/{% endblock %}
 
 {% block og_title %}{{ header.blog_title }}{% endblock %}
 {% block og_type %}website{% endblock %}
-{% block og_url %}/{% endblock %}
+{% block og_url %}{{ header.base_url }}/{% endblock %}
 {% block og_description %}Read articles on {{ header.blog_title }} by {{ header.blog_author }}.{% endblock %}
 
 {% block thumbnail_meta %}
@@ -14,6 +15,10 @@
 
 {% block twitter_title %}{{ header.blog_title }}{% endblock %}
 {% block twitter_description %}Read articles on {{ header.blog_title }} by {{ header.blog_author }}.{% endblock %}
+
+{% block structured_data %}
+{{ structured_data|safe }}
+{% endblock %}
 
 {% block page_type %}index{% endblock %}
 

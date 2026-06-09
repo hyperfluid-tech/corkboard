@@ -1,6 +1,5 @@
 use crate::helper::capture_full_page;
 use headless_chrome::Tab;
-use std::time::Duration;
 
 pub fn assert_thumbnail_group(
     tab: &Tab,
@@ -11,8 +10,8 @@ pub fn assert_thumbnail_group(
     println!("Navigating to: {}", url);
     tab.navigate_to(&url)?;
 
-    // Wait for the WebGL paper shader to render
-    std::thread::sleep(Duration::from_millis(2000));
+    // Wait for the WebGL paper shader to signal it has finished rendering
+    tab.wait_for_element("body[data-shaders-ready]")?;
 
     capture_full_page(tab, "thumbnail", 1200, 630, override_main)
 }

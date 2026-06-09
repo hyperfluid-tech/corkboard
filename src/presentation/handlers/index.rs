@@ -1,8 +1,10 @@
 use crate::presentation::model::app_context::AppContext;
 use crate::presentation::model::sidebar_entry::SidebarEntry;
+use crate::presentation::model::structured_data::StructuredData;
 use crate::presentation::state::AppState;
 use crate::presentation::templates::components::footer_template::FooterTemplate;
 use crate::presentation::templates::components::header_template::HeaderTemplate;
+use crate::presentation::templates::components::structured_data_template::StructuredDataTemplate;
 use crate::presentation::templates::index_template::{ArticleView, IndexTemplate};
 use axum::extract::State;
 use axum::response::IntoResponse;
@@ -30,6 +32,7 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
     let header = HeaderTemplate {
         blog_title: state.settings.blog_title.clone(),
         blog_author: state.settings.blog_author.clone(),
+        base_url: state.settings.base_url.clone(),
         lang: state.settings.lang.clone(),
         is_single_article_page: false,
     };
@@ -49,6 +52,12 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
         .map(SidebarEntry::from_article)
         .collect();
 
+    let structured_data = StructuredDataTemplate::new(&StructuredData::website(
+        state.settings.blog_title.clone(),
+        state.settings.base_url.clone(),
+        state.settings.blog_author.clone(),
+    ));
+
     IndexTemplate {
         app,
         header,
@@ -56,5 +65,6 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
         articles,
         sidebar_entries,
         is_single_article_page: false,
+        structured_data,
     }
 }

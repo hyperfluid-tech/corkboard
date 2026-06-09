@@ -26,11 +26,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             OsStr::new("--no-sandbox"),
             OsStr::new("--ignore-gpu-blocklist"),
             OsStr::new("--enable-webgl"),
+            OsStr::new("--disable-dev-shm-usage"),
         ])
         .build()?;
 
     let browser = Browser::new(options)?;
-    let tab = browser.new_tab()?;
 
     let golden_dir = Path::new("tests/golden");
     if !golden_dir.exists() {
@@ -42,13 +42,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut all_matched = true;
 
     // 1. Capture Home Page Components
-    all_matched &= pages::home::assert_home_group(&tab, &base_url, override_main)?;
+    let tab_home = browser.new_tab()?;
+    all_matched &= pages::home::assert_home_group(&tab_home, &base_url, override_main)?;
+    tab_home.close_with_unload()?;
 
     // 2. Capture Thumbnail Page
-    all_matched &= pages::thumbnail::assert_thumbnail_group(&tab, &base_url, override_main)?;
+    let tab_thumb = browser.new_tab()?;
+    all_matched &= pages::thumbnail::assert_thumbnail_group(&tab_thumb, &base_url, override_main)?;
+    tab_thumb.close_with_unload()?;
 
     // 3. Capture Welcome Article Components
-    all_matched &= pages::article::assert_article_group(&tab, &base_url, override_main)?;
+    let tab_article = browser.new_tab()?;
+    all_matched &= pages::article::assert_article_group(&tab_article, &base_url, override_main)?;
+    tab_article.close_with_unload()?;
+
+    // 4. Capture 404 Page Components
+    let tab_404 = browser.new_tab()?;
+    all_matched &= pages::not_found::assert_not_found_group(&tab_404, &base_url, override_main)?;
+    tab_404.close_with_unload()?;
 
     if !all_matched {
         eprintln!("Golden test failed: visual mismatches detected.");
