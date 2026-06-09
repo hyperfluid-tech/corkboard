@@ -55,7 +55,8 @@ impl StructuredData {
 
     pub fn blog_posting(
         headline: String,
-        url: String,
+        base_url: &str,
+        slug: &str,
         date_published: chrono::NaiveDate,
         author_name: String,
         publisher_name: String,
@@ -65,7 +66,7 @@ impl StructuredData {
         Self::BlogPosting {
             context: "https://schema.org".to_string(),
             headline,
-            url,
+            url: format!("{}/article/{}", base_url, slug),
             date_published,
             author: Person {
                 r#type: "Person".to_string(),

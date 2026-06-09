@@ -58,7 +58,8 @@ pub async fn article_handler(
 
             let structured_data = StructuredDataTemplate::new(&StructuredData::blog_posting(
                 article.title.clone(),
-                format!("{}/article/{}", state.settings.base_url, article.slug),
+                &state.settings.base_url,
+                &article.slug,
                 article.date,
                 state.settings.blog_author.clone(),
                 state.settings.blog_title.clone(),
