@@ -33,12 +33,30 @@ pub fn capture_selector_padded(
     );
 
     let eval = tab.evaluate(&js, false)?;
-    let val_str = eval.value.unwrap().as_str().unwrap().to_string();
-    let parts: Vec<f64> = val_str
-        .split(',')
-        .map(|s| s.parse::<f64>().unwrap())
-        .collect();
 
+    // Safely extract the string, catching any JS evaluation errors
+    let val_str = match eval.value.as_ref().and_then(|v| v.as_str()) {
+        Some(v) if v.is_empty() => {
+            return Err(format!(
+                "❌ JS Error: Element '{}' not found by querySelector!",
+                selector
+            )
+            .into());
+        }
+        Some(v) => v.to_string(),
+        None => {
+            return Err(format!("❌ JS Evaluation Failed! Raw output: {:?}", eval).into());
+        }
+    };
+
+    // Safely parse the floats
+    let parts: Result<Vec<f64>, _> = val_str.split(',').map(|s| s.parse::<f64>()).collect();
+    let parts = match parts {
+        Ok(p) => p,
+        Err(e) => {
+            return Err(format!("❌ Float Parse Error: '{}'. JS returned: {}", e, val_str).into());
+        }
+    };
     let viewport = headless_chrome::protocol::cdp::Page::Viewport {
         x: parts[0],
         y: parts[1],

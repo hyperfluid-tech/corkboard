@@ -20,7 +20,15 @@ impl IntoResponse for NotFoundTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => (StatusCode::NOT_FOUND, Html(html)).into_response(),
-            Err(_) => (StatusCode::NOT_FOUND, "Page not found").into_response(),
+            Err(e) => {
+                // ⚠️ PRINT THE EXACT RENDER ERROR
+                println!("❌ ASKAMA RENDER ERROR: {}", e);
+                (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    format!("Render Error: {}", e),
+                )
+                    .into_response()
+            }
         }
     }
 }
