@@ -3,14 +3,18 @@ use headless_chrome::Tab;
 pub fn assert_not_found_group(
     tab: &headless_chrome::Tab,
     base_url: &str,
-    override_main: bool,
+    _override_main: bool,
 ) -> Result<bool, Box<dyn std::error::Error>> {
     let url_404 = format!("{}/this-page-does-not-exist", base_url);
     println!("Navigating to: {}", url_404);
-    tab.navigate_to(&url_404)?;
-    tab.wait_until_navigated()?;
 
-    // 🔍 X-RAY: Dump the exact HTML Chrome is seeing to the GitHub Actions console
+    // 1. Navigate
+    tab.navigate_to(&url_404)?;
+
+    // Wait a brief moment to allow the server to respond and Chrome to parse
+    std::thread::sleep(std::time::Duration::from_secs(2));
+
+    // 2. Dump the exact HTML that Chrome has loaded into the DOM
     if let Ok(eval) = tab.evaluate("document.documentElement.outerHTML", false) {
         if let Some(val) = eval.value {
             if let Some(html_str) = val.as_str() {
@@ -20,18 +24,12 @@ pub fn assert_not_found_group(
                 );
             }
         }
+    } else {
+        println!(
+            "================ PAGE HTML DUMP ================\nCOULD NOT EVALUATE JAVASCRIPT - PAGE MIGHT BE DEAD/BLANK\n================================================"
+        );
     }
 
-    println!("Waiting for shaders...");
-    // If it times out, it will crash here. But we will have already printed the HTML!
-    tab.wait_for_element("body[data-shaders-ready]")?;
-
-    println!("Shaders ready! Capturing card...");
-    crate::helper::capture_selector_padded(
-        tab,
-        ".article-card-wrapper",
-        "not_found_card",
-        16.0,
-        override_main,
-    )
+    // 3. Intentionally crash the runner so we can read the logs in GitHub Actions
+    panic!("DEBUG: Check the 'PAGE HTML DUMP' above to see exactly what Chrome is looking at!");
 }
