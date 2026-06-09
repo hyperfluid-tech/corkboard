@@ -1,5 +1,6 @@
 use super::components::footer_template::FooterTemplate;
 use super::components::header_template::HeaderTemplate;
+use crate::domain::model::error::AppError;
 use crate::presentation::model::app_context::AppContext;
 use crate::presentation::model::sidebar_entry::SidebarEntry;
 use crate::presentation::templates::index_template::ArticleView;
@@ -22,7 +23,7 @@ impl IntoResponse for ArticleTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),
-            Err(err) => crate::domain::model::error::AppError::TemplateError(err).into_response(),
+            Err(err) => AppError::TemplateError(err).into_response(),
         }
     }
 }

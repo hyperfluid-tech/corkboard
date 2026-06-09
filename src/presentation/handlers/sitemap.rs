@@ -13,9 +13,7 @@ struct SitemapTemplate<'a> {
     articles: &'a [Article],
 }
 
-pub async fn sitemap_handler(
-    State(state): State<AppState>,
-) -> Result<impl IntoResponse, AppError> {
+pub async fn sitemap_handler(State(state): State<AppState>) -> Result<impl IntoResponse, AppError> {
     let template = SitemapTemplate {
         base_url: &state.settings.base_url,
         articles: &state.articles,

@@ -45,12 +45,20 @@ impl IntoResponse for AppError {
             AppError::RobotsGeneration(err) => {
                 let error_message = format!("Error generating robots.txt: {}", err);
                 tracing::error!("{}", error_message);
-                (StatusCode::INTERNAL_SERVER_ERROR, "Error generating robots.txt").into_response()
+                (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Error generating robots.txt",
+                )
+                    .into_response()
             }
             AppError::SitemapGeneration(err) => {
                 let error_message = format!("Error generating sitemap: {}", err);
                 tracing::error!("{}", error_message);
-                (StatusCode::INTERNAL_SERVER_ERROR, "Error generating sitemap").into_response()
+                (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Error generating sitemap",
+                )
+                    .into_response()
             }
         }
     }

@@ -1,4 +1,5 @@
 use super::components::header_template::HeaderTemplate;
+use crate::domain::model::error::AppError;
 use crate::presentation::model::app_context::AppContext;
 use crate::presentation::templates::index_template::ArticleView;
 use askama::Template;
@@ -17,7 +18,7 @@ impl IntoResponse for ThumbnailTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => Html(html).into_response(),
-            Err(err) => crate::domain::model::error::AppError::TemplateError(err).into_response(),
+            Err(err) => AppError::TemplateError(err).into_response(),
         }
     }
 }

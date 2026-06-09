@@ -11,9 +11,7 @@ struct RobotsTemplate<'a> {
     base_url: &'a str,
 }
 
-pub async fn robots_handler(
-    State(state): State<AppState>,
-) -> Result<impl IntoResponse, AppError> {
+pub async fn robots_handler(State(state): State<AppState>) -> Result<impl IntoResponse, AppError> {
     let template = RobotsTemplate {
         base_url: &state.settings.base_url,
     };

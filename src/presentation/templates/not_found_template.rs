@@ -1,5 +1,6 @@
 use super::components::footer_template::FooterTemplate;
 use super::components::header_template::HeaderTemplate;
+use crate::domain::model::error::AppError;
 use crate::presentation::model::app_context::AppContext;
 use crate::presentation::model::sidebar_entry::SidebarEntry;
 use askama::Template;
@@ -20,15 +21,7 @@ impl IntoResponse for NotFoundTemplate {
     fn into_response(self) -> Response {
         match self.render() {
             Ok(html) => (StatusCode::NOT_FOUND, Html(html)).into_response(),
-            Err(e) => {
-                // ⚠️ PRINT THE EXACT RENDER ERROR
-                println!("❌ ASKAMA RENDER ERROR: {}", e);
-                (
-                    StatusCode::INTERNAL_SERVER_ERROR,
-                    format!("Render Error: {}", e),
-                )
-                    .into_response()
-            }
+            Err(err) => AppError::TemplateError(err).into_response(),
         }
     }
 }
