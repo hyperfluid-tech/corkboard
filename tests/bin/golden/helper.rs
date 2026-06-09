@@ -69,7 +69,10 @@ pub fn capture_selector_padded(
     // Scroll to the element instantly to make sure it's in the viewport,
     // avoiding massive viewport heights that crash the Linux Chrome GPU process.
     // We use `behavior: 'instant'` to override the CSS `scroll-behavior: smooth`.
-    let scroll_js = format!("window.scrollTo({{ left: {}, top: {}, behavior: 'instant' }});", parts[0], parts[1]);
+    let scroll_js = format!(
+        "window.scrollTo({{ left: {}, top: {}, behavior: 'instant' }});",
+        parts[0], parts[1]
+    );
     tab.evaluate(&scroll_js, false)?;
 
     // Give it a tiny moment to reflow the layout with the new viewport height

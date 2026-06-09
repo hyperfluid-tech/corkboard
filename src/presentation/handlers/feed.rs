@@ -1,4 +1,5 @@
 use crate::domain::model::article::Article;
+use crate::domain::model::error::AppError;
 use crate::presentation::state::AppState;
 use askama::Template;
 use axum::extract::State;
@@ -14,7 +15,7 @@ struct FeedTemplate<'a> {
     articles: &'a [Article],
 }
 
-pub async fn feed_handler(State(state): State<AppState>) -> Response {
+pub async fn feed_handler(State(state): State<AppState>) -> Result<impl IntoResponse, AppError> {
     let template = FeedTemplate {
         base_url: &state.settings.base_url,
         blog_title: &state.settings.blog_title,
@@ -22,15 +23,10 @@ pub async fn feed_handler(State(state): State<AppState>) -> Response {
         articles: &state.articles,
     };
 
-    match template.render() {
-        Ok(xml) => (
-            [(header::CONTENT_TYPE, "application/rss+xml; charset=utf-8")],
-            xml,
-        )
-            .into_response(),
-        Err(_) => Response::builder()
-            .status(500)
-            .body("Error generating feed".into())
-            .unwrap(),
-    }
+    let xml = template.render().map_err(AppError::FeedGeneration)?;
+
+    Ok((
+        [(header::CONTENT_TYPE, "application/rss+xml; charset=utf-8")],
+        xml,
+    ))
 }

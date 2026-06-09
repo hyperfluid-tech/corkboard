@@ -5,6 +5,7 @@ use axum::response::{IntoResponse, Response};
 pub enum AppError {
     TemplateError(askama::Error),
     InvalidConfig(String),
+    FeedGeneration(askama::Error),
 }
 
 impl std::fmt::Display for AppError {
@@ -12,6 +13,7 @@ impl std::fmt::Display for AppError {
         match self {
             AppError::TemplateError(err) => write!(f, "Template error: {}", err),
             AppError::InvalidConfig(err) => write!(f, "Invalid configuration: {}", err),
+            AppError::FeedGeneration(err) => write!(f, "Feed generation error: {}", err),
         }
     }
 }
@@ -30,6 +32,11 @@ impl IntoResponse for AppError {
                 let error_message = format!("Invalid configuration: {}", err);
                 tracing::error!("{}", error_message);
                 (StatusCode::INTERNAL_SERVER_ERROR, error_message).into_response()
+            }
+            AppError::FeedGeneration(err) => {
+                let error_message = format!("Error generating feed: {}", err);
+                tracing::error!("{}", error_message);
+                (StatusCode::INTERNAL_SERVER_ERROR, "Error generating feed").into_response()
             }
         }
     }
