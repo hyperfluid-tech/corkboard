@@ -8,6 +8,7 @@ pub enum AppError {
     FeedGeneration(askama::Error),
     RobotsGeneration(askama::Error),
     SitemapGeneration(askama::Error),
+    GitError(String),
 }
 
 impl std::fmt::Display for AppError {
@@ -18,6 +19,7 @@ impl std::fmt::Display for AppError {
             AppError::FeedGeneration(err) => write!(f, "Feed generation error: {}", err),
             AppError::RobotsGeneration(err) => write!(f, "Robots generation error: {}", err),
             AppError::SitemapGeneration(err) => write!(f, "Sitemap generation error: {}", err),
+            AppError::GitError(err) => write!(f, "Git error: {}", err),
         }
     }
 }
@@ -59,6 +61,11 @@ impl IntoResponse for AppError {
                     "Error generating sitemap",
                 )
                     .into_response()
+            }
+            AppError::GitError(err) => {
+                let error_message = format!("Git error: {}", err);
+                tracing::error!("{}", error_message);
+                (StatusCode::INTERNAL_SERVER_ERROR, "Git error").into_response()
             }
         }
     }

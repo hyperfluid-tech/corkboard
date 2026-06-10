@@ -30,6 +30,28 @@ pub struct Settings {
     #[serde(default)]
     pub social_links: Vec<url::Url>,
     pub thumbnail_show_articles: bool,
+    pub git: Option<GitSettings>,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+pub struct GitSettings {
+    pub link: String,
+    #[serde(default = "default_git_folder")]
+    pub folder: String,
+    #[serde(default)]
+    pub username: Option<String>,
+    #[serde(default)]
+    pub password: Option<String>,
+    #[serde(default = "default_git_branch")]
+    pub branch: String,
+}
+
+fn default_git_folder() -> String {
+    String::from("")
+}
+
+fn default_git_branch() -> String {
+    String::from("main")
 }
 
 impl Settings {

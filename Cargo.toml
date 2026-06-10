@@ -21,6 +21,9 @@ tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 headless_chrome = "1.0.21"
 url = { version = "2.5.8", features = ["serde"] }
+gix = { version = "0.84", features = ["blocking-network-client", "blocking-http-transport-curl"] }
+tempfile = "3.27.0"
+
 
 
 [[bin]]

@@ -14,3 +14,10 @@ thumbnail_show_articles = false
 #     "https://twitter.com/your-username"
 # ]
 
+# [git]
+# link = "https://github.com/user/repo"
+# folder = ""
+# username = "user"
+# password = "pat"
+# branch = "main"
+
