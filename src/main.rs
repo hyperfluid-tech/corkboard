@@ -77,13 +77,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         None
     };
 
-    let mut repos: Vec<&dyn ArticleRepository> = vec![&repo];
-    if let Some(ref gr) = git_repo {
-        repos.push(gr);
+    let mut repos: Vec<Box<dyn ArticleRepository + Send + Sync>> = vec![Box::new(repo)];
+    if let Some(gr) = git_repo {
+        repos.push(Box::new(gr));
     }
 
-    let article_service = ArticleService::new();
-    let articles = article_service.merge_and_deduplicate(&repos).map_err(|e| {
+    let article_service = ArticleService::new(repos);
+    let articles = article_service.get_all_articles().map_err(|e| {
         tracing::error!("Failed to load and merge articles: {}", e);
         e
     })?;
