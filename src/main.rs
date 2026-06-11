@@ -81,11 +81,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    let article_service = ArticleService::new(repos);
-    let articles = article_service.get_all_articles().map_err(|e| {
-        tracing::error!("Failed to load and merge articles: {}", e);
-        e
-    })?;
+    let articles = {
+        let article_service = ArticleService::new(repos);
+        article_service.get_all_articles().map_err(|e| {
+            tracing::error!("Failed to load and merge articles: {}", e);
+            e
+        })?
+    };
 
     tracing::info!("Loaded {} articles successfully.", articles.len());
 
