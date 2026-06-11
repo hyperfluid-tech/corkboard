@@ -1,13 +1,13 @@
-use super::local_storage_markdown_data_source::LocalStorageMarkdownDataSource;
 use super::markdown_data_source::MarkdownDataSource;
 use crate::data::model::markdown_document::MarkdownDocument;
+use crate::data::usecase::get_markdown_files_from_directory_usecase::GetMarkdownFilesFromDirectoryUsecase;
 use crate::domain::model::error::AppError;
 use std::path::PathBuf;
 use tempfile::TempDir;
 
 pub struct GitMarkdownDataSource {
     _temp_dir: TempDir,
-    local_source: LocalStorageMarkdownDataSource,
+    articles_path: String,
 }
 
 impl GitMarkdownDataSource {
@@ -52,12 +52,9 @@ impl GitMarkdownDataSource {
             articles_path.push(folder);
         }
 
-        let local_source =
-            LocalStorageMarkdownDataSource::new(articles_path.to_string_lossy().to_string());
-
         Ok(Self {
             _temp_dir: temp_dir,
-            local_source,
+            articles_path: articles_path.to_string_lossy().to_string(),
         })
     }
 }
@@ -97,6 +94,6 @@ fn inject_credentials(
 
 impl MarkdownDataSource for GitMarkdownDataSource {
     fn fetch_all(&self) -> Result<Vec<MarkdownDocument>, Box<dyn std::error::Error>> {
-        self.local_source.fetch_all()
+        GetMarkdownFilesFromDirectoryUsecase::execute(&self.articles_path)
     }
 }
