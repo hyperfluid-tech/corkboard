@@ -131,8 +131,9 @@ fn capture_screenshot(port: u16) -> Result<Vec<u8>, String> {
         .map_err(|e| format!("Navigation timed out: {:?}", e))?;
 
     // Wait for the WebGL paper shader to signal it has finished rendering
-    if let Err(_) = tab
+    if tab
         .wait_for_element_with_custom_timeout("body[data-shaders-ready]", Duration::from_secs(30))
+        .is_err()
     {
         tracing::warn!(
             "Shader readiness signal not detected within timeout, proceeding with screenshot"

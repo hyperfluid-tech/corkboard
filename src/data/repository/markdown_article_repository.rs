@@ -72,7 +72,7 @@ impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS>
             });
         }
 
-        articles.sort_by(|a, b| b.date.cmp(&a.date));
+        articles.sort_by_key(|b| std::cmp::Reverse(b.date));
 
         Ok(articles)
     }

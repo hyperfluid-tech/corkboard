@@ -28,12 +28,11 @@ pub async fn not_found_handler(State(state): State<AppState>) -> impl IntoRespon
         &state.settings.social_links,
     );
 
-    let template = NotFoundTemplate {
+    NotFoundTemplate {
         app,
         header,
         footer,
         sidebar_entries: Vec::new(),
         is_single_article_page: false,
-    };
-    template
+    }
 }
