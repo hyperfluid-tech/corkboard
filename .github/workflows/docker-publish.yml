@@ -39,6 +39,27 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Extract metadata (tags, labels) for Git variant
+        id: meta_git
+        uses: docker/metadata-action@v5
+        with:
+          images: gilnobrega/corkboard
+          flavor: |
+            latest=auto
+            suffix=-git,onlatest=true
+
+      - name: Build and push Git variant Docker image
+        id: push_git
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/Dockerfile
+          push: true
+          build-args: |
+            CARGO_FEATURES=git
+          tags: ${{ steps.meta_git.outputs.tags }}
+          labels: ${{ steps.meta_git.outputs.labels }}
+
       - name: Update Docker Hub Description
         uses: peter-evans/dockerhub-description@v4
         with:
@@ -52,3 +73,11 @@ jobs:
           subject-name: index.docker.io/gilnobrega/corkboard
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
+      - name: Generate artifact attestation for Git variant
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: index.docker.io/gilnobrega/corkboard
+          subject-digest: ${{ steps.push_git.outputs.digest }}
+          push-to-registry: true
+

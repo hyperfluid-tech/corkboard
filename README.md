@@ -152,6 +152,9 @@ thumbnail_show_articles = false
 
 Every setting can be configured via a `config.toml` file or overridden using an environment variable prefixed with `CORKBOARD_`. For nested configuration fields like `git`, the environment variable should use a double underscore separator (`__`), for example: `CORKBOARD_GIT__LINK`.
 
+<details>
+<summary><strong>Advanced Configuration & Environment Variables</strong></summary>
+
 | Setting | Environment Variable | Default | Description |
 | --- | --- | --- | --- |
 | `blog_title` | `CORKBOARD_BLOG_TITLE` | `My blog` | Shown in the header and page title |
@@ -169,6 +172,8 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | `git.username` | `CORKBOARD_GIT__USERNAME` | *(none)* | (Requires Git variant/feature) Optional username for basic auth (only needed if not public repository) |
 | `git.password` | `CORKBOARD_GIT__PASSWORD` | *(none)* | (Requires Git variant/feature) Optional password or PAT (Personal Access Token) for authenticated access |
 | `git.branch` | `CORKBOARD_GIT__BRANCH` | `main` | (Requires Git variant/feature) Target git branch name to check out |
+
+</details>
 
 ## Contributing
 
