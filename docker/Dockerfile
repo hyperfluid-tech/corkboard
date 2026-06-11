@@ -19,7 +19,8 @@ RUN rustup target add x86_64-unknown-linux-musl
 COPY . .
 COPY --from=tailwind-builder /build/templates/style/tailwind.css /usr/src/corkboard/templates/style/tailwind.css
 
-RUN cargo build --release --target x86_64-unknown-linux-musl
+ARG CARGO_FEATURES=""
+RUN cargo build --release --target x86_64-unknown-linux-musl --features "${CARGO_FEATURES}"
 
 FROM alpine:latest
 

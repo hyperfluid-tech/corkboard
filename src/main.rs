@@ -6,6 +6,7 @@ mod domain;
 mod infrastructure;
 mod presentation;
 
+#[cfg(feature = "git")]
 use data::data_source::markdown::git_markdown_data_source::GitMarkdownDataSource;
 use data::data_source::markdown::local_storage_markdown_data_source::LocalStorageMarkdownDataSource;
 use data::repository::markdown_article_repository::MarkdownArticleRepository;
@@ -55,7 +56,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let data_source = LocalStorageMarkdownDataSource::new(settings.articles_dir.clone());
     let repo = MarkdownArticleRepository::new(data_source, settings.truncate_lines);
 
-    let git_repo = if let Some(git) = &settings.git {
+    #[allow(unused_mut)]
+    let mut repos: Vec<Box<dyn ArticleRepository + Send + Sync>> = vec![Box::new(repo)];
+
+    #[cfg(feature = "git")]
+    if let Some(git) = &settings.git {
         tracing::info!("Initializing Git data source...");
         match GitMarkdownDataSource::new(
             &git.link,
@@ -64,22 +69,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             git.password.as_deref(),
             &git.branch,
         ) {
-            Ok(git_source) => Some(MarkdownArticleRepository::new(
-                git_source,
-                settings.truncate_lines,
-            )),
+            Ok(git_source) => {
+                repos.push(Box::new(MarkdownArticleRepository::new(
+                    git_source,
+                    settings.truncate_lines,
+                )));
+            }
             Err(e) => {
                 tracing::error!("Failed to initialize Git data source: {}", e);
-                None
             }
         }
-    } else {
-        None
-    };
-
-    let mut repos: Vec<Box<dyn ArticleRepository + Send + Sync>> = vec![Box::new(repo)];
-    if let Some(gr) = git_repo {
-        repos.push(Box::new(gr));
     }
 
     let article_service = ArticleService::new(repos);

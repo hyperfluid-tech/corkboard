@@ -30,9 +30,11 @@ pub struct Settings {
     #[serde(default)]
     pub social_links: Vec<url::Url>,
     pub thumbnail_show_articles: bool,
+    #[cfg(feature = "git")]
     pub git: Option<GitSettings>,
 }
 
+#[cfg(feature = "git")]
 #[derive(Debug, Deserialize, Clone)]
 pub struct GitSettings {
     pub link: String,
@@ -46,10 +48,12 @@ pub struct GitSettings {
     pub branch: String,
 }
 
+#[cfg(feature = "git")]
 fn default_git_folder() -> String {
     String::from("")
 }
 
+#[cfg(feature = "git")]
 fn default_git_branch() -> String {
     String::from("main")
 }

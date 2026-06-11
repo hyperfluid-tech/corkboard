@@ -28,7 +28,11 @@ A skeuomorphic blog platform built with Rust. Write Markdown files, and Corkboar
 
 ### Deploying with Docker (Recommended)
 
-Create a `docker-compose.yml` file:
+Corkboard is available in two Docker image variants:
+1. **Default/Lean Variant (`gilnobrega/corkboard:latest`):** A lightweight image designed only for loading local Markdown files.
+2. **Git-Enabled Variant (`gilnobrega/corkboard:latest-git`):** A variant compiled with the Git feature to automatically pull articles from a remote Git repository.
+
+Create a `docker-compose.yml` file using your preferred variant (e.g., the lean version):
 
 ```yaml
 version: '3.8'
@@ -71,10 +75,16 @@ npm install
 npm run build:css
 ```
 
-Then run the application:
+Then run the application (defaults to local-only files):
 
 ```bash
 cargo run
+```
+
+If you want to run the application with the Git data source enabled:
+
+```bash
+cargo run --features git
 ```
 
 If you are modifying HTML templates or styles, you can run the CSS compiler in watch mode in a separate terminal:
@@ -154,11 +164,11 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | `truncate_lines` | `CORKBOARD_TRUNCATE_LINES` | `15` | Markdown lines shown per card before truncation |
 | `thumbnail_show_articles` | `CORKBOARD_THUMBNAIL_SHOW_ARTICLES` | `false` | Whether to show article snippets in the blog's generated thumbnail |
 | `social_links` | `CORKBOARD_SOCIAL_LINKS` | *(empty list)* | List of social/external URLs to show in the footer (comma-separated in env) |
-| `git.link` | `CORKBOARD_GIT__LINK` | *(none)* | Git repository HTTPS/SSH URL to clone and load remote articles from |
-| `git.folder` | `CORKBOARD_GIT__FOLDER` | `""` | Subfolder within the git repository containing articles (defaults to root) |
-| `git.username` | `CORKBOARD_GIT__USERNAME` | *(none)* | Optional username for basic auth (only needed if not public repository) |
-| `git.password` | `CORKBOARD_GIT__PASSWORD` | *(none)* | Optional password or PAT (Personal Access Token) for authenticated access |
-| `git.branch` | `CORKBOARD_GIT__BRANCH` | `main` | Target git branch name to check out |
+| `git.link` | `CORKBOARD_GIT__LINK` | *(none)* | (Requires Git variant/feature) Git repository HTTPS/SSH URL to clone and load remote articles from |
+| `git.folder` | `CORKBOARD_GIT__FOLDER` | `""` | (Requires Git variant/feature) Subfolder within the git repository containing articles (defaults to root) |
+| `git.username` | `CORKBOARD_GIT__USERNAME` | *(none)* | (Requires Git variant/feature) Optional username for basic auth (only needed if not public repository) |
+| `git.password` | `CORKBOARD_GIT__PASSWORD` | *(none)* | (Requires Git variant/feature) Optional password or PAT (Personal Access Token) for authenticated access |
+| `git.branch` | `CORKBOARD_GIT__BRANCH` | `main` | (Requires Git variant/feature) Target git branch name to check out |
 
 ## Contributing
 
