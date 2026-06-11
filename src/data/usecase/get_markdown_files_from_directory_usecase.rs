@@ -12,7 +12,7 @@ impl GetMarkdownFilesFromDirectoryUsecase {
         for path in paths {
             let path = path?.path();
 
-            if !path.is_file() || path.extension().map_or(true, |ext| ext != "md") {
+            if !path.is_file() || path.extension().is_none_or(|ext| ext != "md") {
                 continue;
             }
 

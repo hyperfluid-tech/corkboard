@@ -1,3 +1,4 @@
+use crate::domain::model::article::Article;
 use serde::Serialize;
 
 #[derive(Debug, Clone, Serialize)]
@@ -54,20 +55,16 @@ impl StructuredData {
     }
 
     pub fn blog_posting(
-        headline: String,
+        article: &Article,
         base_url: &str,
-        slug: &str,
-        date_published: chrono::NaiveDate,
         author_name: String,
         publisher_name: String,
-        description: Option<String>,
-        image: Option<String>,
     ) -> Self {
         Self::BlogPosting {
             context: "https://schema.org".to_string(),
-            headline,
-            url: format!("{}/article/{}", base_url, slug),
-            date_published,
+            headline: article.title.clone(),
+            url: format!("{}/article/{}", base_url, article.slug),
+            date_published: article.date,
             author: Person {
                 r#type: "Person".to_string(),
                 name: author_name,
@@ -76,8 +73,8 @@ impl StructuredData {
                 r#type: "Organization".to_string(),
                 name: publisher_name,
             },
-            description,
-            image,
+            description: article.description.clone(),
+            image: article.thumbnail.clone(),
         }
     }
 }

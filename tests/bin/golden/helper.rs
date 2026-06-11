@@ -102,7 +102,7 @@ pub fn capture_selector_padded(
 
         if main_path.exists() {
             let output = std::process::Command::new("compare")
-                .args(&[
+                .args([
                     "-metric",
                     "AE",
                     "-fuzz",
@@ -208,7 +208,7 @@ pub fn capture_full_page(
 
         if main_path.exists() {
             let output = std::process::Command::new("compare")
-                .args(&[
+                .args([
                     "-metric",
                     "AE",
                     "-fuzz",
