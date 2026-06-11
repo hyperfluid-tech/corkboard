@@ -131,9 +131,16 @@ thumbnail_show_articles = false
 #     "https://linkedin.com/in/your-username",
 #     "https://twitter.com/your-username"
 # ]
+
+# [git]
+# link = "https://github.com/user/repo"
+# folder = ""
+# username = "user"
+# password = "pat"
+# branch = "main"
 ```
 
-Every setting can be configured via a `config.toml` file or overridden using an environment variable prefixed with `CORKBOARD_`.
+Every setting can be configured via a `config.toml` file or overridden using an environment variable prefixed with `CORKBOARD_`. For nested configuration fields like `git`, the environment variable should use a double underscore separator (`__`), for example: `CORKBOARD_GIT__LINK`.
 
 | Setting | Environment Variable | Default | Description |
 | --- | --- | --- | --- |
@@ -147,6 +154,11 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | `truncate_lines` | `CORKBOARD_TRUNCATE_LINES` | `15` | Markdown lines shown per card before truncation |
 | `thumbnail_show_articles` | `CORKBOARD_THUMBNAIL_SHOW_ARTICLES` | `false` | Whether to show article snippets in the blog's generated thumbnail |
 | `social_links` | `CORKBOARD_SOCIAL_LINKS` | *(empty list)* | List of social/external URLs to show in the footer (comma-separated in env) |
+| `git.link` | `CORKBOARD_GIT__LINK` | *(none)* | Git repository HTTPS/SSH URL to clone and load remote articles from |
+| `git.folder` | `CORKBOARD_GIT__FOLDER` | `""` | Subfolder within the git repository containing articles (defaults to root) |
+| `git.username` | `CORKBOARD_GIT__USERNAME` | *(none)* | Optional username for basic auth (only needed if not public repository) |
+| `git.password` | `CORKBOARD_GIT__PASSWORD` | *(none)* | Optional password or PAT (Personal Access Token) for authenticated access |
+| `git.branch` | `CORKBOARD_GIT__BRANCH` | `main` | Target git branch name to check out |
 
 ## Contributing
 

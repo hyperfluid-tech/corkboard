@@ -74,6 +74,7 @@ impl Settings {
             .add_source(File::with_name("config").required(false))
             .add_source(
                 config::Environment::with_prefix("CORKBOARD")
+                    .separator("__")
                     .list_separator(",")
                     .with_list_parse_key("social_links")
                     .try_parsing(true),
