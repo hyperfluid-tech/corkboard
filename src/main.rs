@@ -6,9 +6,12 @@ mod domain;
 mod infrastructure;
 mod presentation;
 
+#[cfg(feature = "git")]
+use data::data_source::markdown::git_markdown_data_source::GitMarkdownDataSource;
 use data::data_source::markdown::local_storage_markdown_data_source::LocalStorageMarkdownDataSource;
 use data::repository::markdown_article_repository::MarkdownArticleRepository;
 use domain::repository::article_repository::ArticleRepository;
+use domain::service::article_service::ArticleService;
 use infrastructure::config::Settings;
 use presentation::handlers;
 use presentation::state::AppState;
@@ -52,10 +55,40 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing::info!("Parsing articles from '{}'...", settings.articles_dir);
     let data_source = LocalStorageMarkdownDataSource::new(settings.articles_dir.clone());
     let repo = MarkdownArticleRepository::new(data_source, settings.truncate_lines);
-    let articles = repo.load_all().map_err(|e| {
-        tracing::error!("Failed to load articles: {}", e);
-        e
-    })?;
+
+    #[allow(unused_mut)]
+    let mut repos: Vec<Box<dyn ArticleRepository + Send + Sync>> = vec![Box::new(repo)];
+
+    #[cfg(feature = "git")]
+    if let Some(git) = &settings.git {
+        tracing::info!("Initializing Git data source...");
+        match GitMarkdownDataSource::new(
+            &git.link,
+            &git.folder,
+            git.username.as_deref(),
+            git.password.as_deref(),
+            &git.branch,
+        ) {
+            Ok(git_source) => {
+                repos.push(Box::new(MarkdownArticleRepository::new(
+                    git_source,
+                    settings.truncate_lines,
+                )));
+            }
+            Err(e) => {
+                tracing::error!("Failed to initialize Git data source: {}", e);
+            }
+        }
+    }
+
+    let articles = {
+        let article_service = ArticleService::new(repos);
+        article_service.get_all_articles().map_err(|e| {
+            tracing::error!("Failed to load and merge articles: {}", e);
+            e
+        })?
+    };
+
     tracing::info!("Loaded {} articles successfully.", articles.len());
 
     let state = AppState {

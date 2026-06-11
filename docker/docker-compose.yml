@@ -5,6 +5,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+      # args:
+      #   - CARGO_FEATURES=git # Uncomment to build with Git support
     container_name: corkboard_blog
     restart: unless-stopped
     ports:
@@ -28,3 +30,9 @@ services:
       # - CORKBOARD_SOCIAL_LINKS=https://github.com/your-username,https://linkedin.com/in/your-username,https://twitter.com/your-username
       # - CORKBOARD_BLOG_LICENSE=CC 4.0 BY-SA
       # - CORKBOARD_BLOG_LICENSE_URL=https://creativecommons.org/licenses/by-sa/4.0/
+      # Git Repository Settings (Requires building with CARGO_FEATURES=git)
+      # - CORKBOARD_GIT__LINK=https://github.com/user/repo.git
+      # - CORKBOARD_GIT__FOLDER=
+      # - CORKBOARD_GIT__USERNAME=
+      # - CORKBOARD_GIT__PASSWORD=
+      # - CORKBOARD_GIT__BRANCH=main

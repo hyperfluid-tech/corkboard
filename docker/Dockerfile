@@ -19,7 +19,8 @@ RUN rustup target add x86_64-unknown-linux-musl
 COPY . .
 COPY --from=tailwind-builder /build/templates/style/tailwind.css /usr/src/corkboard/templates/style/tailwind.css
 
-RUN cargo build --release --target x86_64-unknown-linux-musl
+ARG CARGO_FEATURES=""
+RUN cargo build --release --target x86_64-unknown-linux-musl --features "${CARGO_FEATURES}"
 
 FROM alpine:latest
 
@@ -51,6 +52,12 @@ ENV CORKBOARD_THUMBNAIL_SHOW_ARTICLES=false
 ENV CORKBOARD_SOCIAL_LINKS=""
 ENV CORKBOARD_BLOG_LICENSE="CC 4.0 BY-SA"
 ENV CORKBOARD_BLOG_LICENSE_URL="https://creativecommons.org/licenses/by-sa/4.0/"
+# Git Repository Settings (Optional)
+# ENV CORKBOARD_GIT__LINK=""
+# ENV CORKBOARD_GIT__FOLDER=""
+# ENV CORKBOARD_GIT__USERNAME=""
+# ENV CORKBOARD_GIT__PASSWORD=""
+# ENV CORKBOARD_GIT__BRANCH="main"
 
 EXPOSE 3000
 

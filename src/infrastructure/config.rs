@@ -30,6 +30,32 @@ pub struct Settings {
     #[serde(default)]
     pub social_links: Vec<url::Url>,
     pub thumbnail_show_articles: bool,
+    #[cfg(feature = "git")]
+    pub git: Option<GitSettings>,
+}
+
+#[cfg(feature = "git")]
+#[derive(Debug, Deserialize, Clone)]
+pub struct GitSettings {
+    pub link: String,
+    #[serde(default = "default_git_folder")]
+    pub folder: String,
+    #[serde(default)]
+    pub username: Option<String>,
+    #[serde(default)]
+    pub password: Option<String>,
+    #[serde(default = "default_git_branch")]
+    pub branch: String,
+}
+
+#[cfg(feature = "git")]
+fn default_git_folder() -> String {
+    String::from("")
+}
+
+#[cfg(feature = "git")]
+fn default_git_branch() -> String {
+    String::from("main")
 }
 
 impl Settings {
@@ -52,6 +78,7 @@ impl Settings {
             .add_source(File::with_name("config").required(false))
             .add_source(
                 config::Environment::with_prefix("CORKBOARD")
+                    .separator("__")
                     .list_separator(",")
                     .with_list_parse_key("social_links")
                     .try_parsing(true),
