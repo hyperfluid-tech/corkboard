@@ -155,6 +155,8 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 <details>
 <summary><strong>Advanced Configuration & Environment Variables</strong></summary>
 
+### Core Settings
+
 | Setting | Environment Variable | Default | Description |
 | --- | --- | --- | --- |
 | `blog_title` | `CORKBOARD_BLOG_TITLE` | `My blog` | Shown in the header and page title |
@@ -167,11 +169,18 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | `truncate_lines` | `CORKBOARD_TRUNCATE_LINES` | `15` | Markdown lines shown per card before truncation |
 | `thumbnail_show_articles` | `CORKBOARD_THUMBNAIL_SHOW_ARTICLES` | `false` | Whether to show article snippets in the blog's generated thumbnail |
 | `social_links` | `CORKBOARD_SOCIAL_LINKS` | *(empty list)* | List of social/external URLs to show in the footer (comma-separated in env) |
-| `git.link` | `CORKBOARD_GIT__LINK` | *(none)* | (Requires Git variant/feature) Git repository HTTPS/SSH URL to clone and load remote articles from |
-| `git.folder` | `CORKBOARD_GIT__FOLDER` | `""` | (Requires Git variant/feature) Subfolder within the git repository containing articles (defaults to root) |
-| `git.username` | `CORKBOARD_GIT__USERNAME` | *(none)* | (Requires Git variant/feature) Optional username for basic auth (only needed if not public repository) |
-| `git.password` | `CORKBOARD_GIT__PASSWORD` | *(none)* | (Requires Git variant/feature) Optional password or PAT (Personal Access Token) for authenticated access |
-| `git.branch` | `CORKBOARD_GIT__BRANCH` | `main` | (Requires Git variant/feature) Target git branch name to check out |
+
+### Git Settings
+> [!NOTE]
+> These settings require building with the `git` feature (e.g. `cargo run --features git`), or using the `latest-git` Docker image.
+
+| Setting | Environment Variable | Default | Description |
+| --- | --- | --- | --- |
+| `git.link` | `CORKBOARD_GIT__LINK` | *(none)* | Git repository HTTPS/SSH URL to clone and load remote articles from |
+| `git.folder` | `CORKBOARD_GIT__FOLDER` | `""` | Subfolder within the git repository containing articles (defaults to root) |
+| `git.username` | `CORKBOARD_GIT__USERNAME` | *(none)* | Optional username for basic auth (only needed if not public repository) |
+| `git.password` | `CORKBOARD_GIT__PASSWORD` | *(none)* | Optional password or PAT (Personal Access Token) for authenticated access |
+| `git.branch` | `CORKBOARD_GIT__BRANCH` | `main` | Target git branch name to check out |
 
 </details>
 
