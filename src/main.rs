@@ -66,6 +66,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         match GitMarkdownDataSource::new(
             &git.link,
             &git.folder,
+            &git.assets_folder,
             git.username.as_deref(),
             git.password.as_deref(),
             &git.branch,

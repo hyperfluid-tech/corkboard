@@ -14,6 +14,7 @@ impl GitMarkdownDataSource {
     pub fn new(
         link: &str,
         folder: &str,
+        assets_folder: &str,
         username: Option<&str>,
         password: Option<&str>,
         _branch: &str,
@@ -52,11 +53,43 @@ impl GitMarkdownDataSource {
             articles_path.push(folder);
         }
 
+        if !assets_folder.is_empty() {
+            copy_git_assets(temp_dir.path(), assets_folder)?;
+        }
+
         Ok(Self {
             _temp_dir: temp_dir,
             articles_path: articles_path.to_string_lossy().to_string(),
         })
     }
+}
+
+fn copy_git_assets(temp_dir_path: &std::path::Path, assets_folder: &str) -> Result<(), AppError> {
+    let src_assets_path = temp_dir_path.join(assets_folder);
+    if !src_assets_path.exists() || !src_assets_path.is_dir() {
+        tracing::warn!(
+            "Configured git assets_folder '{}' does not exist in the repository.",
+            assets_folder
+        );
+        return Ok(());
+    }
+
+    tracing::info!("Copying assets from Git repository to local assets directory");
+    let dest_assets_path = std::path::PathBuf::from("assets");
+    if !dest_assets_path.exists() {
+        std::fs::create_dir_all(&dest_assets_path).map_err(|e| {
+            AppError::GitError(format!(
+                "Failed to create local assets directory: {}",
+                e
+            ))
+        })?;
+    }
+
+    if let Err(e) = copy_dir_recursive(&src_assets_path, &dest_assets_path) {
+        tracing::error!("Failed to copy assets from Git: {}", e);
+    }
+
+    Ok(())
 }
 
 fn inject_credentials(
@@ -79,16 +112,20 @@ fn inject_credentials(
         return Ok(link.to_string());
     }
 
-    if let Some(p) = password {
+    let Some(p) = password else {
+        return Ok(parsed_url.to_string());
+    };
+
+    parsed_url
+        .set_password(Some(p))
+        .map_err(|_| AppError::GitError("Failed to set password in URL".to_string()))?;
+
+    if let Some(u) = username {
         parsed_url
-            .set_password(Some(p))
-            .map_err(|_| AppError::GitError("Failed to set password in URL".to_string()))?;
-        if let Some(u) = username {
-            parsed_url
-                .set_username(u)
-                .map_err(|_| AppError::GitError("Failed to set username in URL".to_string()))?;
-        }
+            .set_username(u)
+            .map_err(|_| AppError::GitError("Failed to set username in URL".to_string()))?;
     }
+
     Ok(parsed_url.to_string())
 }
 
@@ -96,4 +133,28 @@ impl MarkdownDataSource for GitMarkdownDataSource {
     fn fetch_all(&self) -> Result<Vec<MarkdownDocument>, Box<dyn std::error::Error>> {
         GetMarkdownFilesFromDirectoryUsecase::execute(&self.articles_path)
     }
+}
+
+#[cfg(feature = "git")]
+fn copy_dir_recursive(src: &std::path::Path, dst: &std::path::Path) -> std::io::Result<()> {
+    if !src.is_dir() {
+        return Ok(());
+    }
+
+    if !dst.exists() {
+        std::fs::create_dir_all(dst)?;
+    }
+
+    for entry in std::fs::read_dir(src)? {
+        let entry = entry?;
+        let path = entry.path();
+        let dest_path = dst.join(entry.file_name());
+
+        if path.is_dir() {
+            copy_dir_recursive(&path, &dest_path)?;
+            continue;
+        }
+        std::fs::copy(&path, &dest_path)?;
+    }
+    Ok(())
 }

@@ -213,6 +213,7 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | --- | --- | --- | --- |
 | `git.link` | `CORKBOARD_GIT__LINK` | *(none)* | Git repository HTTPS/SSH URL to clone and load remote articles from |
 | `git.folder` | `CORKBOARD_GIT__FOLDER` | `""` | Subfolder within the git repository containing articles (defaults to root) |
+| `git.assets_folder` | `CORKBOARD_GIT__ASSETS_FOLDER` | `""` | Subfolder within the git repository containing assets to be copied to the local assets folder |
 | `git.username` | `CORKBOARD_GIT__USERNAME` | *(none)* | Optional username for basic auth (only needed if not public repository) |
 | `git.password` | `CORKBOARD_GIT__PASSWORD` | *(none)* | Optional password or PAT (Personal Access Token) for authenticated access |
 | `git.branch` | `CORKBOARD_GIT__BRANCH` | `main` | Target git branch name to check out |
