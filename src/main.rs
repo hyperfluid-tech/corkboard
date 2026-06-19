@@ -111,7 +111,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         allowed_assets: Arc::new(allowed_assets),
     };
 
-    let app = presentation::router::build_router(state);
+    let app = presentation::router::build_router(state)?;
 
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], settings.port));
     tracing::info!("Listening on http://{}", addr);

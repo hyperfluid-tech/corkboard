@@ -177,6 +177,13 @@ thumbnail_show_articles = false
 #     "https://twitter.com/your-username"
 # ]
 
+# cors_allowed_origins = ["http://localhost:3000"]
+# csp_allowed_origins = [
+#     "http://localhost:3000",
+#     "https://fonts.googleapis.com",
+#     "https://fonts.gstatic.com"
+# ]
+
 # [git]
 # link = "https://github.com/user/repo"
 # folder = ""
@@ -204,6 +211,8 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | `truncate_lines` | `CORKBOARD_TRUNCATE_LINES` | `15` | Markdown lines shown per card before truncation |
 | `thumbnail_show_articles` | `CORKBOARD_THUMBNAIL_SHOW_ARTICLES` | `false` | Whether to show article snippets in the blog's generated thumbnail |
 | `social_links` | `CORKBOARD_SOCIAL_LINKS` | *(empty list)* | List of social/external URLs to show in the footer (comma-separated in env) |
+| `cors_allowed_origins` | `CORKBOARD_CORS_ALLOWED_ORIGINS` | *(base_url)* | List of allowed CORS origins (comma-separated list in env) |
+| `csp_allowed_origins` | `CORKBOARD_CSP_ALLOWED_ORIGINS` | *(base_url + Google Fonts)* | List of allowed CSP origins (comma-separated list in env) |
 
 ### Git Settings
 > [!NOTE]

@@ -1,19 +1,45 @@
+use crate::domain::model::error::AppError;
 use crate::presentation::handlers;
 use crate::presentation::state::AppState;
 use axum::{
     Router,
     body::Body,
-    http::{Request, StatusCode},
+    http::{HeaderValue, Method, Request, StatusCode, header},
     middleware,
     response::Response,
 };
 use std::collections::HashSet;
 use std::sync::Arc;
+use tower_http::cors::{AllowOrigin, CorsLayer};
+use tower_http::set_header::SetResponseHeaderLayer;
 
-pub fn build_router(state: AppState) -> Router {
+pub fn build_router(state: AppState) -> Result<Router, AppError> {
     let allowed_assets = state.allowed_assets.clone();
 
-    Router::new()
+    let cors_origins: Vec<HeaderValue> = state
+        .settings
+        .cors_origins()
+        .iter()
+        .map(|o| {
+            o.parse::<HeaderValue>()
+                .map_err(|e| AppError::InvalidConfig(format!("Invalid CORS origin '{}': {}", o, e)))
+        })
+        .collect::<Result<Vec<HeaderValue>, AppError>>()?;
+
+    let cors_layer = CorsLayer::new()
+        .allow_origin(AllowOrigin::list(cors_origins))
+        .allow_methods([Method::GET, Method::POST, Method::OPTIONS])
+        .allow_headers([header::CONTENT_TYPE]);
+
+    let csp_domains = state.settings.csp_origins().join(" ");
+    let csp_value = format!(
+        "default-src 'self'; style-src 'self' {}; font-src 'self' {}; script-src 'self' {}; img-src 'self' data: *;",
+        csp_domains, csp_domains, csp_domains
+    );
+    let csp_header_value = HeaderValue::from_str(&csp_value)
+        .map_err(|e| AppError::InvalidConfig(format!("Invalid CSP header configuration: {}", e)))?;
+
+    let router = Router::new()
         .route("/", axum::routing::get(handlers::index::index_handler))
         .route(
             "/article/{slug}",
@@ -51,7 +77,14 @@ pub fn build_router(state: AppState) -> Router {
                 })),
         )
         .fallback(handlers::not_found::not_found_handler)
-        .with_state(state)
+        .layer(cors_layer)
+        .layer(SetResponseHeaderLayer::overriding(
+            header::CONTENT_SECURITY_POLICY,
+            csp_header_value,
+        ))
+        .with_state(state);
+
+    Ok(router)
 }
 
 async fn filter_allowed_assets(
