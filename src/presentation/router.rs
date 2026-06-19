@@ -31,10 +31,16 @@ pub fn build_router(state: AppState) -> Result<Router, AppError> {
         .allow_methods([Method::GET, Method::POST, Method::OPTIONS])
         .allow_headers([header::CONTENT_TYPE]);
 
+    let mut img_domains = state.settings.csp_origins();
+    if state.settings.csp_allowed_origins.is_none() {
+        img_domains.extend(state.allowed_external_origins.iter().cloned());
+    }
+    let img_domains_str = img_domains.join(" ");
+
     let csp_domains = state.settings.csp_origins().join(" ");
     let csp_value = format!(
-        "default-src 'self'; style-src 'self' {}; font-src 'self' {}; script-src 'self' {}; img-src 'self' data: *;",
-        csp_domains, csp_domains, csp_domains
+        "default-src 'self'; style-src 'self' {}; font-src 'self' {}; script-src 'self' {}; img-src 'self' data: {};",
+        csp_domains, csp_domains, csp_domains, img_domains_str
     );
     let csp_header_value = HeaderValue::from_str(&csp_value)
         .map_err(|e| AppError::InvalidConfig(format!("Invalid CSP header configuration: {}", e)))?;

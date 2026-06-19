@@ -105,10 +105,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
 
+    let allowed_external_origins: HashSet<String> = articles
+        .iter()
+        .flat_map(|a| a.referenced_external_origins.iter().cloned())
+        .collect();
+
+    if !allowed_external_origins.is_empty() {
+        tracing::info!(
+            "Registered {} allowed external asset origin(s) for CSP.",
+            allowed_external_origins.len()
+        );
+    }
+
     let state = AppState {
         settings: settings.clone(),
         articles: Arc::new(articles),
         allowed_assets: Arc::new(allowed_assets),
+        allowed_external_origins: Arc::new(allowed_external_origins),
     };
 
     let app = presentation::router::build_router(state)?;

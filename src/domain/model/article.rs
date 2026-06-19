@@ -13,4 +13,6 @@ pub struct Article {
     pub toc: Vec<super::toc_entry::TocEntry>,
     #[serde(default)]
     pub referenced_assets: HashSet<String>,
+    #[serde(default)]
+    pub referenced_external_origins: HashSet<String>,
 }

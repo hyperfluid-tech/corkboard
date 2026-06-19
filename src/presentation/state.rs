@@ -8,4 +8,5 @@ pub struct AppState {
     pub settings: Settings,
     pub articles: Arc<Vec<Article>>,
     pub allowed_assets: Arc<HashSet<String>>,
+    pub allowed_external_origins: Arc<HashSet<String>>,
 }
