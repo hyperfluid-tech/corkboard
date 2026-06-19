@@ -82,20 +82,28 @@ impl Settings {
     pub fn validate(&self) -> Result<(), AppError> {
         if let Some(origins) = &self.cors_allowed_origins {
             for origin in origins {
-                origin.parse::<axum::http::HeaderValue>()
-                    .map_err(|e| AppError::InvalidConfig(format!("Invalid CORS origin '{}': {}", origin, e)))?;
+                origin.parse::<axum::http::HeaderValue>().map_err(|e| {
+                    AppError::InvalidConfig(format!("Invalid CORS origin '{}': {}", origin, e))
+                })?;
             }
         }
 
         if let Some(origins) = &self.csp_allowed_origins {
             for origin in origins {
-                origin.parse::<axum::http::HeaderValue>()
-                    .map_err(|e| AppError::InvalidConfig(format!("Invalid CSP origin '{}': {}", origin, e)))?;
+                origin.parse::<axum::http::HeaderValue>().map_err(|e| {
+                    AppError::InvalidConfig(format!("Invalid CSP origin '{}': {}", origin, e))
+                })?;
             }
         }
 
-        self.base_url.parse::<axum::http::HeaderValue>()
-            .map_err(|e| AppError::InvalidConfig(format!("Invalid base_url configuration '{}': {}", self.base_url, e)))?;
+        self.base_url
+            .parse::<axum::http::HeaderValue>()
+            .map_err(|e| {
+                AppError::InvalidConfig(format!(
+                    "Invalid base_url configuration '{}': {}",
+                    self.base_url, e
+                ))
+            })?;
 
         Ok(())
     }
