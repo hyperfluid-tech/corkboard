@@ -33,6 +33,7 @@ pub fn parse_and_rewrite_headings(raw_events: Vec<Event>) -> (Vec<Event>, Vec<To
     let mut toc = Vec::new();
     let mut seen_slugs = HashSet::new();
     let mut heading_id_mapping = HashMap::new();
+    let mut stack = vec![0];
 
     for (event_idx, level, existing_id, text) in headings_data {
         let level_num = match level {
@@ -64,10 +65,15 @@ pub fn parse_and_rewrite_headings(raw_events: Vec<Event>) -> (Vec<Event>, Vec<To
         }
         seen_slugs.insert(slug.clone());
 
+        stack.retain(|&x| x < level_num);
+        let relative_level = stack.len() as u32;
+        stack.push(level_num);
+
         toc.push(TocEntry {
-            level: level_num,
+            absolute_level: level_num,
             title: text.trim().to_string(),
             slug: slug.clone(),
+            relative_level: relative_level,
         });
 
         heading_id_mapping.insert(event_idx, slug);

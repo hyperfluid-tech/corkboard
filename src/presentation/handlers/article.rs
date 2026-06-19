@@ -50,9 +50,10 @@ pub async fn article_handler(
                 &state.settings.social_links,
             );
 
-            let sidebar_entries: Vec<SidebarEntry> = std::iter::once(SidebarEntry::from_article(article))
-                .chain(article.toc.iter().map(SidebarEntry::from_toc_entry))
-                .collect();
+            let sidebar_entries: Vec<SidebarEntry> =
+                std::iter::once(SidebarEntry::from_article(article))
+                    .chain(article.toc.iter().map(SidebarEntry::from_toc_entry))
+                    .collect();
 
             let structured_data = StructuredDataTemplate::new(&StructuredData::blog_posting(
                 article,
