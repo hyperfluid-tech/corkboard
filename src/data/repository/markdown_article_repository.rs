@@ -1,6 +1,7 @@
 use crate::data::data_source::markdown::markdown_data_source::MarkdownDataSource;
 use crate::data::usecase::extract_asset_references_usecase::ExtractAssetReferencesUsecase;
 use crate::domain::model::article::Article;
+use crate::domain::model::error::AppError;
 use crate::domain::repository::article_repository::ArticleRepository;
 use crate::infrastructure::markdown::helpers::close_open_fences;
 use crate::infrastructure::markdown::markdown_renderer::render_markdown;
@@ -33,16 +34,16 @@ impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS>
         for doc in documents {
             let date = chrono::NaiveDate::parse_from_str(doc.frontmatter.date.trim(), "%Y-%m-%d")?;
 
-            let title = match doc.frontmatter.title.or(doc.frontmatter.heading) {
-                Some(t) => t,
-                None => {
-                    tracing::error!(
+            let title = doc
+                .frontmatter
+                .title
+                .or(doc.frontmatter.heading)
+                .ok_or_else(|| {
+                    AppError::InvalidArticle(format!(
                         "Article in file {} is missing both 'title' and 'heading'",
                         doc.file_name
-                    );
-                    continue;
-                }
-            };
+                    ))
+                })?;
 
             let slug = slug::slugify(&title);
 

@@ -26,8 +26,6 @@ impl GitMarkdownDataSource {
 
         let final_link = inject_credentials(link, username, password)?;
 
-        tracing::info!("Cloning repository {} into temporary directory", link);
-
         let url = gix::url::parse(final_link.as_bytes().into())
             .map_err(|e| AppError::GitError(format!("Failed to parse URL: {}", e)))?;
 
@@ -67,27 +65,21 @@ impl GitMarkdownDataSource {
 fn copy_git_assets(temp_dir_path: &std::path::Path, assets_folder: &str) -> Result<(), AppError> {
     let src_assets_path = temp_dir_path.join(assets_folder);
     if !src_assets_path.exists() || !src_assets_path.is_dir() {
-        tracing::warn!(
+        return Err(AppError::GitError(format!(
             "Configured git assets_folder '{}' does not exist in the repository.",
             assets_folder
-        );
-        return Ok(());
+        )));
     }
 
-    tracing::info!("Copying assets from Git repository to local assets directory");
     let dest_assets_path = std::path::PathBuf::from("assets");
     if !dest_assets_path.exists() {
         std::fs::create_dir_all(&dest_assets_path).map_err(|e| {
-            AppError::GitError(format!(
-                "Failed to create local assets directory: {}",
-                e
-            ))
+            AppError::GitError(format!("Failed to create local assets directory: {}", e))
         })?;
     }
 
-    if let Err(e) = copy_dir_recursive(&src_assets_path, &dest_assets_path) {
-        tracing::error!("Failed to copy assets from Git: {}", e);
-    }
+    copy_dir_recursive(&src_assets_path, &dest_assets_path)
+        .map_err(|e| AppError::GitError(format!("Failed to copy assets from Git: {}", e)))?;
 
     Ok(())
 }
@@ -104,10 +96,10 @@ fn inject_credentials(
 
     if parsed_url.scheme() != "http" && parsed_url.scheme() != "https" {
         if password.is_some() {
-            tracing::warn!(
-                "Git password was configured but the protocol is '{}'. Credentials will be ignored.",
+            return Err(AppError::GitError(format!(
+                "Git password was configured but the protocol is '{}'. Credentials cannot be injected.",
                 parsed_url.scheme()
-            );
+            )));
         }
         return Ok(link.to_string());
     }
@@ -147,10 +139,11 @@ fn copy_dir_recursive(src: &std::path::Path, dst: &std::path::Path) -> std::io::
 
     for entry in std::fs::read_dir(src)? {
         let entry = entry?;
+        let file_type = entry.file_type()?;
         let path = entry.path();
         let dest_path = dst.join(entry.file_name());
 
-        if path.is_dir() {
+        if file_type.is_dir() {
             copy_dir_recursive(&path, &dest_path)?;
             continue;
         }
