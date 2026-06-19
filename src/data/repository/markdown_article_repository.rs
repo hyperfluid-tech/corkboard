@@ -1,4 +1,5 @@
 use crate::data::data_source::markdown::markdown_data_source::MarkdownDataSource;
+use crate::data::usecase::extract_asset_references_usecase::ExtractAssetReferencesUsecase;
 use crate::domain::model::article::Article;
 use crate::domain::repository::article_repository::ArticleRepository;
 use crate::infrastructure::markdown::helpers::close_open_fences;
@@ -57,6 +58,11 @@ impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS>
                 (content.clone(), false)
             };
 
+            let referenced_assets = ExtractAssetReferencesUsecase::execute(
+                &doc.body,
+                doc.frontmatter.thumbnail.as_deref(),
+            );
+
             let description = doc.frontmatter.description.or(doc.frontmatter.subheading);
 
             articles.push(Article {
@@ -69,6 +75,7 @@ impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS>
                 description,
                 thumbnail: doc.frontmatter.thumbnail,
                 toc,
+                referenced_assets,
             });
         }
 

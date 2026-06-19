@@ -40,6 +40,8 @@ fi
 
 ARTICLES_DIR=${CORKBOARD_ARTICLES_DIR:-/app/articles}
 mkdir -p "$ARTICLES_DIR"
+mkdir -p /app/assets
+
 
 if [ -z "$(ls -A "$ARTICLES_DIR" 2>/dev/null)" ]; then
     echo "No markdown articles found in $ARTICLES_DIR. Creating a default welcome post..."

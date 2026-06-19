@@ -16,8 +16,9 @@ A skeuomorphic blog platform built with Rust. Write Markdown files, and Corkboar
 
 - [Getting Started](#getting-started)
   - [Deploying with Docker (Recommended)](#deploying-with-docker)
-  - [Running Locally](#running-locally)
+  - [Running Locally](#running-running-locally)
 - [Writing Articles](#writing-articles)
+  - [Using Local Assets](#using-local-assets)
 - [Tech Stack](#tech-stack)
 - [Configuration](#configuration)
 - [Contributing](#contributing)
@@ -46,6 +47,7 @@ services:
       - "8080:3000"
     volumes:
       - ./articles:/app/articles
+      - ./assets:/app/assets
     environment:
       - PUID=1000
       - PGID=1000
@@ -104,6 +106,7 @@ Place Markdown files inside the `articles/` directory. Each file needs a YAML fr
 title: "My First Post"
 date: "2026-01-15"
 description: "An optional description shown below the title"
+thumbnail: "/assets/my-thumbnail.webp"
 ---
 
 Your content goes here. Standard Markdown is supported:
@@ -112,6 +115,38 @@ footnotes, and fenced code blocks with syntax highlighting.
 ```
 
 Articles are sorted by date (newest first) and displayed on a single scrollable page. Long articles are truncated with a "Read more" link to their dedicated page.
+
+### Using Local Assets
+
+You can reference local images and files from your articles by placing them in the `assets/` directory at the project root (or `/app/assets` inside a Docker container).
+
+Reference assets in your Markdown using the `/assets/` path prefix:
+
+```markdown
+---
+title: "My Post with Images"
+date: "2026-01-15"
+thumbnail: "/assets/my-thumbnail.webp"
+---
+
+Here is a photo from my local assets folder:
+
+![A beautiful sunset](/assets/photos/sunset.jpg "Sunset over the mountains")
+```
+
+You can also organize assets into subdirectories:
+
+```
+assets/
+├── photos/
+│   ├── sunset.jpg
+│   └── portrait.png
+├── diagrams/
+│   └── architecture.svg
+└── my-thumbnail.webp
+```
+
+> **Security note:** Only asset files that are explicitly referenced in your Markdown articles (via `![](...)` image syntax or the `thumbnail` frontmatter field) will be served. Any file placed in `assets/` that is not referenced by an article will return a `403 Forbidden` response. This prevents accidental exposure of unreferenced files.
 
 ## Tech Stack
 
