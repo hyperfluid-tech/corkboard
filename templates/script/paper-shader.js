@@ -301,7 +301,12 @@ void main() {
       return null;
     }
 
-    const program = createProgram(gl, VERTEX_SHADER, FRAGMENT_SHADER);
+    let fragSrc = FRAGMENT_SHADER;
+    if (navigator.userAgent.toLowerCase().includes("firefox")) {
+      fragSrc = fragSrc.replace("precision highp float;", "precision mediump float;");
+    }
+
+    const program = createProgram(gl, VERTEX_SHADER, fragSrc);
     if (!program) return null;
 
     const posBuffer = gl.createBuffer();
