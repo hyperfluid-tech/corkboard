@@ -14,6 +14,7 @@ services:
     volumes:
       - ../articles:/app/articles
       - ../config.toml:/app/config.toml
+      - ../assets:/app/assets
     environment:
       # - PUID=1000
       # - PGID=1000
@@ -33,6 +34,7 @@ services:
       # Git Repository Settings (Requires building with CARGO_FEATURES=git)
       # - CORKBOARD_GIT__LINK=https://github.com/user/repo.git
       # - CORKBOARD_GIT__FOLDER=
+      # - CORKBOARD_GIT__ASSETS_FOLDER=
       # - CORKBOARD_GIT__USERNAME=
       # - CORKBOARD_GIT__PASSWORD=
       # - CORKBOARD_GIT__BRANCH=main

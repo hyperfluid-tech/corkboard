@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::sync::Arc;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -65,6 +66,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         match GitMarkdownDataSource::new(
             &git.link,
             &git.folder,
+            &git.assets_folder,
             git.username.as_deref(),
             git.password.as_deref(),
             &git.branch,
@@ -91,9 +93,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     tracing::info!("Loaded {} articles successfully.", articles.len());
 
+    let allowed_assets: HashSet<String> = articles
+        .iter()
+        .flat_map(|a| a.referenced_assets.iter().cloned())
+        .collect();
+
+    if !allowed_assets.is_empty() {
+        tracing::info!(
+            "Registered {} allowed asset path(s) for serving.",
+            allowed_assets.len()
+        );
+    }
+
     let state = AppState {
         settings: settings.clone(),
         articles: Arc::new(articles),
+        allowed_assets: Arc::new(allowed_assets),
     };
 
     let app = presentation::router::build_router(state);

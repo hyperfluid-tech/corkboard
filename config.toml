@@ -17,6 +17,7 @@ thumbnail_show_articles = false
 # [git]
 # link = "https://github.com/user/repo"
 # folder = ""
+# assets_folder = ""
 # username = "user"
 # password = "pat"
 # branch = "main"

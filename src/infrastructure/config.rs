@@ -40,6 +40,8 @@ pub struct GitSettings {
     pub link: String,
     #[serde(default = "default_git_folder")]
     pub folder: String,
+    #[serde(default = "default_git_assets_folder")]
+    pub assets_folder: String,
     #[serde(default)]
     pub username: Option<String>,
     #[serde(default)]
@@ -50,6 +52,11 @@ pub struct GitSettings {
 
 #[cfg(feature = "git")]
 fn default_git_folder() -> String {
+    String::from("")
+}
+
+#[cfg(feature = "git")]
+fn default_git_assets_folder() -> String {
     String::from("")
 }
 

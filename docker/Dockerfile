@@ -17,7 +17,9 @@ RUN apt-get update && apt-get install -y musl-tools && rm -rf /var/lib/apt/lists
 RUN rustup target add x86_64-unknown-linux-musl
 
 COPY . .
+RUN mkdir -p /usr/src/corkboard/assets
 COPY --from=tailwind-builder /build/templates/style/tailwind.css /usr/src/corkboard/templates/style/tailwind.css
+
 
 ARG CARGO_FEATURES=""
 RUN cargo build --release --target x86_64-unknown-linux-musl --features "${CARGO_FEATURES}"
@@ -39,6 +41,7 @@ WORKDIR /app
 
 COPY --from=builder /usr/src/corkboard/target/x86_64-unknown-linux-musl/release/corkboard /usr/local/bin/corkboard
 COPY --from=builder /usr/src/corkboard/templates /app/templates
+COPY --from=builder /usr/src/corkboard/assets /app/assets
 COPY --from=builder /usr/src/corkboard/articles/welcome.md /app/welcome.md
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
