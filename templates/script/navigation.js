@@ -5,9 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('overlay');
   const toggleBtn = document.getElementById('sidebar-toggle');
 
-  // On article pages we track the headings; on the index page we track article cards.
   const spyTargets = isArticlePage
-    ? document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6')
+    ? document.querySelectorAll('article, .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6')
     : document.querySelectorAll('article');
 
   const sidebarLinks = document.querySelectorAll('.sidebar-link');

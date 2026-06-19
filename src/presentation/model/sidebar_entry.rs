@@ -12,9 +12,9 @@ pub struct SidebarEntry {
 
 impl SidebarEntry {
     pub fn from_toc_entry(entry: &TocEntry) -> Self {
-        let font_class = if entry.level >= 5 {
+        let font_class = if entry.absolute_level >= 5 {
             "text-xs font-normal text-primary/75 italic"
-        } else if entry.level >= 3 {
+        } else if entry.absolute_level >= 3 {
             "text-sm font-medium text-primary/90"
         } else {
             "font-semibold text-primary"
@@ -24,7 +24,7 @@ impl SidebarEntry {
             title: entry.title.clone(),
             url: format!("#{}", entry.slug),
             slug: entry.slug.clone(),
-            indent_level: entry.level - 1,
+            indent_level: entry.relative_level,
             font_class: font_class.to_string(),
         }
     }
