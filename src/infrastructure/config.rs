@@ -13,6 +13,9 @@ pub const DEFAULT_TRUNCATE_LINES: i64 = 15;
 pub const DEFAULT_LANG: &str = "en";
 pub const DEFAULT_THUMBNAIL_SHOW_ARTICLES: bool = false;
 
+pub const DEFAULT_CSP_DOMAINS: &[&str] =
+    &["https://fonts.googleapis.com", "https://fonts.gstatic.com"];
+
 pub const LOCALHOST_PLACEHOLDER: &str = "localhost";
 pub const DOMAIN_PLACEHOLDER: &str = "your-domain-here.com";
 
@@ -30,6 +33,10 @@ pub struct Settings {
     #[serde(default)]
     pub social_links: Vec<url::Url>,
     pub thumbnail_show_articles: bool,
+    #[serde(default)]
+    pub cors_allowed_origins: Option<Vec<String>>,
+    #[serde(default)]
+    pub csp_allowed_origins: Option<Vec<String>>,
     #[cfg(feature = "git")]
     pub git: Option<GitSettings>,
 }
@@ -67,7 +74,48 @@ fn default_git_branch() -> String {
 
 impl Settings {
     pub fn new() -> Result<Self, AppError> {
-        Self::load().map_err(|e| AppError::InvalidConfig(e.to_string()))
+        let settings = Self::load().map_err(|e| AppError::InvalidConfig(e.to_string()))?;
+        settings.validate()?;
+        Ok(settings)
+    }
+
+    pub fn validate(&self) -> Result<(), AppError> {
+        for origin in self.cors_allowed_origins.iter().flatten() {
+            origin.parse::<axum::http::HeaderValue>().map_err(|e| {
+                AppError::InvalidConfig(format!("Invalid CORS origin '{}': {}", origin, e))
+            })?;
+        }
+
+        for origin in self.csp_allowed_origins.iter().flatten() {
+            origin.parse::<axum::http::HeaderValue>().map_err(|e| {
+                AppError::InvalidConfig(format!("Invalid CSP origin '{}': {}", origin, e))
+            })?;
+        }
+
+        self.base_url
+            .parse::<axum::http::HeaderValue>()
+            .map_err(|e| {
+                AppError::InvalidConfig(format!(
+                    "Invalid base_url configuration '{}': {}",
+                    self.base_url, e
+                ))
+            })?;
+
+        Ok(())
+    }
+
+    pub fn cors_origins(&self) -> Vec<String> {
+        self.cors_allowed_origins
+            .clone()
+            .unwrap_or_else(|| vec![self.base_url.clone()])
+    }
+
+    pub fn csp_origins(&self) -> Vec<String> {
+        self.csp_allowed_origins.clone().unwrap_or_else(|| {
+            let mut origins = vec![self.base_url.clone()];
+            origins.extend(DEFAULT_CSP_DOMAINS.iter().map(|s| s.to_string()));
+            origins
+        })
     }
 
     fn load() -> Result<Self, config::ConfigError> {
@@ -89,6 +137,8 @@ impl Settings {
                     .separator("__")
                     .list_separator(",")
                     .with_list_parse_key("social_links")
+                    .with_list_parse_key("cors_allowed_origins")
+                    .with_list_parse_key("csp_allowed_origins")
                     .try_parsing(true),
             )
             .build()?;

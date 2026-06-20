@@ -29,6 +29,8 @@ services:
       - CORKBOARD_TRUNCATE_LINES=15
       # - CORKBOARD_THUMBNAIL_SHOW_ARTICLES=false
       # - CORKBOARD_SOCIAL_LINKS=https://github.com/your-username,https://linkedin.com/in/your-username,https://twitter.com/your-username
+      # - CORKBOARD_CORS_ALLOWED_ORIGINS=http://your-domain-here.com:8080
+      # - CORKBOARD_CSP_ALLOWED_ORIGINS=http://your-domain-here.com:8080,https://fonts.googleapis.com,https://fonts.gstatic.com
       # - CORKBOARD_BLOG_LICENSE=CC 4.0 BY-SA
       # - CORKBOARD_BLOG_LICENSE_URL=https://creativecommons.org/licenses/by-sa/4.0/
       # Git Repository Settings (Requires building with CARGO_FEATURES=git)

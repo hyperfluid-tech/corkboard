@@ -59,7 +59,7 @@ impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS>
                 (content.clone(), false)
             };
 
-            let referenced_assets = ExtractAssetReferencesUsecase::execute(
+            let asset_refs = ExtractAssetReferencesUsecase::execute(
                 &doc.body,
                 doc.frontmatter.thumbnail.as_deref(),
             );
@@ -76,7 +76,8 @@ impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS>
                 description,
                 thumbnail: doc.frontmatter.thumbnail,
                 toc,
-                referenced_assets,
+                referenced_assets: asset_refs.local_assets,
+                referenced_external_origins: asset_refs.external_origins,
             });
         }
 

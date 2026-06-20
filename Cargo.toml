@@ -1,6 +1,6 @@
 [package]
 name = "corkboard"
-version = "0.3.1"
+version = "0.4.0"
 edition = "2024"
 default-run = "corkboard"
 
@@ -19,7 +19,7 @@ serde_yaml = "0.9.34"
 slug = "0.1.6"
 syntect = "5.3.0"
 tokio = { version = "1.52.3", features = ["full"] }
-tower-http = { version = "0.6.2", features = ["fs"] }
+tower-http = { version = "0.6.2", features = ["fs", "cors", "set-header"] }
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 headless_chrome = "1.0.21"

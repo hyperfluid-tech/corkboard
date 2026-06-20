@@ -35,6 +35,13 @@ thumbnail_show_articles = false
 #     "https://linkedin.com/in/your-username",
 #     "https://twitter.com/your-username"
 # ]
+
+# cors_allowed_origins = ["http://localhost:3000"]
+# csp_allowed_origins = [
+#     "http://localhost:3000",
+#     "https://fonts.googleapis.com",
+#     "https://fonts.gstatic.com"
+# ]
 EOF
 fi
 
