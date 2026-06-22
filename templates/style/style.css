@@ -392,6 +392,7 @@ header.paper-card {
     padding-left: calc(10px + var(--toc-indent, 0px)) !important;
 }
 
+
 #sidebar-active-indicator {
     position: absolute;
     right: calc(100% - 24px);
