@@ -392,15 +392,6 @@ header.paper-card {
     padding-left: calc(10px + var(--toc-indent, 0px)) !important;
 }
 
-.sidebar-link[data-indent="0"] { --toc-indent: 0px; }
-.sidebar-link[data-indent="1"] { --toc-indent: 12px; }
-.sidebar-link[data-indent="2"] { --toc-indent: 24px; }
-.sidebar-link[data-indent="3"] { --toc-indent: 36px; }
-.sidebar-link[data-indent="4"] { --toc-indent: 48px; }
-.sidebar-link[data-indent="5"] { --toc-indent: 60px; }
-.sidebar-link[data-indent="6"] { --toc-indent: 72px; }
-.sidebar-link[data-indent="7"] { --toc-indent: 84px; }
-.sidebar-link[data-indent="8"] { --toc-indent: 96px; }
 
 #sidebar-active-indicator {
     position: absolute;

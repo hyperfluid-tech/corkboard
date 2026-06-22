@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     : document.querySelectorAll('article');
 
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
+  sidebarLinks.forEach(link => {
+    const indent = parseInt(link.getAttribute('data-indent') || '0', 10);
+    link.style.setProperty('--toc-indent', `${indent * 12}px`);
+  });
 
   let activeSlug = '';
   let isClickNavigating = false;
