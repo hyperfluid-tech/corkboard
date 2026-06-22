@@ -12,7 +12,7 @@
         {% for entry in sidebar_entries %}
         <li class="sidebar-item">
           <a class="block hover:bg-white/30 p-2 rounded transition-colors sidebar-link {{ entry.font_class }} overflow-hidden"
-            href="{{ entry.url }}" data-slug="{{ entry.slug }}" style="--toc-indent: {{ entry.indent_level * 12 }}px;">
+            href="{{ entry.url }}" data-slug="{{ entry.slug }}" data-indent="{{ entry.indent_level }}">
             <span class="sidebar-link-text block lg:truncate">{{ entry.title }}</span>
           </a>
         </li>
