@@ -28,6 +28,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: gilnobrega/corkboard
+          tags: |
+            type=semver,pattern={{version}},value=${{ github.event.release.tag_name }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ github.event.release.tag_name }}
+            type=raw,value=${{ github.event.release.tag_name }}
 
       - name: Build and push Docker image
         id: push
@@ -47,6 +51,10 @@ jobs:
           flavor: |
             latest=auto
             suffix=-git,onlatest=true
+          tags: |
+            type=semver,pattern={{version}},value=${{ github.event.release.tag_name }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ github.event.release.tag_name }}
+            type=raw,value=${{ github.event.release.tag_name }}
 
       - name: Build and push Git variant Docker image
         id: push_git
