@@ -9,6 +9,7 @@ target
 .DS_Store
 templates/thumbnails/
 templates/style/tailwind.css
+templates/style/syntax.css
 
 node_modules/
 npm-debug.log*

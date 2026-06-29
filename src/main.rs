@@ -53,6 +53,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::fs::create_dir_all(thumbnails_dir)?;
     }
 
+    {
+        use infrastructure::markdown::highlight_css_generator::write_highlight_css;
+        let highlight_css_path = "templates/style/syntax.css";
+        if let Err(e) = write_highlight_css(highlight_css_path) {
+            tracing::warn!("Failed to write syntax.css: {}", e);
+        }
+    }
+
     tracing::info!("Parsing articles from '{}'...", settings.articles_dir);
     let data_source = LocalStorageMarkdownDataSource::new(settings.articles_dir.clone());
     let repo = MarkdownArticleRepository::new(data_source, settings.truncate_lines);
