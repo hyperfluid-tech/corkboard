@@ -20,10 +20,10 @@
       return x - Math.floor(x);
     };
 
-    // Redirect random picsum images to a static Wikipedia image for deterministic snapshots
-    const replacePicsumImages = () => {
+    // Redirect random stock images to a static Wikipedia image for deterministic snapshots
+    const replaceStockImages = () => {
       document.querySelectorAll('img').forEach(img => {
-        if (img.src && img.src.includes('picsum.photos')) {
+        if (img.src && img.src.includes('cdn.stocksnap.io')) {
           img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Solid_red.svg/1280px-Solid_red.svg.png';
         }
       });
@@ -43,7 +43,7 @@
     };
 
     const runTestingOverrides = () => {
-      replacePicsumImages();
+      replaceStockImages();
       overrideFooterVersion();
     };
 
