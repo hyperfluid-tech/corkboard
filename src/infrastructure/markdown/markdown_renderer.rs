@@ -1,19 +1,13 @@
 use super::heading_parser::parse_and_rewrite_headings;
-use super::helpers::escape_html;
 use crate::domain::model::toc_entry::TocEntry;
 use crate::presentation::templates::components::code_block_template::CodeBlockTemplate;
 use crate::presentation::templates::components::markdown_image_template::MarkdownImageTemplate;
 use askama::Template;
 use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag, TagEnd};
-use syntect::highlighting::Theme;
-use syntect::html::highlighted_html_for_string;
+use syntect::html::{ClassStyle, ClassedHTMLGenerator};
 use syntect::parsing::SyntaxSet;
 
-pub fn render_markdown(
-    markdown_content: &str,
-    syntax_set: &SyntaxSet,
-    theme: &Theme,
-) -> (String, Vec<TocEntry>) {
+pub fn render_markdown(markdown_content: &str, syntax_set: &SyntaxSet) -> (String, Vec<TocEntry>) {
     let mut options = Options::empty();
     options.insert(Options::ENABLE_TABLES);
     options.insert(Options::ENABLE_FOOTNOTES);
@@ -86,20 +80,21 @@ pub fn render_markdown(
                     .find_syntax_by_token(&code_block_lang)
                     .unwrap_or_else(|| syntax_set.find_syntax_plain_text());
 
-                let highlighted = match highlighted_html_for_string(
-                    &code_block_content,
-                    syntax_set,
-                    syntax,
-                    theme,
-                ) {
-                    Ok(html) => html,
-                    Err(_) => {
-                        format!(
-                            "<pre><code>{}</code></pre>",
-                            escape_html(&code_block_content)
-                        )
+                let highlighted = {
+                    let class_style = ClassStyle::SpacedPrefixed { prefix: "hl-" };
+                    let mut generator =
+                        ClassedHTMLGenerator::new_with_class_style(syntax, syntax_set, class_style);
+                    for line in syntect::util::LinesWithEndings::from(&code_block_content) {
+                        if generator
+                            .parse_html_for_line_which_includes_newline(line)
+                            .is_err()
+                        {
+                            break;
+                        }
                     }
+                    format!("<pre><code>{}</code></pre>", generator.finalize())
                 };
+
                 let template = CodeBlockTemplate {
                     content: &highlighted,
                 };

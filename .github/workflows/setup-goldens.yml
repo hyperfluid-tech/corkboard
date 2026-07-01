@@ -18,7 +18,7 @@ jobs:
   run_goldens:
     runs-on: ubuntu-latest
     env:
-      CORKBOARD_CSP_ALLOWED_ORIGINS: "http://localhost:3000,https://fonts.googleapis.com,https://fonts.gstatic.com,https://picsum.photos,https://upload.wikimedia.org"
+      CORKBOARD_CSP_ALLOWED_ORIGINS: "http://localhost:3000,https://fonts.googleapis.com,https://fonts.gstatic.com,https://cdn.stocksnap.io,https://upload.wikimedia.org"
     steps:
       - name: Generate GitHub App Token
         id: generate-token

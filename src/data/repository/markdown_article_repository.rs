@@ -1,11 +1,11 @@
 use crate::data::data_source::markdown::markdown_data_source::MarkdownDataSource;
 use crate::data::usecase::extract_asset_references_usecase::ExtractAssetReferencesUsecase;
+use crate::data::usecase::sanitize_markdown_html_usecase::SanitizeMarkdownHtmlUsecase;
 use crate::domain::model::article::Article;
 use crate::domain::model::error::AppError;
 use crate::domain::repository::article_repository::ArticleRepository;
 use crate::infrastructure::markdown::helpers::close_open_fences;
 use crate::infrastructure::markdown::markdown_renderer::render_markdown;
-use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
 pub struct MarkdownArticleRepository<DS: MarkdownDataSource> {
@@ -25,8 +25,6 @@ impl<DS: MarkdownDataSource> MarkdownArticleRepository<DS> {
 impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS> {
     fn load_all(&self) -> Result<Vec<Article>, Box<dyn std::error::Error>> {
         let ps = SyntaxSet::load_defaults_newlines();
-        let ts = ThemeSet::load_defaults();
-        let theme = &ts.themes["InspiredGitHub"];
 
         let documents = self.data_source.fetch_all()?;
         let mut articles = Vec::new();
@@ -47,13 +45,15 @@ impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS>
 
             let slug = slug::slugify(&title);
 
-            let (content, toc) = render_markdown(&doc.body, &ps, theme);
+            let (raw_content, toc) = render_markdown(&doc.body, &ps);
+            let content = SanitizeMarkdownHtmlUsecase::execute(raw_content);
 
             let lines: Vec<&str> = doc.body.lines().collect();
             let (preview, has_more_content) = if lines.len() > self.truncate_lines {
                 let truncated_md = lines[..self.truncate_lines].join("\n");
                 let safe_md = close_open_fences(&truncated_md);
-                let (p, _) = render_markdown(&safe_md, &ps, theme);
+                let (raw_preview, _) = render_markdown(&safe_md, &ps);
+                let p = SanitizeMarkdownHtmlUsecase::execute(raw_preview);
                 (p, true)
             } else {
                 (content.clone(), false)

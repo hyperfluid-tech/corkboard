@@ -672,6 +672,18 @@ header.paper-card {
     width: 100%;
 }
 
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
 @media (max-width: 640px) {
     .table-scroll-container {
         overflow-x: auto;

@@ -1,3 +1,4 @@
 pub mod extract_asset_references_usecase;
 pub mod get_markdown_files_from_directory_usecase;
 pub mod parse_markdown_file_usecase;
+pub mod sanitize_markdown_html_usecase;

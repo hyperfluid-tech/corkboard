@@ -2,7 +2,7 @@
 title: "Welcome to Corkboard"
 description: "A fast, lightweight, and skeuomorphic blog platform built with Rust"
 date: "2026-05-21"
-thumbnail: "https://picsum.photos/800/600"
+thumbnail: "https://cdn.stocksnap.io/img-thumbs/960w/waterfall-iceland_AF9QPX5P5T.jpg"
 ---
 
 Welcome to Corkboard, a fast and lightweight blog platform written in Rust! 
@@ -132,7 +132,7 @@ Tables are rendered with custom headers, borders, and support for alignment:
 
 All images parsed from Markdown are automatically compiled into a skeuomorphic, tipped-in card style with waxy tape decorations and soft shadows:
 
-![Random Internet Image](https://picsum.photos/800/600 "Skeuomorphic image display card")
+![Random Internet Image](https://cdn.stocksnap.io/img-thumbs/960w/waterfall-iceland_AF9QPX5P5T.jpg "Skeuomorphic image display card")
 
 ---
 
