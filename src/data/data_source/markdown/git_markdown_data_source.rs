@@ -37,7 +37,7 @@ impl GitMarkdownDataSource {
                 gix::progress::Discard,
                 &std::sync::atomic::AtomicBool::new(false),
             )
-            .map_err(|e| AppError::GitError(format!("Failed to fetch: {}", e)))?;
+            .map_err(|e| AppError::GitError(format!("Failed to fetch: {:?}", e)))?;
 
         let (_repo, _): (gix::Repository, _) = prepare_checkout
             .main_worktree(
