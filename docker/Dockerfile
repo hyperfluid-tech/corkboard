@@ -13,7 +13,7 @@ FROM rust:1-slim-bookworm AS builder
 
 WORKDIR /usr/src/corkboard
 
-RUN apt-get update && apt-get install -y musl-tools && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y musl-tools perl && rm -rf /var/lib/apt/lists/*
 RUN rustup target add x86_64-unknown-linux-musl
 
 COPY . .
