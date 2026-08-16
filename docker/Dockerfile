@@ -13,7 +13,7 @@ FROM rust:1-slim-bookworm AS builder
 
 WORKDIR /usr/src/corkboard
 
-RUN apt-get update && apt-get install -y musl-tools perl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y musl-tools perl make && rm -rf /var/lib/apt/lists/*
 RUN rustup target add x86_64-unknown-linux-musl
 
 COPY . .
@@ -36,6 +36,7 @@ RUN apk add --no-cache \
     ttf-freefont
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ENV SSL_CERT_DIR=/etc/ssl/certs
+ENV CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 RUN addgroup -S corkboard_group && adduser -S corkboard_user -G corkboard_group
 RUN mkdir -p /app && chown -R corkboard_user:corkboard_group /app
 
