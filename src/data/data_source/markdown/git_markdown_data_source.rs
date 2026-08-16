@@ -19,6 +19,15 @@ impl GitMarkdownDataSource {
         password: Option<&str>,
         _branch: &str,
     ) -> Result<Self, AppError> {
+        unsafe {
+            openssl_probe::init_openssl_env_vars();
+            if let Ok(cert_file) = std::env::var("SSL_CERT_FILE") {
+                if std::env::var("CURL_CA_BUNDLE").is_err() {
+                    std::env::set_var("CURL_CA_BUNDLE", &cert_file);
+                }
+            }
+        }
+
         let temp_dir = tempfile::Builder::new()
             .prefix("corkboard-git-")
             .tempdir()
