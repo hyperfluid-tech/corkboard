@@ -34,6 +34,8 @@ RUN apk add --no-cache \
     freetype \
     harfbuzz \
     ttf-freefont
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV SSL_CERT_DIR=/etc/ssl/certs
 RUN addgroup -S corkboard_group && adduser -S corkboard_user -G corkboard_group
 RUN mkdir -p /app && chown -R corkboard_user:corkboard_group /app
 
