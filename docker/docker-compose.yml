@@ -27,6 +27,7 @@ services:
       - CORKBOARD_BLOG_AUTHOR=Author
       - CORKBOARD_ARTICLES_DIR=/app/articles
       - CORKBOARD_TRUNCATE_LINES=15
+      # - CORKBOARD_PREVIEW_INCLUDE_IMAGES=false
       # - CORKBOARD_THUMBNAIL_SHOW_ARTICLES=false
       # - CORKBOARD_SOCIAL_LINKS=https://github.com/your-username,https://linkedin.com/in/your-username,https://twitter.com/your-username
       # - CORKBOARD_CORS_ALLOWED_ORIGINS=http://your-domain-here.com:8080

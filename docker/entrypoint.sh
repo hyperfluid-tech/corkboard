@@ -28,6 +28,7 @@ base_url = "http://localhost:3000"
 articles_dir = "articles"
 port = 3000
 truncate_lines = 15
+preview_include_images = false
 thumbnail_show_articles = false
 
 # social_links = [

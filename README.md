@@ -169,6 +169,7 @@ base_url = "https://your-domain-here.com"
 articles_dir = "articles"
 port = 3000
 truncate_lines = 15
+preview_include_images = false
 thumbnail_show_articles = false
 
 # social_links = [
@@ -209,6 +210,7 @@ Every setting can be configured via a `config.toml` file or overridden using an 
 | `articles_dir` | `CORKBOARD_ARTICLES_DIR` | `articles` | Directory to scan for `.md` files |
 | `port` | `CORKBOARD_PORT` | `3000` | Internal HTTP port the application listens on |
 | `truncate_lines` | `CORKBOARD_TRUNCATE_LINES` | `15` | Markdown lines shown per card before truncation |
+| `preview_include_images` | `CORKBOARD_PREVIEW_INCLUDE_IMAGES` | `false` | Whether to include images in truncated article previews |
 | `thumbnail_show_articles` | `CORKBOARD_THUMBNAIL_SHOW_ARTICLES` | `false` | Whether to show article snippets in the blog's generated thumbnail |
 | `social_links` | `CORKBOARD_SOCIAL_LINKS` | *(empty list)* | List of social/external URLs to show in the footer (comma-separated in env) |
 | `cors_allowed_origins` | `CORKBOARD_CORS_ALLOWED_ORIGINS` | `[base_url]` | List of allowed CORS origins. Defaults to the configured `base_url`. (comma-separated list in env) |

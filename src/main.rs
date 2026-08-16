@@ -63,7 +63,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     tracing::info!("Parsing articles from '{}'...", settings.articles_dir);
     let data_source = LocalStorageMarkdownDataSource::new(settings.articles_dir.clone());
-    let repo = MarkdownArticleRepository::new(data_source, settings.truncate_lines);
+    let repo = MarkdownArticleRepository::new(
+        data_source,
+        settings.truncate_lines,
+        settings.preview_include_images,
+    );
 
     #[allow(unused_mut)]
     let mut repos: Vec<Box<dyn ArticleRepository + Send + Sync>> = vec![Box::new(repo)];
@@ -83,6 +87,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 repos.push(Box::new(MarkdownArticleRepository::new(
                     git_source,
                     settings.truncate_lines,
+                    settings.preview_include_images,
                 )));
             }
             Err(e) => {

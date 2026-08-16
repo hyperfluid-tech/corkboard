@@ -5,19 +5,23 @@ use crate::domain::model::article::Article;
 use crate::domain::model::error::AppError;
 use crate::domain::repository::article_repository::ArticleRepository;
 use crate::infrastructure::markdown::helpers::close_open_fences;
-use crate::infrastructure::markdown::markdown_renderer::render_markdown;
+use crate::infrastructure::markdown::markdown_renderer::{
+    render_markdown, render_markdown_preview,
+};
 use syntect::parsing::SyntaxSet;
 
 pub struct MarkdownArticleRepository<DS: MarkdownDataSource> {
     data_source: DS,
     truncate_lines: usize,
+    preview_include_images: bool,
 }
 
 impl<DS: MarkdownDataSource> MarkdownArticleRepository<DS> {
-    pub fn new(data_source: DS, truncate_lines: usize) -> Self {
+    pub fn new(data_source: DS, truncate_lines: usize, preview_include_images: bool) -> Self {
         Self {
             data_source,
             truncate_lines,
+            preview_include_images,
         }
     }
 }
@@ -52,7 +56,11 @@ impl<DS: MarkdownDataSource> ArticleRepository for MarkdownArticleRepository<DS>
             let (preview, has_more_content) = if lines.len() > self.truncate_lines {
                 let truncated_md = lines[..self.truncate_lines].join("\n");
                 let safe_md = close_open_fences(&truncated_md);
-                let (raw_preview, _) = render_markdown(&safe_md, &ps);
+                let (raw_preview, _) = if self.preview_include_images {
+                    render_markdown(&safe_md, &ps)
+                } else {
+                    render_markdown_preview(&safe_md, &ps)
+                };
                 let p = SanitizeMarkdownHtmlUsecase::execute(raw_preview);
                 (p, true)
             } else {
