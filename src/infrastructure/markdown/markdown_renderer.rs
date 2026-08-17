@@ -8,6 +8,21 @@ use syntect::html::{ClassStyle, ClassedHTMLGenerator};
 use syntect::parsing::SyntaxSet;
 
 pub fn render_markdown(markdown_content: &str, syntax_set: &SyntaxSet) -> (String, Vec<TocEntry>) {
+    render_markdown_with_options(markdown_content, syntax_set, true)
+}
+
+pub fn render_markdown_preview(
+    markdown_content: &str,
+    syntax_set: &SyntaxSet,
+) -> (String, Vec<TocEntry>) {
+    render_markdown_with_options(markdown_content, syntax_set, false)
+}
+
+fn render_markdown_with_options(
+    markdown_content: &str,
+    syntax_set: &SyntaxSet,
+    include_images: bool,
+) -> (String, Vec<TocEntry>) {
     let mut options = Options::empty();
     options.insert(Options::ENABLE_TABLES);
     options.insert(Options::ENABLE_FOOTNOTES);
@@ -34,23 +49,27 @@ pub fn render_markdown(markdown_content: &str, syntax_set: &SyntaxSet) -> (Strin
             match event {
                 Event::End(TagEnd::Image) => {
                     in_image = false;
-                    let display_caption = if !image_title.is_empty() {
-                        &image_title
-                    } else {
-                        ""
-                    };
+                    if include_images {
+                        let display_caption = if !image_title.is_empty() {
+                            &image_title
+                        } else {
+                            ""
+                        };
 
-                    let template = MarkdownImageTemplate {
-                        src: &image_dest,
-                        alt: &image_alt,
-                        caption: display_caption,
-                    };
+                        let template = MarkdownImageTemplate {
+                            src: &image_dest,
+                            alt: &image_alt,
+                            caption: display_caption,
+                        };
 
-                    let html = template.render().unwrap();
-                    new_events.push(Event::Html(html.into()));
+                        let html = template.render().unwrap();
+                        new_events.push(Event::Html(html.into()));
+                    }
                 }
                 Event::Text(text) => {
-                    image_alt.push_str(&text);
+                    if include_images {
+                        image_alt.push_str(&text);
+                    }
                 }
                 _ => {}
             }
@@ -62,9 +81,21 @@ pub fn render_markdown(markdown_content: &str, syntax_set: &SyntaxSet) -> (Strin
                 dest_url, title, ..
             }) => {
                 in_image = true;
-                image_dest = dest_url.to_string();
-                image_title = title.to_string();
-                image_alt.clear();
+                if include_images {
+                    image_dest = dest_url.to_string();
+                    image_title = title.to_string();
+                    image_alt.clear();
+                }
+            }
+            Event::Start(Tag::Paragraph) => {
+                new_events.push(Event::Start(Tag::Paragraph));
+            }
+            Event::End(TagEnd::Paragraph) => {
+                if let Some(Event::Start(Tag::Paragraph)) = new_events.last() {
+                    new_events.pop();
+                } else {
+                    new_events.push(Event::End(TagEnd::Paragraph));
+                }
             }
             Event::Start(Tag::CodeBlock(kind)) => {
                 in_code_block = true;

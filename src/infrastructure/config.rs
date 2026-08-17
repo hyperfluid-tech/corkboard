@@ -10,6 +10,7 @@ pub const DEFAULT_BASE_URL: &str = "http://localhost:3000";
 pub const DEFAULT_BLOG_LICENSE: &str = "CC 4.0 BY-SA";
 pub const DEFAULT_BLOG_LICENSE_URL: &str = "https://creativecommons.org/licenses/by-sa/4.0/";
 pub const DEFAULT_TRUNCATE_LINES: i64 = 15;
+pub const DEFAULT_PREVIEW_INCLUDE_IMAGES: bool = false;
 pub const DEFAULT_LANG: &str = "en";
 pub const DEFAULT_THUMBNAIL_SHOW_ARTICLES: bool = false;
 
@@ -29,6 +30,7 @@ pub struct Settings {
     pub articles_dir: String,
     pub port: u16,
     pub truncate_lines: usize,
+    pub preview_include_images: bool,
     pub lang: String,
     #[serde(default)]
     pub social_links: Vec<url::Url>,
@@ -128,6 +130,7 @@ impl Settings {
             .set_default("blog_license", DEFAULT_BLOG_LICENSE)?
             .set_default("blog_license_url", DEFAULT_BLOG_LICENSE_URL)?
             .set_default("truncate_lines", DEFAULT_TRUNCATE_LINES)?
+            .set_default("preview_include_images", DEFAULT_PREVIEW_INCLUDE_IMAGES)?
             .set_default("lang", DEFAULT_LANG)?
             .set_default("thumbnail_show_articles", DEFAULT_THUMBNAIL_SHOW_ARTICLES)?
             .add_source(File::with_name("config").required(false))

@@ -28,6 +28,7 @@ base_url = "http://localhost:3000"
 articles_dir = "articles"
 port = 3000
 truncate_lines = 15
+preview_include_images = false
 thumbnail_show_articles = false
 
 # social_links = [
@@ -50,7 +51,19 @@ mkdir -p "$ARTICLES_DIR"
 mkdir -p /app/assets
 
 
-if [ -z "$(ls -A "$ARTICLES_DIR" 2>/dev/null)" ]; then
+GIT_CONFIGURED=false
+if [ -n "$CORKBOARD_GIT__LINK" ]; then
+    GIT_CONFIGURED=true
+elif grep -E "^\[git\]" /app/config.toml >/dev/null 2>&1; then
+    GIT_CONFIGURED=true
+fi
+
+if [ "$GIT_CONFIGURED" = "true" ]; then
+    if [ "$(ls -A "$ARTICLES_DIR" 2>/dev/null)" = "welcome.md" ]; then
+        echo "Git repository configured: removing auto-generated welcome post..."
+        rm -f "$ARTICLES_DIR/welcome.md"
+    fi
+elif [ -z "$(ls -A "$ARTICLES_DIR" 2>/dev/null)" ]; then
     echo "No markdown articles found in $ARTICLES_DIR. Creating a default welcome post..."
     cp /app/welcome.md "$ARTICLES_DIR/welcome.md"
     CURRENT_DATE=$(date +%Y-%m-%d)
