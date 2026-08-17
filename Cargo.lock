@@ -383,7 +383,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
 [[package]]
 name = "corkboard"
-version = "0.4.6"
+version = "0.4.7"
 dependencies = [
  "askama",
  "axum",
@@ -392,6 +392,7 @@ dependencies = [
  "curl-sys",
  "gix",
  "headless_chrome",
+ "openssl-probe",
  "openssl-sys",
  "pulldown-cmark",
  "serde",
@@ -2356,6 +2357,12 @@ dependencies = [
  "cc",
  "pkg-config",
 ]
+
+[[package]]
+name = "openssl-probe"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d05e27ee213611ffe7d6348b942e8f942b37114c00cc03cec254295a4a17852e"
 
 [[package]]
 name = "openssl-src"
